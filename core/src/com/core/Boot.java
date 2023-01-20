@@ -1,31 +1,34 @@
 package com.core;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
-public class Boot extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class Boot extends Game {
+
+	public static Boot INSTANCE;
+	private int screenWidth, screenHeight;
+	private OrthographicCamera orthographicCamera;
+
+	public Boot() {
+		INSTANCE = this;
+	}
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		this.screenWidth = Gdx.graphics.getWidth();
+		this.screenHeight = Gdx.graphics.getHeight();
+		this.orthographicCamera = new OrthographicCamera();
+		this.orthographicCamera.setToOrtho(false, screenWidth, screenHeight);
+		setScreen(new GameScreen(orthographicCamera));
 	}
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public int getScreenWidth() {
+		return screenWidth;
 	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
+
+	public int getScreenHeight() {
+		return screenHeight;
 	}
 }
