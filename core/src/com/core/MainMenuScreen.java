@@ -38,6 +38,6 @@ public class MainMenuScreen extends ScreenAdapter {
         batch.end();
 
         // For debugging purposes:
-        //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
+        //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM)); // Will need to add our PPM or ignore it if not applicable (I.E. remove the argument)
     }
 }
