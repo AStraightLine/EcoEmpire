@@ -3,7 +3,6 @@ package com.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
 public class Boot extends Game {
 
