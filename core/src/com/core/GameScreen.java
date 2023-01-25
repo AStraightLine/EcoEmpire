@@ -4,25 +4,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.core.clock.GameClock;
 
 public class GameScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
+    private BitmapFont font;
     private World world;
+    private GameClock gameClock;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.batch = new SpriteBatch();
+        this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
+        this.gameClock = new GameClock();
     }
 
     public void update() {
@@ -42,9 +48,20 @@ public class GameScreen extends ScreenAdapter {
 
         batch.begin();
 
+        drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
+
         batch.end();
 
         // For debugging purposes:
         //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
+    }
+
+    private void drawTime(SpriteBatch batch, int timeElapsedInSeconds, float x, float y) {
+        int hours = timeElapsedInSeconds / 3600;
+        int minutes = (timeElapsedInSeconds % 3600) / 60;
+        int seconds = timeElapsedInSeconds % 60;
+        String timeElapsed = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+
+        font.draw(batch, timeElapsed, x, y);
     }
 }
