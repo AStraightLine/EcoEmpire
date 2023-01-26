@@ -76,7 +76,15 @@ public class GameClock {
         }
     }
 
-    public void setTimeMod(int mod) {
+    public void handlePause() {
+        if (!isPaused) {
+            setTimeMod(0);
+        } else {
+            setTimeMod(lastTimeMod);
+        }
+    }
+
+    private void setTimeMod(int mod) {
         if (mod == 0) { // Pause request
             this.lastTimeMod = this.timeMod; // Set last game speed to current speed before updating.
             this.pausedByPause = true; // A literal pause request is pausing the game (as opposed to speed inc / dec).

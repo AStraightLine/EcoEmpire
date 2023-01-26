@@ -40,11 +40,7 @@ public class GameScreen extends ScreenAdapter {
         // Start of controls section:
         // Pause:
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            if (!gameClock.getPauseState()) {
-                gameClock.setTimeMod(0);
-            } else {
-                gameClock.setTimeMod(gameClock.getLastTimeMod());
-            }
+            gameClock.handlePause();
             // Add additional functionality such as restricting access to gameplay options as they're implemented here:
         }
         // Increase game speed:
