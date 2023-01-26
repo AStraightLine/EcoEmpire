@@ -1,6 +1,7 @@
 package com.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,6 +37,26 @@ public class GameScreen extends ScreenAdapter {
 
         this.camera.update();
 
+        // Start of controls section:
+        // Pause:
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            if (!gameClock.getPauseState()) {
+                gameClock.setTimeMod(0);
+            } else {
+                gameClock.setTimeMod(gameClock.getLastTimeMod());
+            }
+            // Add additional functionality such as restricting access to gameplay options as they're implemented here:
+        }
+        // Increase game speed:
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) { // Right arrow key
+            gameClock.incTimeMod();
+        }
+        // Decrease game speed:
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) { // Right arrow key
+            gameClock.decTimeMod();
+        }
+        // End of controls section.
+
         batch.setProjectionMatrix(camera.combined);
     }
 
@@ -56,10 +77,10 @@ public class GameScreen extends ScreenAdapter {
         //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
     }
 
-    private void drawTime(SpriteBatch batch, int timeElapsedInSeconds, float x, float y) {
-        int hours = timeElapsedInSeconds / 3600;
-        int minutes = (timeElapsedInSeconds % 3600) / 60;
-        int seconds = timeElapsedInSeconds % 60;
+    private void drawTime(SpriteBatch batch, float timeElapsedInSeconds, float x, float y) {
+        int hours = Math.round(timeElapsedInSeconds) / 3600;
+        int minutes = Math.round((timeElapsedInSeconds) % 3600) / 60;
+        int seconds = Math.round(timeElapsedInSeconds) % 60;
         String timeElapsed = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
         font.draw(batch, timeElapsed, x, y);
