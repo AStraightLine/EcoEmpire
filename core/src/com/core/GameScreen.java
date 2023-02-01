@@ -22,6 +22,8 @@ public class GameScreen extends ScreenAdapter {
     private World world;
     private GameClock gameClock;
 
+    private Grid grid;
+
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
@@ -30,6 +32,8 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
+        this.grid = new Grid();
+        grid.create();
     }
 
     public void update() {
@@ -59,11 +63,13 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         update();
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+
+
+        grid.render();
 
         drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
 
