@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.core.clock.GameClock;
+import com.core.grid.Grid;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -32,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
-        this.grid = new Grid();
+        this.grid = new Grid(16, 16);
         grid.create();
     }
 
