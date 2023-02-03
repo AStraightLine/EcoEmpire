@@ -34,7 +34,7 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
-        this.grid = new Grid(16, 16);
+        this.grid = new Grid(100, 100);
         grid.create();
 
     }

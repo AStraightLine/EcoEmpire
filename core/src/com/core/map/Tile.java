@@ -34,6 +34,17 @@ public class Tile extends Rectangle
         ;
     }
 
+    public int getTileType()
+    {
+        return tileType;
+    }
+
+    public void setTileType(int t)
+    {
+        tileType = t;
+    }
+
+
     public int getType()
     {
         return tileType;
