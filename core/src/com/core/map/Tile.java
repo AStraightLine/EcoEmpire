@@ -1,5 +1,7 @@
 package com.core.map;
 import com.badlogic.gdx.math.Rectangle;
+import com.core.map.location.Location;
+
 public class Tile extends Rectangle
 {
     private float oilConcentration;
@@ -11,12 +13,15 @@ public class Tile extends Rectangle
     //1 for land
     //2 etc
 
+    // Location - Hold resource data and extraction data for this Tile.
+    private Location location;
 
     public Tile(float x, float y, float width, float height, int tileType)
     {
         super(x, y, width, height);
 
         this.tileType = tileType;
+        this.location = new Location(tileType);
     }
 
     public Tile(int tileType)
