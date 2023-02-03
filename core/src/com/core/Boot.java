@@ -3,6 +3,8 @@ package com.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.core.startscreen.StartScreen;
+import jdk.javadoc.internal.tool.Start;
 
 public class Boot extends Game {
 
@@ -20,6 +22,11 @@ public class Boot extends Game {
 		this.screenHeight = Gdx.graphics.getHeight();
 		this.orthographicCamera = new OrthographicCamera();
 		this.orthographicCamera.setToOrtho(false, screenWidth, screenHeight);
+		setScreen(new StartScreen(orthographicCamera));
+	}
+
+	public void startGame(){
+		//will change from the start screen to the
 		setScreen(new GameScreen(orthographicCamera));
 	}
 
