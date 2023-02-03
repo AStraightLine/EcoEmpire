@@ -11,6 +11,8 @@ public class Tile extends Rectangle
     //1 for land
     //2 etc
 
+    private Location location;
+
 
 
 
