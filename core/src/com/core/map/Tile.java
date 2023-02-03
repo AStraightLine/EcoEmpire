@@ -1,6 +1,4 @@
-package com.core.grid;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+package com.core.map;
 import com.badlogic.gdx.math.Rectangle;
 public class Tile extends Rectangle
 {
@@ -12,6 +10,9 @@ public class Tile extends Rectangle
     //0 for water
     //1 for land
     //2 etc
+
+
+
 
     public Tile(float x, float y, float width, float height, int tileType)
     {

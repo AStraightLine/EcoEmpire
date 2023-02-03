@@ -1,4 +1,4 @@
-package com.core.grid;
+package com.core.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,6 +11,9 @@ public class Grid extends ScreenAdapter {
     private SpriteBatch batch;
     private Texture[] textures;
     private Tile[][] grid;
+
+    private Rectangle[][] grid2;
+
     private int rows;
     private int columns;
 
@@ -29,6 +32,7 @@ public class Grid extends ScreenAdapter {
         initialiseTextures();
 
         grid = new Tile[rows][columns];
+        grid2 = new Rectangle[rows][columns];
 
         int middleX = (int) (Math.floor(columns/2 * 100) / 100);
         int middleY = (int) (Math.floor(rows/2 * 100) / 100);
@@ -48,6 +52,23 @@ public class Grid extends ScreenAdapter {
             }
         }
         selectedTile = grid[middleX][middleY];
+        calibrateWindow();
+    }
+
+    public void calibrateWindow()
+    {
+        float squareWidth = Gdx.graphics.getWidth() / columns;
+        float squareHeight = Gdx.graphics.getHeight() / rows;
+
+        for(int i=0; i<rows; i++)
+        {
+            for(int j=0; j<columns; j++)
+            {
+                float x = j*squareWidth;
+                float y = i*squareHeight;
+                grid2[i][j] = new Rectangle(x, y, squareWidth, squareHeight);
+            }
+        }
     }
 
     public void initialiseTextures()
@@ -87,7 +108,7 @@ public class Grid extends ScreenAdapter {
             {
                 for(int j=0; j<columns; j++)
                 {
-                    Tile currentTile = grid[i][j];
+                    Rectangle currentTile = grid2[i][j];
                     if(currentTile.contains(clickX, clickY))
                     {
                         selectedTile = grid[i][j];

@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.core.clock.GameClock;
-import com.core.grid.Grid;
+import com.core.map.Grid;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -25,6 +25,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Grid grid;
 
+
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
@@ -35,6 +36,14 @@ public class GameScreen extends ScreenAdapter {
         this.gameClock = new GameClock();
         this.grid = new Grid(16, 16);
         grid.create();
+
+    }
+
+    public void resize(int width, int height)
+    {
+        System.out.println("XX");
+        //viewport.update(width, height);
+        grid.calibrateWindow();
     }
 
     public void update() {
