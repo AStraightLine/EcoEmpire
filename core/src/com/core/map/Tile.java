@@ -12,15 +12,12 @@ public class Tile extends Rectangle
     //2 etc
 
 
-
-
     public Tile(float x, float y, float width, float height, int tileType)
     {
         super(x, y, width, height);
 
         this.tileType = tileType;
     }
-
 
     public Tile(int tileType)
     {

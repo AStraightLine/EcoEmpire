@@ -11,9 +11,7 @@ public class Grid extends ScreenAdapter {
     private SpriteBatch batch;
     private Texture[] textures;
     private Tile[][] grid;
-
     private Rectangle[][] grid2;
-
     private int rows;
     private int columns;
 
@@ -37,8 +35,6 @@ public class Grid extends ScreenAdapter {
         int middleX = (int) (Math.floor(columns/2 * 100) / 100);
         int middleY = (int) (Math.floor(rows/2 * 100) / 100);
 
-
-
         float squareWidth = Gdx.graphics.getWidth() / columns;
         float squareHeight = Gdx.graphics.getHeight() / rows;
 
@@ -48,7 +44,7 @@ public class Grid extends ScreenAdapter {
             {
                 float x = j*squareWidth;
                 float y = i*squareHeight;
-                grid[i][j] = new Tile(x, y, squareWidth, squareHeight, 1);
+                grid[i][j] = new Tile(x, y, squareWidth, squareHeight, 0);
             }
         }
         selectedTile = grid[middleX][middleY];
@@ -73,9 +69,9 @@ public class Grid extends ScreenAdapter {
 
     public void initialiseTextures()
     {
-        textures[0] = new Texture(Gdx.files.internal("core/src/water.png"));
-        textures[1] = new Texture(Gdx.files.internal("core/src/land.png"));
-        textures[2] = new Texture(Gdx.files.internal("core/src/overlay.png"));
+        textures[0] = new Texture(Gdx.files.internal("water.png"));
+        textures[1] = new Texture(Gdx.files.internal("land.png"));
+        textures[2] = new Texture(Gdx.files.internal("overlay.png"));
     }
 
 
