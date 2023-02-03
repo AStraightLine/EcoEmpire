@@ -22,9 +22,7 @@ public class GameScreen extends ScreenAdapter {
     private BitmapFont font;
     private World world;
     private GameClock gameClock;
-
     private Grid grid;
-
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -34,14 +32,14 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
-        this.grid = new Grid(16, 16);
+        this.grid = new Grid(40, 40);
         grid.create();
 
     }
 
     public void resize(int width, int height)
     {
-        System.out.println("XX");
+        System.out.println("resized window");
         //viewport.update(width, height);
         grid.calibrateWindow();
     }
