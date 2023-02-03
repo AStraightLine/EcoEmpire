@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.core.GameDisplayUI.LayoutHome;
 import com.core.clock.GameClock;
 import com.core.map.Grid;
 
@@ -22,9 +25,9 @@ public class GameScreen extends ScreenAdapter {
     private BitmapFont font;
     private World world;
     private GameClock gameClock;
-
     private Grid grid;
-
+    private LayoutHome layoutTest;
+    private Stage stage;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -35,6 +38,9 @@ public class GameScreen extends ScreenAdapter {
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
         this.grid = new Grid(16, 16);
+        this.layoutTest = new LayoutHome();
+        this.stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
         grid.create();
 
     }
@@ -44,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
         System.out.println("XX");
         //viewport.update(width, height);
         grid.calibrateWindow();
+        stage.getViewport().update(width, height, true);
     }
 
     public void update() {
@@ -77,14 +84,15 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
-
         grid.render();
 
         drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
 
         batch.end();
-
+        layoutTest.create();
+        delta = Gdx.graphics.getDeltaTime();
+        stage.act(delta);
+        stage.draw();
         // For debugging purposes:
         //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
     }

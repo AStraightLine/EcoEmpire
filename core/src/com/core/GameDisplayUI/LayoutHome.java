@@ -1,14 +1,15 @@
 package com.core.GameDisplayUI;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
 public class LayoutHome {
     private Border b;
+    private Actor actor;
     public LayoutHome(){
-        b = new Border();
-        b.create();
-        b.resize(100, 100);
 
     }
-    public void render(){
-        b.render();
+    public void create(){
+
     }
 }
