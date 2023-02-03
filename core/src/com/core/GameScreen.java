@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.core.clock.GameClock;
+import com.core.map.Grid;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -21,6 +22,7 @@ public class GameScreen extends ScreenAdapter {
     private BitmapFont font;
     private World world;
     private GameClock gameClock;
+    private Grid grid;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -30,6 +32,16 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
+        this.grid = new Grid(40, 40);
+        grid.create();
+
+    }
+
+    public void resize(int width, int height)
+    {
+        System.out.println("resized window");
+        //viewport.update(width, height);
+        grid.calibrateWindow();
     }
 
     public void update() {
@@ -59,11 +71,13 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         update();
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+
+
+        grid.render();
 
         drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
 
