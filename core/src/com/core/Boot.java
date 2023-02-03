@@ -17,7 +17,6 @@ public class Boot extends Game {
 	}
 
 
-
 	@Override
 	public void create () {
 		this.screenWidth = Gdx.graphics.getWidth();
