@@ -7,15 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Random;
-
 public class Grid extends ScreenAdapter {
     private SpriteBatch batch;
     private Texture[] textures;
     private Tile[][] grid;
-
     private Rectangle[][] grid2;
-
     private int rows;
     private int columns;
 
@@ -39,94 +35,20 @@ public class Grid extends ScreenAdapter {
         int middleX = (int) (Math.floor(columns/2 * 100) / 100);
         int middleY = (int) (Math.floor(rows/2 * 100) / 100);
 
-
-
         float squareWidth = Gdx.graphics.getWidth() / columns;
         float squareHeight = Gdx.graphics.getHeight() / rows;
-
-        Random r = new Random();
 
         for(int i=0; i<rows; i++)
         {
             for(int j=0; j<columns; j++)
             {
-                int tType = r.nextInt(3); //Generate noise map, each tile is assigned a type of either 0 or 1, current 67% chance for land
-                if (tType > 1)
-                {
-                    tType = 1;
-                }
                 float x = j*squareWidth;
                 float y = i*squareHeight;
-                grid[i][j] = new Tile(x, y, squareWidth, squareHeight, tType);
+                grid[i][j] = new Tile(x, y, squareWidth, squareHeight, 0);
             }
         }
-        cellularAutomata(1); //Perform the algorithm once
         selectedTile = grid[middleX][middleY];
         calibrateWindow();
-    }
-
-    private Tile[][] copyTiles()
-    {
-        Tile[][] temp = new Tile[rows][columns];
-        for (int y = 0; y < rows; y++)
-        {
-            for (int x = 0; x < columns; x++)
-            {
-                temp[y][x] = grid[y][x];
-            }
-        }
-        return temp;
-    }
-
-    private void cellularAutomata(int iterations) //Map generation algorithm
-    {
-        for (int i = 0; i < iterations; i++)
-        {
-            Tile[][] temp = copyTiles(); //Copy of the tilemap before any changes
-            for (int y = 0; y < rows; y++)
-            {
-                for (int x = 0; x < columns; x++)
-                {
-                    float max = 8; //Max amount of land tiles around a single tile
-                    float nearbyLand = 0;
-                    {
-                        for (int yOffset = -1; yOffset < 2; yOffset++)
-                        {
-                            for (int xOffset = -1; xOffset < 2; xOffset++)
-                            {
-                                if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows)
-                                {
-                                    max--;
-                                }
-                                else if (xOffset == 0 && yOffset == 0)
-                                {
-
-                                }
-                                else
-                                {
-                                    Tile t = temp[y + yOffset][x + xOffset];
-                                    int tType = t.getTileType();
-                                    if (tType == 1)
-                                    {
-                                        nearbyLand++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    float nearbyLandPercentage = nearbyLand / max;
-                    Tile t = grid[y][x];
-                    if (nearbyLandPercentage > 0.5)
-                    {
-                        t.setTileType(1);
-                    }
-                    else
-                    {
-                        t.setTileType(0);
-                    }
-                }
-            }
-        }
     }
 
     public void calibrateWindow()
@@ -147,9 +69,9 @@ public class Grid extends ScreenAdapter {
 
     public void initialiseTextures()
     {
-        textures[0] = new Texture(Gdx.files.internal("core/src/water.png"));
-        textures[1] = new Texture(Gdx.files.internal("core/src/land.png"));
-        textures[2] = new Texture(Gdx.files.internal("core/src/overlay.png"));
+        textures[0] = new Texture(Gdx.files.internal("water.png"));
+        textures[1] = new Texture(Gdx.files.internal("land.png"));
+        textures[2] = new Texture(Gdx.files.internal("overlay.png"));
     }
 
 
