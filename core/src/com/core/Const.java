@@ -7,7 +7,7 @@ public class Const{
     // Infinity representation for renewable resource quantity (and anything else)
     public static final Double infinity = Double.POSITIVE_INFINITY;
     // resources
-    public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", tidal = "TIDAL", geothermal = "GEOTHERMAL";
+    public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", geothermal = "GEOTHERMAL";
     // tile types
     public static final String water = "WATER", land = "LAND";
 }

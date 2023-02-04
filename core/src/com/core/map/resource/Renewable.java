@@ -8,9 +8,9 @@ public class Renewable extends Resource {
     private double baseValue = 1;
     private double baseValueLowerBound = 1;
     private double baseValueUpperBound = 2;
-    private double baseImpact = 0.5; // Still some impact due to production etc
-    private double baseImpactLowerBound = 0.5;
-    private double baseImpactUpperBound = 1;
+    private double baseImpact = 0.25; // Still some impact due to production etc
+    private double baseImpactLowerBound = 0.25;
+    private double baseImpactUpperBound = 0.5;
     private int baseStability = 100;
     private int baseStabilityLowerBound = 100;
     private int baseStabilityUpperBound = 150; // Max average break (repair cost) every 2.5 minutes

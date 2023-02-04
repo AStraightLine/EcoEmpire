@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.core.Const;
 import com.core.map.extract.Extractor;
 import com.core.map.extract.extractors.*;
-import com.core.map.resource.Resource;
 import com.core.map.resource.resources.*;
 
 public class Location {
@@ -26,7 +25,6 @@ public class Location {
     private Solar solar;
     private Wind wind;
     private Hydro hydro;
-    private Tidal tidal; // Will need updating when we implement coast type. Until then, I'll just set everything to 0.
     private Geothermal geothermal;
 
     public Location(int type) {
@@ -46,8 +44,16 @@ public class Location {
         this.solar = new Solar(this.type);
         this.wind = new Wind(this.type);
         this.hydro = new Hydro(this.type);
-        this.tidal = new Tidal(this.type);
         this.geothermal = new Geothermal(this.type);
+
+        System.out.println("Coal - Value: " + coal.getValue() + " Quantity: " + coal.getQuantity() + " Impact: " + coal.getImpact() + " Stability: " + coal.getStability() + " Extraction Cost: " + coal.getExtractionCost());
+        System.out.println("Gas - Value: " + gas.getValue() + " Quantity: " + gas.getQuantity() + " Impact: " + gas.getImpact() + " Stability: " + gas.getStability() + " Extraction Cost: " + gas.getExtractionCost());
+        System.out.println("Oil - Value: " + oil.getValue() + " Quantity: " + oil.getQuantity() + " Impact: " + oil.getImpact() + " Stability: " + oil.getStability() + " Extraction Cost: " + oil.getExtractionCost());
+        System.out.println("Solar - Value: " + solar.getValue() + " Quantity: " + solar.getQuantity() + " Impact: " + solar.getImpact() + " Stability: " + solar.getStability() + " Extraction Cost: " + solar.getExtractionCost());
+        System.out.println("Wind - Value: " + wind.getValue() + " Quantity: " + wind.getQuantity() + " Impact: " + wind.getImpact() + " Stability: " + wind.getStability() + " Extraction Cost: " + wind.getExtractionCost());
+        System.out.println("Hydro - Value: " + hydro.getValue() + " Quantity: " + hydro.getQuantity() + " Impact: " + hydro.getImpact() + " Stability: " + hydro.getStability() + " Extraction Cost: " + hydro.getExtractionCost());
+        System.out.println("Geothermal - Value: " + geothermal.getValue() + " Quantity: " + geothermal.getQuantity() + " Impact: " + geothermal.getImpact() + " Stability: " + geothermal.getStability() + " Extraction Cost: " + geothermal.getExtractionCost());
+        System.out.println("Nuclear - Value: " + nuclear.getValue() + " Quantity: " + nuclear.getQuantity() + " Impact: " + nuclear.getImpact() + " Stability: " + nuclear.getStability() + " Extraction Cost: " + nuclear.getExtractionCost());
     }
 
     public Extractor buildExtractor(String resource) { // resource should come from the extraction type paid for.
@@ -95,11 +101,6 @@ public class Location {
                         this.extractingResource = Const.hydro;
                         //this.extractionTexture = new Texture("appropriatePath");
                         break;
-                    case "TIDAL":
-                        this.extractor = new TidalExtractor(tidal);
-                        this.extractingResource = Const.tidal;
-                        //this.extractionTexture = new Texture("appropriatePath");
-                        break;
                     case "GEOTHERMAL":
                         this.extractor = new GeothermalExtractor(geothermal);
                         this.extractingResource = Const.geothermal;
@@ -142,11 +143,6 @@ public class Location {
                         this.extractor = new HydroExtractor(hydro);
                         this.extractingResource = Const.hydro;
                         //this.extractionTexture = new Texture("appropriatePath");
-                        break;
-                    case "TIDAL":
-                        this.extractor = null;
-                        this.extractingResource = null;
-                        //this.extractionTexture = null;
                         break;
                     case "GEOTHERMAL":
                         this.extractor = new GeothermalExtractor(geothermal);
@@ -199,10 +195,6 @@ public class Location {
 
     public Hydro getHydro() {
         return hydro;
-    }
-
-    public Tidal getTidal() {
-        return tidal;
     }
 
     public Geothermal getGeothermal() {
