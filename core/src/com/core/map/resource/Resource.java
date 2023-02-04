@@ -3,23 +3,17 @@ package com.core.map.resource;
 public class Resource {
 
     private String location;
-
     private double quantity, quantityLowerBound, quantityUpperBound;
     private double value, valueLowerBound, valueUpperBound;
     private double impact, impactLowerBound, impactUpperBound;
     private int stability, stabilityLowerBound, stabilityUpperBound; // Determines size of dice roll. So higher number = more stable
-    private double easeOfExtraction, easeOfExtractionLowerBound, easeOfExtractionUpperBound;
-
-    // Not bounded as dependent on the other bounded variables (Though each resource should have a base extraction cost too)
-    private double extractionCost;
+    private double easeOfExtraction, easeOfExtractionLowerBound, easeOfExtractionUpperBound; // Lower better, use to calculate cost of extraction / value penalty
+    private double baseExtractionCost = 10;
+    private double extractionCost; // No bounds as dependent on the other bounded variables (Though each resource should have a base extraction cost too)
 
     public Resource(String location) {
         this.location = location;
-
-        // Minimum cost to extract any resource is 10
-        // Modified by type (Renewable / NonRenewable) and then by specific resource.
-        // Modified by other factors such as stability
-        this.extractionCost = 10;
+        this.extractionCost = baseExtractionCost;
     }
 
     public void setQuantity(double quantity) {
@@ -102,7 +96,7 @@ public class Resource {
         return extractionCost;
     }
 
-    public double getStability() {
+    public int getStability() {
         return stability;
     }
 
@@ -142,11 +136,15 @@ public class Resource {
         return impactUpperBound;
     }
 
-    public double getStabilityLowerBound() {
+    public int getStabilityLowerBound() {
         return stabilityLowerBound;
     }
 
-    public double getStabilityUpperBound() {
+    public int getStabilityUpperBound() {
         return stabilityUpperBound;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }

@@ -41,40 +41,77 @@ public class Location {
         this.geothermal = new Geothermal(this.type);
     }
 
-    public void setExtractor(String resource) { // resource should come from the extraction type paid for.
+    public Extractor buildExtractor(String resource) { // resource should come from the extraction type paid for.
         if (resource != null) {
             this.extracting = true; // Each location (tile) can only have one extraction.
 
-            switch(resource) {
-                case "COAL":
-                    this.extractor = new CoalExtractor(coal);
-                    break;
-                case "GAS":
-                    this.extractor = new GasExtractor(gas);
-                    break;
-                case "NUCLEAR":
-                    this.extractor = new NuclearExtractor(nuclear);
-                    break;
-                case "OIL":
-                    this.extractor = new OilExtractor(oil);
-                    break;
-                case "SOLAR":
-                    this.extractor = new SolarExtractor(solar);
-                    break;
-                case "WIND":
-                    this.extractor = new WindExtractor(wind);
-                    break;
-                case "HYDRO":
-                    this.extractor = new HydroExtractor(hydro);
-                    break;
-                case "TIDAL":
-                    this.extractor = new TidalExtractor(tidal);
-                    break;
-                case "GEOTHERMAL":
-                    this.extractor = new GeothermalExtractor(geothermal);
-                    break;
+            // Make sure appropriate for type (WATER / LAND)
+            if (this.type == "WATER") {
+                switch(resource) {
+                    case "COAL":
+                        this.extractor = new CoalExtractor(coal);
+                        break;
+                    case "GAS":
+                        this.extractor = new GasExtractor(gas);
+                        break;
+                    case "NUCLEAR":
+                        this.extractor = null;
+                        break;
+                    case "OIL":
+                        this.extractor = new OilExtractor(oil);
+                        break;
+                    case "SOLAR":
+                        this.extractor = null;
+                        break;
+                    case "WIND":
+                        this.extractor = new WindExtractor(wind);
+                        break;
+                    case "HYDRO":
+                        this.extractor = new HydroExtractor(hydro);
+                        break;
+                    case "TIDAL":
+                        this.extractor = new TidalExtractor(tidal);
+                        break;
+                    case "GEOTHERMAL":
+                        this.extractor = new GeothermalExtractor(geothermal);
+                        break;
+                }
+            } else if (this.type == "LAND") {
+                switch(resource) {
+                    case "COAL":
+                        this.extractor = new CoalExtractor(coal);
+                        break;
+                    case "GAS":
+                        this.extractor = new GasExtractor(gas);
+                        break;
+                    case "NUCLEAR":
+                        this.extractor = new NuclearExtractor(nuclear);
+                        break;
+                    case "OIL":
+                        this.extractor = new OilExtractor(oil);
+                        break;
+                    case "SOLAR":
+                        this.extractor = new SolarExtractor(solar);
+                        break;
+                    case "WIND":
+                        this.extractor = new WindExtractor(wind);
+                        break;
+                    case "HYDRO":
+                        this.extractor = new HydroExtractor(hydro);
+                        break;
+                    case "TIDAL":
+                        this.extractor = null;
+                        break;
+                    case "GEOTHERMAL":
+                        this.extractor = new GeothermalExtractor(geothermal);
+                        break;
+                }
             }
+
+            return this.extractor;
         }
+
+        else return null;
     }
 
     public String getType() {

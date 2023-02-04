@@ -4,6 +4,8 @@ public class NonRenewable extends Resource {
 
     private double baseExtractionCostModifier = 10;
     private int baseQuantity = 600;
+    private int baseQuantityLowerBound = 600;
+    private int baseQuantityUpperBound = 1000;
     private double baseValue = 2;
     private double baseValueLowerBound = 2;
     private double baseValueUpperBound = 4;
@@ -24,6 +26,8 @@ public class NonRenewable extends Resource {
         this.setExtractionCost(baseExtractionCostModifier);
         // Base quantity of 600 ensures 10 minutes of extraction at level 1 extraction rate.
         this.setQuantity(baseQuantity);
+        this.setQuantityLowerBound(baseQuantityLowerBound);
+        this.setQuantityUpperBound(baseQuantityUpperBound);
         // NonRenewables more profitable generally
         this.setValue(baseValue);
         this.setValueLowerBound(baseValueLowerBound);
