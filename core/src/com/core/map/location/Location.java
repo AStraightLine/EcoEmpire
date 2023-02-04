@@ -6,11 +6,16 @@ import com.core.map.extract.Extractor;
 import com.core.map.extract.extractors.*;
 import com.core.map.resource.resources.*;
 
+import java.util.Random;
+
 public class Location {
+
+    private Random rand = new Random();
 
     private String type;
 
     private boolean searched;
+    private double searchCost;
 
     private Extractor extractor;
     private String extractingResource;
@@ -29,6 +34,8 @@ public class Location {
 
     public Location(int type) {
         this.searched = false;
+        this.searchCost = (Math.round((2.50 + (10 - 2.50) * rand.nextDouble()) * 100.0) / 100.0);
+
         this.extracting = false;
 
         if (type == 0) {
@@ -46,7 +53,7 @@ public class Location {
         this.hydro = new Hydro(this.type);
         this.geothermal = new Geothermal(this.type);
 
-        System.out.println("Coal - Value: " + coal.getValue() + " Quantity: " + coal.getQuantity() + " Impact: " + coal.getImpact() + " Stability: " + coal.getStability() + " Extraction Cost: " + coal.getExtractionCost());
+        /*System.out.println("Coal - Value: " + coal.getValue() + " Quantity: " + coal.getQuantity() + " Impact: " + coal.getImpact() + " Stability: " + coal.getStability() + " Extraction Cost: " + coal.getExtractionCost());
         System.out.println("Gas - Value: " + gas.getValue() + " Quantity: " + gas.getQuantity() + " Impact: " + gas.getImpact() + " Stability: " + gas.getStability() + " Extraction Cost: " + gas.getExtractionCost());
         System.out.println("Oil - Value: " + oil.getValue() + " Quantity: " + oil.getQuantity() + " Impact: " + oil.getImpact() + " Stability: " + oil.getStability() + " Extraction Cost: " + oil.getExtractionCost());
         System.out.println("Solar - Value: " + solar.getValue() + " Quantity: " + solar.getQuantity() + " Impact: " + solar.getImpact() + " Stability: " + solar.getStability() + " Extraction Cost: " + solar.getExtractionCost());
@@ -54,6 +61,7 @@ public class Location {
         System.out.println("Hydro - Value: " + hydro.getValue() + " Quantity: " + hydro.getQuantity() + " Impact: " + hydro.getImpact() + " Stability: " + hydro.getStability() + " Extraction Cost: " + hydro.getExtractionCost());
         System.out.println("Geothermal - Value: " + geothermal.getValue() + " Quantity: " + geothermal.getQuantity() + " Impact: " + geothermal.getImpact() + " Stability: " + geothermal.getStability() + " Extraction Cost: " + geothermal.getExtractionCost());
         System.out.println("Nuclear - Value: " + nuclear.getValue() + " Quantity: " + nuclear.getQuantity() + " Impact: " + nuclear.getImpact() + " Stability: " + nuclear.getStability() + " Extraction Cost: " + nuclear.getExtractionCost());
+        System.out.println("Search Cost: " + searchCost);*/
     }
 
     public Extractor buildExtractor(String resource) { // resource should come from the extraction type paid for.
