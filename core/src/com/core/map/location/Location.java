@@ -11,6 +11,8 @@ public class Location {
 
     private String type;
 
+    private boolean searched;
+
     private Extractor extractor;
     private String extractingResource;
     private Boolean extracting;
@@ -28,6 +30,7 @@ public class Location {
     private Geothermal geothermal;
 
     public Location(int type) {
+        this.searched = false;
         this.extracting = false;
 
         if (type == 0) {
@@ -212,5 +215,13 @@ public class Location {
 
     public Texture getExtractionTexture() {
         return extractionTexture;
+    }
+
+    public void setSearched(boolean b) {
+        searched = b;
+    }
+
+    public boolean getSearched() {
+        return searched;
     }
 }
