@@ -1,6 +1,6 @@
 package com.core.map.extract;
 
-interface Extraction {
+interface Extract {
 
     // void for now but should likely return a tuple containing value and impact
     // may also have a chance of breaking each extraction depending on stability in which case roll the dice and see if breaks:

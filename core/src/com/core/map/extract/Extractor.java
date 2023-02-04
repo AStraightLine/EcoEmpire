@@ -2,7 +2,7 @@ package com.core.map.extract;
 
 import com.core.map.resource.Resource;
 
-public abstract class Extractor implements Extraction {
+public abstract class Extractor implements Extract {
 
     private Resource resource;
     private int extractionRate;
