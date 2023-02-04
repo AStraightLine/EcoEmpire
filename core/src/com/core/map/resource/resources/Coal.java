@@ -10,12 +10,12 @@ public class Coal extends NonRenewable {
     Random rand = new Random();
 
     private String location;
-
     private int baseQuantityUpperBoundMod = 0;
     private double baseValueLowerBoundMod = 1, baseValueUpperBoundMod = 6;
     private double baseImpactLowerBoundMod = 1, baseImpactUpperBoundMod = 3;
     private int baseStabilityLowerBoundMod = 0, baseStabilityUpperBoundMod = 0;
     private double baseEaseOfExtractionLowerBoundMod = 0, baseEaseOfExtractionUpperBoundMod = 0;
+
     public Coal(String location) {
         super(location);
 
