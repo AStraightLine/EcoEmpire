@@ -1,7 +1,10 @@
 package com.core.map.location;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.core.Const;
 import com.core.map.extract.Extractor;
 import com.core.map.extract.extractors.*;
+import com.core.map.resource.Resource;
 import com.core.map.resource.resources.*;
 
 public class Location {
@@ -9,7 +12,10 @@ public class Location {
     private String type;
 
     private Extractor extractor;
+    private String extractingResource;
     private Boolean extracting;
+
+    private Texture extractionTexture;
 
     private Coal coal;
     private Gas gas;
@@ -42,6 +48,9 @@ public class Location {
     }
 
     public Extractor buildExtractor(String resource) { // resource should come from the extraction type paid for.
+
+        // Needs updating when possible to set extractionTexture depending on which resource is being extracted.
+
         if (resource != null) {
             this.extracting = true; // Each location (tile) can only have one extraction.
 
@@ -50,60 +59,96 @@ public class Location {
                 switch(resource) {
                     case "COAL":
                         this.extractor = new CoalExtractor(coal);
+                        this.extractingResource = Const.coal;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "GAS":
                         this.extractor = new GasExtractor(gas);
+                        this.extractingResource = Const.gas;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "NUCLEAR":
                         this.extractor = null;
+                        this.extractingResource = null;
+                        //this.extractionTexture = null;
                         break;
                     case "OIL":
                         this.extractor = new OilExtractor(oil);
+                        this.extractingResource = Const.oil;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "SOLAR":
                         this.extractor = null;
+                        this.extractingResource = null;
+                        //this.extractionTexture = null;
                         break;
                     case "WIND":
                         this.extractor = new WindExtractor(wind);
+                        this.extractingResource = Const.wind;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "HYDRO":
                         this.extractor = new HydroExtractor(hydro);
+                        this.extractingResource = Const.hydro;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "TIDAL":
                         this.extractor = new TidalExtractor(tidal);
+                        this.extractingResource = Const.tidal;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "GEOTHERMAL":
                         this.extractor = new GeothermalExtractor(geothermal);
+                        this.extractingResource = Const.geothermal;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                 }
             } else if (this.type == "LAND") {
                 switch(resource) {
                     case "COAL":
                         this.extractor = new CoalExtractor(coal);
+                        this.extractingResource = Const.coal;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "GAS":
                         this.extractor = new GasExtractor(gas);
+                        this.extractingResource = Const.gas;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "NUCLEAR":
                         this.extractor = new NuclearExtractor(nuclear);
+                        this.extractingResource = Const.nuclear;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "OIL":
                         this.extractor = new OilExtractor(oil);
+                        this.extractingResource = Const.oil;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "SOLAR":
                         this.extractor = new SolarExtractor(solar);
+                        this.extractingResource = Const.solar;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "WIND":
                         this.extractor = new WindExtractor(wind);
+                        this.extractingResource = Const.wind;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "HYDRO":
                         this.extractor = new HydroExtractor(hydro);
+                        this.extractingResource = Const.hydro;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                     case "TIDAL":
                         this.extractor = null;
+                        this.extractingResource = null;
+                        //this.extractionTexture = null;
                         break;
                     case "GEOTHERMAL":
                         this.extractor = new GeothermalExtractor(geothermal);
+                        this.extractingResource = Const.geothermal;
+                        //this.extractionTexture = new Texture("appropriatePath");
                         break;
                 }
             }
@@ -159,5 +204,13 @@ public class Location {
 
     public Geothermal getGeothermal() {
         return geothermal;
+    }
+
+    public String getExtractingResource() {
+        return extractingResource;
+    }
+
+    public Texture getExtractionTexture() {
+        return extractionTexture;
     }
 }
