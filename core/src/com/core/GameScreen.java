@@ -11,18 +11,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.clock.GameClock;
-import com.core.map.Grid;
+import com.core.map.MapGrid;
 
 public class GameScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
+    private Stage stage;
+    private FitViewport viewport;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
     private BitmapFont font;
     private World world;
     private GameClock gameClock;
-    private Grid grid;
+    private MapGrid grid;
+    public final static float HEIGHT = 100;
+    public final static float WIDTH = 16 * HEIGHT / 9;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -32,7 +38,12 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
-        this.grid = new Grid(40, 40);
+
+
+        this.viewport = new FitViewport(1280, 720, camera);
+
+        stage = new Stage(viewport);
+        this.grid = new MapGrid(40, 40, stage);
 
         grid.create();
 
@@ -41,8 +52,7 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height)
     {
         System.out.println("resized window");
-        //viewport.update(width, height);
-        grid.calibrateWindow();
+        viewport.update(width, height);
     }
 
     public void update() {
@@ -77,15 +87,15 @@ public class GameScreen extends ScreenAdapter {
 
         batch.begin();
 
-
-        grid.render();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
         drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
 
         batch.end();
 
         // For debugging purposes:
-        //this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
+        this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
     }
 
     private void drawTime(SpriteBatch batch, float timeElapsedInSeconds, float x, float y) {
