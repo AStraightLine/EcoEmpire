@@ -1,12 +1,11 @@
 package com.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -30,6 +29,8 @@ public class GameScreen extends ScreenAdapter {
     private World world;
     private GameClock gameClock;
     private MapGrid grid;
+    private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
 
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
@@ -41,14 +42,15 @@ public class GameScreen extends ScreenAdapter {
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
 
-
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
         stage = new Stage(viewport);
-        this.grid = new MapGrid(40, 40, stage); //make sure rows and columns can divide by the resolution exactly
+        this.grid = new MapGrid(80, 80, stage, inputMultiplexer); //make sure rows and columns can divide by the resolution exactly
 
+        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer);
+        camImp.create();
         grid.create();
-
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     public void resize(int width, int height)
@@ -86,6 +88,7 @@ public class GameScreen extends ScreenAdapter {
         update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        camera.update();
 
         batch.begin();
 
@@ -108,4 +111,6 @@ public class GameScreen extends ScreenAdapter {
 
         font.draw(batch, timeElapsed, x, y);
     }
+
+
 }

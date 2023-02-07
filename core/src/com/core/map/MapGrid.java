@@ -1,6 +1,7 @@
 package com.core.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,17 +19,19 @@ public class MapGrid {
     private int rows;
     private int columns;
     private TileActor selectedTile;
+    private InputMultiplexer inputMultiplexer;
 
-    public MapGrid (int rows, int columns, Stage stage) {
+    public MapGrid (int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
         this.textures = new Texture[3];
+        this.inputMultiplexer = inputMultiplexer;
     }
 
     public void create ()
     {
-        Gdx.input.setInputProcessor(stage);
+        inputMultiplexer.addProcessor(stage);
         table.setFillParent(true);
         table.left().bottom();
         table.setDebug(false);
