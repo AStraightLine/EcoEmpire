@@ -16,7 +16,8 @@ public class TileActor extends Actor {
     private Texture texture;
     private Location location;
     private Sprite sprite;
-    private Sprite selectedSprite = new Sprite(new Texture(Gdx.files.internal("overlay.png")));
+    private Texture selectedTexture;
+    private Sprite selectedSprite;
     private boolean selected = false;
 
     public TileActor(final int row, final int column, int tileType, Texture texture) {
@@ -39,6 +40,7 @@ public class TileActor extends Actor {
         batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
         if(selected == true)
         {
+            selectedSprite.setTexture(selectedTexture);
             batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
         }
     }
@@ -52,6 +54,12 @@ public class TileActor extends Actor {
     }
     public void selectTile()
     {
+        if(selectedTexture == null)
+        {
+            this.selectedTexture = new Texture(Gdx.files.internal("overlay.png"));
+        }
+
+        this.selectedSprite = new Sprite(selectedTexture);
         this.selected = true;
     }
     public void deselectTile()
