@@ -6,12 +6,17 @@ import com.core.Boot;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
+
+	private static int resolutionX = 1280;
+	private static int resolutionY = 720;
+
+
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setIdleFPS(60);
 		config.useVsync(true);
 		config.setTitle("EcoEmpire");
-		config.setWindowedMode(1280, 720);
-		new Lwjgl3Application(new Boot(), config);
+		config.setWindowedMode(resolutionX, resolutionY);
+		new Lwjgl3Application(new Boot(resolutionX, resolutionY), config);
 	}
 }

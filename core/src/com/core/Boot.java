@@ -11,9 +11,13 @@ public class Boot extends Game {
 	public static Boot INSTANCE;
 	private int screenWidth, screenHeight;
 	private OrthographicCamera orthographicCamera;
+	private int resolutionX;
+	private int resolutionY;
 
-	public Boot() {
+	public Boot(int resolutionX, int resolutionY) {
 		INSTANCE = this;
+		this.resolutionX = resolutionX;
+		this.resolutionY = resolutionY;
 	}
 
 
@@ -28,7 +32,7 @@ public class Boot extends Game {
 
 	public void startGame(){
 		//will change from the start screen to the
-		setScreen(new GameScreen(orthographicCamera));
+		setScreen(new GameScreen(orthographicCamera, resolutionX, resolutionY));
 	}
 
 	public int getScreenWidth() {

@@ -12,7 +12,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.core.clock.GameClock;
 import com.core.map.MapGrid;
 
@@ -27,10 +30,9 @@ public class GameScreen extends ScreenAdapter {
     private World world;
     private GameClock gameClock;
     private MapGrid grid;
-    public final static float HEIGHT = 100;
-    public final static float WIDTH = 16 * HEIGHT / 9;
 
-    public GameScreen(OrthographicCamera camera) {
+
+    public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
         this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.box2DDebugRenderer = new Box2DDebugRenderer();
@@ -40,10 +42,10 @@ public class GameScreen extends ScreenAdapter {
         this.gameClock = new GameClock();
 
 
-        this.viewport = new FitViewport(1280, 720, camera);
+        this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
         stage = new Stage(viewport);
-        this.grid = new MapGrid(40, 40, stage);
+        this.grid = new MapGrid(40, 40, stage); //make sure rows and columns can divide by the resolution exactly
 
         grid.create();
 
