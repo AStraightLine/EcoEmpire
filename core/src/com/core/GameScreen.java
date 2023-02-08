@@ -29,12 +29,14 @@ public class GameScreen extends ScreenAdapter {
     private GameClock gameClock;
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    private SpriteBatch hudBatch;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
         this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.batch = new SpriteBatch();
+        this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
@@ -48,6 +50,7 @@ public class GameScreen extends ScreenAdapter {
         camImp.create();
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
+
     }
 
     public void resize(int width, int height)
@@ -90,13 +93,16 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
 
         batch.begin();
+
         grid.addExtractor();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        drawTime(batch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
-
         batch.end();
+
+        hudBatch.begin();
+        drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
+        hudBatch.end();
 
         // For debugging purposes:
         this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
