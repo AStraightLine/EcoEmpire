@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.core.map.location.Location;
 
 public class TileActor extends Actor {
-
+    private boolean populated = false; //if extractor is on tile
+    private Sprite extractorSprite;
+    private Texture extractorTexture;
     private int tileType;
     private int row;
     private int column;
@@ -43,6 +45,14 @@ public class TileActor extends Actor {
             selectedSprite.setTexture(selectedTexture);
             batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
         }
+        if(populated == true)
+        {
+
+            extractorSprite.setTexture(extractorTexture);
+            batch.draw(extractorSprite, getX(), getY(), getWidth(), getHeight());
+        }
+
+
     }
     public int getRow()
     {
@@ -91,4 +101,30 @@ public class TileActor extends Actor {
     public Location getLocation() {
         return location;
     }
+
+    public boolean drawExtractor() //pass through extractor type probably, method not finished
+    {
+        if(populated == false)
+        {
+
+            if(tileType==0)
+            {
+                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
+            }
+            if(tileType==1)
+            {
+                this.extractorTexture = new Texture(Gdx.files.internal("sea-rig.png"));
+            }
+            this.extractorSprite = new Sprite(extractorTexture);
+            populated = true;
+            System.out.println("Extractor added!");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 }

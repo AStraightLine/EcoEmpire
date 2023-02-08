@@ -19,7 +19,6 @@ import com.core.clock.GameClock;
 import com.core.map.MapGrid;
 
 public class GameScreen extends ScreenAdapter {
-
     private OrthographicCamera camera;
     private Stage stage;
     private FitViewport viewport;
@@ -30,8 +29,6 @@ public class GameScreen extends ScreenAdapter {
     private GameClock gameClock;
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
-
-
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
@@ -45,9 +42,9 @@ public class GameScreen extends ScreenAdapter {
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
         stage = new Stage(viewport);
-        this.grid = new MapGrid(80, 80, stage, inputMultiplexer); //make sure rows and columns can divide by the resolution exactly
+        this.grid = new MapGrid(80, 80, stage, inputMultiplexer);
 
-        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer);
+        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, grid.getActorWidthTotal(), grid.getActorHeightTotal());
         camImp.create();
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -58,6 +55,8 @@ public class GameScreen extends ScreenAdapter {
         System.out.println("resized window");
         viewport.update(width, height);
     }
+
+
 
     public void update() {
         world.step(1 / 60f, 6, 2);
@@ -91,7 +90,7 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
 
         batch.begin();
-
+        grid.addExtractor();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 

@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class MainMenuScreen extends ScreenAdapter {
-
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;

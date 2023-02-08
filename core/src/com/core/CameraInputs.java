@@ -7,13 +7,10 @@ import com.badlogic.gdx.math.Vector3;
 
 public class CameraInputs extends ApplicationAdapter implements InputProcessor
 {
-
-    private Vector3 mousePos = new Vector3();
     private OrthographicCamera camera;
     private InputMultiplexer inputMultiplexer;
 
-
-    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer)
+    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, float actorsWidthTotal, float actorsHeightTotal)
     {
         this.camera = camera;
         this.inputMultiplexer = inputMultiplexer;
@@ -25,9 +22,35 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
+    public boolean scrolled(float amountX, float amountY) {
+        if (amountY != 0)
+        {
+            camera.zoom += 0.1f*amountY;
+        }
+        if (camera.zoom > 1)
+        {
+            camera.zoom = 1;
+            camera.position.set(camera.viewportWidth /2f, camera.viewportHeight /2f, 0);
+        }
+        else if (camera.zoom < 0.2f)
+        {
+            camera.zoom = 0.2f;
+        }
+
+        return true;
+    }
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        float x = Gdx.input.getDeltaX();
+        float y = Gdx.input.getDeltaY();
+
+        camera.translate(-x,y);
+
+        return true;
+    }
+    @Override
     public boolean keyDown(int keycode)
     {
-
         return false;
     }
 
@@ -52,35 +75,8 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        float x = Gdx.input.getDeltaX();
-        float y = Gdx.input.getDeltaY();
-
-        camera.translate(-x,y);
-        return false;
-    }
-
-    @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
 
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        if (amountY != 0)
-        {
-            camera.zoom += 0.1f*amountY;
-        }
-        if (camera.zoom > 1)
-        {
-            camera.zoom = 1;
-            camera.position.set(camera.viewportWidth /2f, camera.viewportHeight /2f, 0);
-        }
-        else if (camera.zoom < 0.2f)
-        {
-            camera.zoom = 0.2f;
-        }
-
-        return false;
-    }
 }

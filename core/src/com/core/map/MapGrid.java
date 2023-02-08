@@ -1,6 +1,7 @@
 package com.core.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +21,8 @@ public class MapGrid {
     private int columns;
     private TileActor selectedTile;
     private InputMultiplexer inputMultiplexer;
+    private float actorWidth;
+    private float actorHeight;
 
     public MapGrid (int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer) {
         this.stage = stage;
@@ -40,8 +43,8 @@ public class MapGrid {
 
         grid = new TileActor[rows][columns];
 
-        int actorWidth = Gdx.graphics.getWidth() / rows;
-        int actorHeight = Gdx.graphics.getHeight() /  columns;
+        actorWidth = Gdx.graphics.getWidth() / rows;
+        actorHeight = Gdx.graphics.getHeight() /  columns;
 
         int middleX = (int) (Math.floor(columns/2 * 100) / 100);
         int middleY = (int) (Math.floor(rows/2 * 100) / 100);
@@ -63,7 +66,7 @@ public class MapGrid {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                         System.out.println("Actor clicked at row: " + tile.getRow() + ", col: " + tile.getColumn());
-
+                        //tile.drawExtractor();
                         selectedTile.deselectTile();
                         selectedTile = tile;
                         selectedTile.selectTile();
@@ -85,6 +88,24 @@ public class MapGrid {
         stage.addActor(table);
     }
 
+    public boolean addExtractor()
+    {
+        boolean complete = false;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O))
+        {
+            complete = selectedTile.drawExtractor();
+        }
+        return complete;
+    }
+
+    public float getActorWidthTotal()
+    {
+        return actorWidth*columns;
+    }
+    public float getActorHeightTotal()
+    {
+        return actorHeight*rows;
+    }
     public void initialiseTextures()
     {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
