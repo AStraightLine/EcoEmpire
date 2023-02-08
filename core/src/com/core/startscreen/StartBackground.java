@@ -27,8 +27,8 @@ public class StartBackground{
 
     public StartBackground(StartScreen startScreen){
 
-        this.x = Boot.INSTANCE.getScreenWidth() / 2;
-        this.y = Boot.INSTANCE.getScreenHeight() / 2;
+        this.x = 0;
+        this.y = 0;
 
         this.texture = new Texture("solar-flare.jpg");
         this.startScreen = startScreen;
