@@ -90,6 +90,8 @@ public class MapGrid {
 
     public boolean addExtractor()
     {
+        // Can later be updated to use the Location build Extraction function and getExtractionTexture / An extraction menu once it's in place to select which Resource
+        // you want to extract.
         boolean complete = false;
         if(Gdx.input.isKeyJustPressed(Input.Keys.O))
         {

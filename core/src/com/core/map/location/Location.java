@@ -224,4 +224,5 @@ public class Location {
     public boolean getSearched() {
         return searched;
     }
+
 }
