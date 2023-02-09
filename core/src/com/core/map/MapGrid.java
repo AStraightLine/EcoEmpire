@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.core.audio.GameSound;
+import com.core.map.mapgen.MapGen;
 
 import java.util.Random;
 
@@ -29,7 +30,7 @@ public class MapGrid {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
-        this.textures = new Texture[3];
+        this.textures = new Texture[4];
         this.inputMultiplexer = inputMultiplexer;
     }
 
@@ -83,10 +84,13 @@ public class MapGrid {
             }
             table.row();
         }
-        cellularAutomata(1); //Perform the algorithm once
+        MapGen mg = new MapGen(grid, rows, columns, textures);
+        TileActor[][] newGrid;
+        newGrid = mg.cellularAutomata(r.nextInt(10) + 1); //Perform the algorithm a random number of times between 1 and 10
+        newGrid = mg.beachGen();
+        grid = newGrid;
         selectedTile = grid[middleX][middleY];
         selectedTile.selectTile();
-
         stage.addActor(table);
     }
 
@@ -114,70 +118,7 @@ public class MapGrid {
     {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
         textures[1] = new Texture(Gdx.files.internal("land.png"));
-        textures[2] = new Texture(Gdx.files.internal("overlay.png"));
-    }
-
-    private TileActor[][] copyTiles()
-    {
-        TileActor[][] temp = new TileActor[rows][columns];
-        for (int y = 0; y < rows; y++)
-        {
-            for (int x = 0; x < columns; x++)
-            {
-                temp[y][x] = grid[y][x];
-            }
-        }
-        return temp;
-    }
-
-    private void cellularAutomata(int iterations) //Map generation algorithm
-    {
-        for (int i = 0; i < iterations; i++)
-        {
-            TileActor[][] temp = copyTiles(); //Copy of the tilemap before any changes
-            for (int y = 0; y < rows; y++)
-            {
-                for (int x = 0; x < columns; x++)
-                {
-                    float max = 8; //Max amount of land tiles around a single tile
-                    float nearbyLand = 0;
-                    {
-                        for (int yOffset = -1; yOffset < 2; yOffset++)
-                        {
-                            for (int xOffset = -1; xOffset < 2; xOffset++)
-                            {
-                                if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows)
-                                {
-                                    max--;
-                                }
-                                else if (xOffset == 0 && yOffset == 0)
-                                {
-
-                                }
-                                else
-                                {
-                                    TileActor t = temp[y + yOffset][x + xOffset];
-                                    int tType = t.getTileType();
-                                    if (tType == 1)
-                                    {
-                                        nearbyLand++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    float nearbyLandPercentage = nearbyLand / max;
-                    TileActor t = grid[y][x];
-                    if (nearbyLandPercentage > 0.5)
-                    {
-                        t.setTileType(1, textures[1]);
-                    }
-                    else
-                    {
-                        t.setTileType(0, textures[0]);
-                    }
-                }
-            }
-        }
+        textures[2] = new Texture(Gdx.files.internal("sand.png"));
+        textures[3] = new Texture(Gdx.files.internal("overlay.png"));
     }
 }

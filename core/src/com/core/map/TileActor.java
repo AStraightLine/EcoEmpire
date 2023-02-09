@@ -109,11 +109,11 @@ public class TileActor extends Actor {
 
             if(tileType==0)
             {
-                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
-            }
-            if(tileType==1)
-            {
                 this.extractorTexture = new Texture(Gdx.files.internal("sea-rig.png"));
+            }
+            if(tileType==1 || tileType==2)
+            {
+                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
             }
             this.extractorSprite = new Sprite(extractorTexture);
             populated = true;

@@ -9,5 +9,5 @@ public class Const{
     // resources
     public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", geothermal = "GEOTHERMAL";
     // tile types
-    public static final String water = "WATER", land = "LAND";
+    public static final String water = "WATER", land = "LAND", sand = "SAND";
 }
