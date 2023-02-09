@@ -18,4 +18,28 @@ public abstract class Extractor implements Extract {
         // may also have a chance of breaking each extraction depending on stability in which case roll the dice and see if breaks:
         // If it does, give the user the chance to rebuild for a fraction of the extractionCost
     }
+
+    public String getLocation() {
+        return resource.getLocation();
+    }
+
+    public double getQuantity() {
+        return resource.getQuantity();
+    }
+
+    public double getValue() {
+        return resource.getValue();
+    }
+
+    public double getImpact() {
+        return resource.getImpact();
+    }
+
+    public int getStability() {
+        return resource.getStability();
+    }
+
+    public double getExtractionCost() {
+        return resource.getExtractionCost();
+    }
 }
