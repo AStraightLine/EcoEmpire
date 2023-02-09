@@ -1,6 +1,7 @@
 package com.core;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.core.audio.GameSound;
 import com.core.clock.GameClock;
 import com.core.map.MapGrid;
 
@@ -30,6 +32,7 @@ public class GameScreen extends ScreenAdapter {
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private SpriteBatch hudBatch;
+    private GameSound gameSound;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
@@ -40,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
+        this.gameSound = new GameSound();
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
