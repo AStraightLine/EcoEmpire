@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.core.audio.GameSound;
 
 import java.util.Random;
 
@@ -70,6 +71,7 @@ public class MapGrid {
                         selectedTile.deselectTile();
                         selectedTile = tile;
                         selectedTile.selectTile();
+                        GameSound.playTileSelectSound();
 
                         return true;
                     }
