@@ -4,6 +4,8 @@ public class ClimatePulseEvent extends PulseEvent {
 
     @Override
     public void run() {
-        // ToDo: Link with funds when implemented to update current total from modifier location.
+        // ToDo: Take Inventory and Climate model as parameters.
+        // ToDo: Get Extractors from Inventory.
+        // ToDo: Call appropriate Extract extract method on each Extractor from Inventory.
     }
 }

@@ -10,7 +10,12 @@ public class GasExtractor extends Extractor {
     }
 
     @Override
-    public void extract() {
+    public void extractFunds() {
+
+    }
+
+    @Override
+    public void extractClimate() {
 
     }
 }
