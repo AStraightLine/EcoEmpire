@@ -46,7 +46,7 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(viewport);
         this.grid = new MapGrid(80, 80, stage, inputMultiplexer);
 
-        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, grid.getActorWidthTotal(), grid.getActorHeightTotal());
+        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
