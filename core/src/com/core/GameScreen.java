@@ -32,7 +32,6 @@ public class GameScreen extends ScreenAdapter {
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private SpriteBatch hudBatch;
-    private GameSound gameSound;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
@@ -43,9 +42,9 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.gameClock = new GameClock();
-        this.gameSound = new GameSound();
 
-        this.gameSound.startBackgroundMusic(0.1F);
+
+        GameSound.startBackgroundMusic(0.1F);
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
