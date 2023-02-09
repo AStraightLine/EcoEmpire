@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter {
         this.gameClock = new GameClock();
         this.gameSound = new GameSound();
 
-        this.gameSound.startBackgroundMusic(0.5F);
+        this.gameSound.startBackgroundMusic(0.1F);
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 

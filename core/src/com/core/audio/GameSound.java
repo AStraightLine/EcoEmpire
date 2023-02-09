@@ -2,16 +2,17 @@ package com.core.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class GameSound {
 
     private Music backgroundMusic;
-
+    private Sound tileSelectSound;
 
     public GameSound(){
 
         this.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("temp-music.mp3"));
-
+        this.tileSelectSound = Gdx.audio.newSound(Gdx.files.internal("tile-select.mp3"));
 
     }
 
@@ -25,5 +26,10 @@ public class GameSound {
         this.backgroundMusic.play();
     }
 
-
+    /**
+     * Will play the sound for selecting a tile
+     */
+    public void playTileSelectSound(){
+        this.tileSelectSound.play();
+    }
 }
