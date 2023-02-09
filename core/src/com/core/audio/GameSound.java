@@ -2,23 +2,27 @@ package com.core.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 
 public class GameSound {
 
     private Music backgroundMusic;
-    private float volume;
 
 
     public GameSound(){
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("temp-music.mp3"));
+        this.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("temp-music.mp3"));
 
-        this.volume = 0.25F;
-        backgroundMusic.setVolume(this.volume);
 
-        backgroundMusic.play();
+    }
 
+    /**
+     * Will start playing the background music for the main game
+     * @param volume float value between 0-1 for how loud you want the music
+     */
+    public void startBackgroundMusic(float volume){
+
+        this.backgroundMusic.setVolume(volume);
+        this.backgroundMusic.play();
     }
 
 
