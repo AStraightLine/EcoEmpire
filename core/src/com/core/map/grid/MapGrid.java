@@ -168,24 +168,22 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean addExtractor(String resource) {
+    public boolean addExtractor(Location location, String resource, String texturePath) {
         // Can later be updated to use the Location build Extraction function and getExtractionTexture / An extraction menu once it's in place to select which Resource
         // you want to extract.
         boolean complete = false;
-
-        int row = selectedTile.getRow();
-        int column = selectedTile.getColumn();
 
         boolean sameType = checkTileTypes();
         boolean available = checkAvailability();
 
         if(sameType && available)
         {
-            Location location = selectedTile.getLocation();
+            Texture texture = new Texture(Gdx.files.internal(texturePath));
             Extractor extractor = location.buildExtractor(resource);
-
-            complete = selectedTile.drawExtractor(location.getExtractionTexture());
-
+            location.setExtracting(true);
+            location.setExtractingResource(resource);
+            location.setExtractionTexture(texture);
+            complete = selectedTile.drawExtractor(texture);
         }
 
         if(complete)
@@ -193,7 +191,6 @@ public class MapGrid {
             setAvailability();
             selectedTile.setAsParent();
         }
-
 
         return complete;
     }
@@ -211,5 +208,9 @@ public class MapGrid {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
         textures[1] = new Texture(Gdx.files.internal("land.png"));
         textures[2] = new Texture(Gdx.files.internal("sand.png"));
+    }
+
+    public TileActor getSelectedTile() {
+        return this.selectedTile;
     }
 }

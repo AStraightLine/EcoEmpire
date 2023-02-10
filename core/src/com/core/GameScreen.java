@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.audio.GameSound;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
+import com.core.map.grid.TileActor;
+import com.core.map.location.Location;
+import com.core.player.PlayerInventory;
 
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
@@ -27,6 +30,9 @@ public class GameScreen extends ScreenAdapter {
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private SpriteBatch hudBatch;
+    private PlayerInventory playerInventory;
+
+    private double startingFunds = 100.0;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         this.camera = camera;
@@ -36,6 +42,7 @@ public class GameScreen extends ScreenAdapter {
         this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
+        this.playerInventory = new PlayerInventory(startingFunds);
         this.gameClock = new GameClock();
 
 
@@ -79,6 +86,60 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) { // Right arrow key
             gameClock.decTimeMod();
         }
+
+        // Start of search and Extract functions
+        // Search:
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            TileActor tile = grid.getSelectedTile();
+            Location location = tile.getLocation();
+
+            if (!location.getSearched()) {
+                if (playerInventory.getFunds() >= location.getSearchCost())
+                    playerInventory.charge(location.getSearchCost());
+                    location.setSearched(true);
+
+                /**
+                 * Only here to demonstrate what the Resource profile looks like, I.E. the data to display somehow to the user.
+                 *
+                 * System.out.println("Search Cost: " + location.getSearchCost())
+                 * System.out.println("Coal - Value: " + location.getCoal().getValue() + " Quantity: " + location.getCoal().getQuantity() + " Impact: " + location.getCoal().getImpact() + " Stability: " + location.getCoal().getStability() + " Extraction Cost: " + location.getCoal().getExtractionCost());
+                 * System.out.println("Gas - Value: " + location.getGas().getValue() + " Quantity: " + location.getGas().getQuantity() + " Impact: " + location.getGas().getImpact() + " Stability: " + location.getGas().getStability() + " Extraction Cost: " + location.getGas().getExtractionCost());
+                 * System.out.println("Oil - Value: " + location.getOil().getValue() + " Quantity: " + location.getOil().getQuantity() + " Impact: " + location.getOil().getImpact() + " Stability: " + location.getOil().getStability() + " Extraction Cost: " + location.getOil().getExtractionCost());
+                 * System.out.println("Solar - Value: " + location.getSolar().getValue() + " Quantity: " + location.getSolar().getQuantity() + " Impact: " + location.getSolar().getImpact() + " Stability: " + location.getSolar().getStability() + " Extraction Cost: " + location.getSolar().getExtractionCost());
+                 * System.out.println("Wind - Value: " + location.getWind().getValue() + " Quantity: " + location.getWind().getQuantity() + " Impact: " + location.getWind().getImpact() + " Stability: " + location.getWind().getStability() + " Extraction Cost: " + location.getWind().getExtractionCost());
+                 * System.out.println("Hydro - Value: " + location.getHydro().getValue() + " Quantity: " + location.getHydro().getQuantity() + " Impact: " + location.getHydro().getImpact() + " Stability: " + location.getHydro().getStability() + " Extraction Cost: " + location.getHydro().getExtractionCost());
+                 * System.out.println("Geothermal - Value: " + location.getGeothermal().getValue() + " Quantity: " + location.getGeothermal().getQuantity() + " Impact: " + location.getGeothermal().getImpact() + " Stability: " + location.getGeothermal().getStability() + " Extraction Cost: " + location.getGeothermal().getExtractionCost());
+                 * System.out.println("Nuclear - Value: " + location.getNuclear().getValue() + " Quantity: " + location.getNuclear().getQuantity() + " Impact: " + location.getNuclear().getImpact() + " Stability: " + location.getNuclear().getStability() + " Extraction Cost: " + location.getNuclear().getExtractionCost());
+                 */
+            }
+
+            System.out.println("Funds: " + playerInventory.getFunds());
+        }
+
+        // Add Oil extractor
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+            TileActor tile = grid.getSelectedTile();
+            Location location = tile.getLocation();
+            String type = location.getType();
+
+            if (location.getSearched() && playerInventory.getFunds() >= location.getOil().getExtractionCost()) {
+                if (type == Const.water) {
+                    grid.addExtractor(location, Const.oil, "sea-rig.png");
+                } else {
+                    grid.addExtractor(location, Const.oil, "land-rig.png");
+                }
+                System.out.println(location.getExtractor());
+                playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
+            }
+
+            System.out.println("Funds: " + playerInventory.getFunds());
+        }
+
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            System.exit(0);
+        }
         // End of controls section.
 
         batch.setProjectionMatrix(camera.combined);
@@ -92,22 +153,9 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
 
         batch.begin();
+
         stage.draw();
-
         stage.act(Gdx.graphics.getDeltaTime());
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            grid.addExtractor("OIL");
-        }
-
-
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            System.exit(0);
-        }
-
-
-
 
         batch.end();
 

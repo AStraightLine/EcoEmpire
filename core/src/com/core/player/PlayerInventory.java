@@ -15,7 +15,7 @@ public class PlayerInventory {
      * Creates a new inventory for the player
      * @param initialFunds The amount of funds the player starts the game with
      */
-    public PlayerInventory(float initialFunds){
+    public PlayerInventory(double initialFunds){
 
         this.funds = initialFunds;
         this.income = 0; //since you don't have anything built yet
@@ -104,6 +104,16 @@ public class PlayerInventory {
 
         return(Boolean.FALSE);
 
+    }
+
+    public double getFunds() {
+        return this.funds;
+    }
+
+    public void charge(double cost) {
+        if (this.funds >= cost) {
+            this.funds -= cost;
+        }
     }
 
 }

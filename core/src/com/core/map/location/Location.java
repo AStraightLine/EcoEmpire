@@ -230,6 +230,10 @@ public class Location {
         return extractionTexture;
     }
 
+    public double getSearchCost() {
+        return this.searchCost;
+    }
+
     public void setSearched(boolean b) {
         searched = b;
     }
@@ -238,4 +242,15 @@ public class Location {
         return searched;
     }
 
+    public void setExtractingResource(String extractingResource) {
+        this.extractingResource = extractingResource;
+    }
+
+    public void setExtracting(Boolean extracting) {
+        this.extracting = extracting;
+    }
+
+    public void setExtractionTexture(Texture extractionTexture) {
+        this.extractionTexture = extractionTexture;
+    }
 }
