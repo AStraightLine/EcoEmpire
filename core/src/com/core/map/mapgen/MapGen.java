@@ -1,7 +1,7 @@
 package com.core.map.mapgen;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.core.map.TileActor;
+import com.core.map.grid.TileActor;
 
 import java.util.Random;
 
