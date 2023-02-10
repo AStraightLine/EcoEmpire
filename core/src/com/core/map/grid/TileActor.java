@@ -1,4 +1,4 @@
-package com.core.map;
+package com.core.map.grid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +10,7 @@ import com.core.map.location.Location;
 
 public class TileActor extends Actor {
     private boolean populated = false; //if extractor is on tile
+    private boolean unavailable = false;
     private Sprite extractorSprite;
     private Texture extractorTexture;
     private int tileType;
@@ -21,6 +22,8 @@ public class TileActor extends Actor {
     private Texture selectedTexture;
     private Sprite selectedSprite;
     private boolean selected = false;
+    private TileActor parentTile = this;
+    private boolean isParent = false;
 
     public TileActor(final int row, final int column, int tileType, Texture texture) {
         this.row = row;
@@ -40,20 +43,31 @@ public class TileActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
+
+        if(populated == true)
+        {
+            extractorSprite.setTexture(extractorTexture);
+            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+        }
         if(selected == true)
         {
             selectedSprite.setTexture(selectedTexture);
-            batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
+            if(isParent)
+            {
+                batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+            }
+            else
+            {
+                batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
+            }
         }
-        if(populated == true)
-        {
-
-            extractorSprite.setTexture(extractorTexture);
-            batch.draw(extractorSprite, getX(), getY(), getWidth(), getHeight());
-        }
-
-
     }
+    public TileActor getParentTile()
+    {
+        return parentTile;
+    }
+
+
     public int getRow()
     {
         return row;
@@ -77,14 +91,25 @@ public class TileActor extends Actor {
         this.selected = false;
     }
 
-    public void initialise()
-    {
-        ;
-    }
-
     public int getTileType()
     {
         return tileType;
+    }
+    public void setUnavailable(TileActor parent)
+    {
+        this.parentTile = parent;
+        isParent = false;
+        unavailable = true;
+    }
+    public void setAsParent()
+    {
+        isParent = true;
+    }
+
+
+    public boolean isUnavailable()
+    {
+        return unavailable;
     }
 
     public void setTileType(int t, Texture texture)
@@ -92,10 +117,6 @@ public class TileActor extends Actor {
         tileType = t;
         this.texture = texture;
         this.sprite.setTexture(texture);
-    }
-    public int getType()
-    {
-        return tileType;
     }
 
     public Location getLocation() {
@@ -109,11 +130,11 @@ public class TileActor extends Actor {
 
             if(tileType==0)
             {
-                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
-            }
-            if(tileType==1)
-            {
                 this.extractorTexture = new Texture(Gdx.files.internal("sea-rig.png"));
+            }
+            if(tileType==1 || tileType==2)
+            {
+                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
             }
             this.extractorSprite = new Sprite(extractorTexture);
             populated = true;

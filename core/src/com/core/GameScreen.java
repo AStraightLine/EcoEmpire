@@ -1,24 +1,19 @@
 package com.core;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.core.audio.GameSound;
 import com.core.clock.GameClock;
-import com.core.map.MapGrid;
+import com.core.map.grid.MapGrid;
 
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
@@ -49,8 +44,7 @@ public class GameScreen extends ScreenAdapter {
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
         stage = new Stage(viewport);
-        this.grid = new MapGrid(80, 80, stage, inputMultiplexer);
-
+        this.grid = new MapGrid(150, 150, stage, inputMultiplexer);
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
@@ -98,10 +92,16 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
 
         batch.begin();
-
-        grid.addExtractor();
-        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        stage.act(Gdx.graphics.getDeltaTime());
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+            grid.addExtractor();
+        }
+
+
+
 
         batch.end();
 

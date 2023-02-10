@@ -4,6 +4,8 @@ public class FundsPulseEvent extends PulseEvent {
 
     @Override
     public void run() {
-        // ToDo: Link with funds when implemented to update current total from modifier location.
+        // ToDo: Needs to take an Inventory as a parameter.
+        // ToDo: Call update on Inventory for funds.
+        // ToDo: Call fundsExtract on each Extraction from Inventory.
     }
 }

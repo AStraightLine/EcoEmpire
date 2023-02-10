@@ -28,6 +28,10 @@ public class GameClock {
     private long nextClimatePulseDelay; // Time until next scheduled climate state update (in milliseconds)
 
     public GameClock() {
+        // ToDo: Needs to take an Inventory and a Climate model as a parameter.
+        // ToDo: Pass Inventory to fundsPulseEvent.
+        // ToDo: Pass Inventory and Climate to climatePulseEvent.
+
         this.timer = new Timer();
         this.clockEvent = new ClockEvent(this);
         this.fundsEventPulse = new FundsPulseEvent();
