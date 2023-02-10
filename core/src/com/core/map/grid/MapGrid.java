@@ -179,24 +179,22 @@ public class MapGrid {
         Texture texture = new Texture(Gdx.files.internal(texturePath));
 
         if (!location.getExtracting()) {
-            complete = selectedTile.drawExtractor(texture);
+
         }
 
-        if(sameType && available && complete)
+        if(sameType && available && !location.getExtracting())
         {
             Extractor extractor = location.buildExtractor(resource);
             location.setExtracting(true);
             location.setExtractingResource(resource);
             location.setExtractionTexture(texture);
-
+            complete = selectedTile.drawExtractor(texture);
+            if(complete)
+            {
+                setAvailability();
+                selectedTile.setAsParent();
+            }
         } else return false;
-
-        if(complete)
-        {
-            setAvailability();
-            selectedTile.setAsParent();
-        }
-
         return complete;
     }
 

@@ -130,10 +130,16 @@ public class GameScreen extends ScreenAdapter {
                 } else {
                     path = "land-rig.png";
                 }
+
                 built = grid.addExtractor(location, Const.oil, path);
+
+                System.out.println("Funds: " + playerInventory.getFunds());
+                System.out.println("Cost: " + location.getOil().getExtractionCost());
 
                 if (built) {
                     playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
+
+
                     System.out.println("Funds: " + playerInventory.getFunds());
                 }
             }
