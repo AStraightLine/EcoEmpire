@@ -43,7 +43,7 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
-        this.gameClock = new GameClock();
+        this.gameClock = new GameClock(playerInventory);
 
 
         GameSound.startBackgroundMusic(0.1F);
@@ -165,6 +165,7 @@ public class GameScreen extends ScreenAdapter {
 
         hudBatch.begin();
         drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
+        drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         hudBatch.end();
 
         // For debugging purposes:
@@ -178,6 +179,11 @@ public class GameScreen extends ScreenAdapter {
         String timeElapsed = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
         font.draw(batch, timeElapsed, x, y);
+    }
+
+    private void drawFunds(SpriteBatch batch, double funds, float x, float y) {
+        String fundsString = String.format("£%,.2f", funds);
+        font.draw(batch, fundsString, x, y);
     }
 
 
