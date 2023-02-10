@@ -44,6 +44,11 @@ public class TileActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
 
+        if(populated == true)
+        {
+            extractorSprite.setTexture(extractorTexture);
+            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+        }
         if(selected == true)
         {
             selectedSprite.setTexture(selectedTexture);
@@ -54,16 +59,8 @@ public class TileActor extends Actor {
             else
             {
                 batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
-
             }
-
         }
-        if(populated == true)
-        {
-            extractorSprite.setTexture(extractorTexture);
-            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-        }
-
     }
     public TileActor getParentTile()
     {

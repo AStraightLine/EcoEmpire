@@ -17,6 +17,7 @@ public class DesktopLauncher {
 		config.useVsync(true);
 		config.setTitle("EcoEmpire");
 		config.setWindowedMode(resolutionX, resolutionY);
+		//config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new Boot(resolutionX, resolutionY), config);
 	}
 }

@@ -80,16 +80,16 @@ public class MapGrid {
 
                 grid[i][j] = tile;
 
-                table.add(tile).width(actorWidth).height(actorHeight);
+                table.add(tile).width(actorWidth).height(actorHeight).width(0).pad(0).height(0);
             }
-            table.row();
+            table.row().expandX().fillX().expandY().fillY();
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
         newGrid = mg.cellularAutomata(r.nextInt(10) + 5); //Perform the algorithm a random number of times between 5 and 15
         newGrid = mg.beachGen();
         grid = newGrid;
-        selectedTile = grid[middleX][middleY];
+        selectedTile = grid[0][0];
         selectedTile.selectTile();
         stage.addActor(table);
     }
