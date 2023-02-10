@@ -121,17 +121,22 @@ public class GameScreen extends ScreenAdapter {
             TileActor tile = grid.getSelectedTile();
             Location location = tile.getLocation();
             String type = location.getType();
+            String path;
+            Boolean built = false;
 
             if (location.getSearched() && playerInventory.getFunds() >= location.getOil().getExtractionCost()) {
                 if (type == Const.water) {
-                    grid.addExtractor(location, Const.oil, "sea-rig.png");
+                    path = "sea-rig.png";
                 } else {
-                    grid.addExtractor(location, Const.oil, "land-rig.png");
+                    path = "land-rig.png";
                 }
-                playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
-            }
+                built = grid.addExtractor(location, Const.oil, path);
 
-            System.out.println("Funds: " + playerInventory.getFunds());
+                if (built) {
+                    playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
+                    System.out.println("Funds: " + playerInventory.getFunds());
+                }
+            }
         }
 
 

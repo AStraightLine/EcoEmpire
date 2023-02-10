@@ -176,15 +176,20 @@ public class MapGrid {
         boolean sameType = checkTileTypes();
         boolean available = checkAvailability();
 
-        if(sameType && available)
+        Texture texture = new Texture(Gdx.files.internal(texturePath));
+
+        if (!location.getExtracting()) {
+            complete = selectedTile.drawExtractor(texture);
+        }
+
+        if(sameType && available && complete)
         {
-            Texture texture = new Texture(Gdx.files.internal(texturePath));
             Extractor extractor = location.buildExtractor(resource);
             location.setExtracting(true);
             location.setExtractingResource(resource);
             location.setExtractionTexture(texture);
-            complete = selectedTile.drawExtractor(texture);
-        }
+
+        } else return false;
 
         if(complete)
         {
