@@ -97,7 +97,13 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            grid.addExtractor();
+            grid.addExtractor("OIL");
+        }
+
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            System.exit(0);
         }
 
 

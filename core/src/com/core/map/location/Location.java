@@ -13,16 +13,12 @@ public class Location {
     private Random rand = new Random();
 
     private String type;
-
     private boolean searched;
     private double searchCost;
-
     private Extractor extractor;
     private String extractingResource;
     private Boolean extracting;
-
     private Texture extractionTexture;
-
     private Coal coal;
     private Gas gas;
     private Nuclear nuclear;
@@ -43,6 +39,10 @@ public class Location {
         } else if (type == 1) {
             this.type = "LAND";
         }
+        else if (type == 2) {
+            this.type = "LAND";
+        }
+
 
         this.coal = new Coal(this.type);
         this.gas = new Gas(this.type);
@@ -62,6 +62,19 @@ public class Location {
         System.out.println("Geothermal - Value: " + geothermal.getValue() + " Quantity: " + geothermal.getQuantity() + " Impact: " + geothermal.getImpact() + " Stability: " + geothermal.getStability() + " Extraction Cost: " + geothermal.getExtractionCost());
         System.out.println("Nuclear - Value: " + nuclear.getValue() + " Quantity: " + nuclear.getQuantity() + " Impact: " + nuclear.getImpact() + " Stability: " + nuclear.getStability() + " Extraction Cost: " + nuclear.getExtractionCost());
         System.out.println("Search Cost: " + searchCost);*/
+    }
+
+    public void changeTileType(int t)
+    {
+        if (t == 0) {
+            this.type = "WATER";
+        } else if (t == 1) {
+            this.type = "LAND";
+        }
+        else if (t == 2) {
+            this.type = "LAND";
+        }
+
     }
 
     public Extractor buildExtractor(String resource) { // resource should come from the extraction type paid for.
@@ -92,7 +105,7 @@ public class Location {
                     case "OIL":
                         this.extractor = new OilExtractor(oil);
                         this.extractingResource = Const.oil;
-                        //this.extractionTexture = new Texture("appropriatePath");
+                        this.extractionTexture = new Texture("sea-rig.png");
                         break;
                     case "SOLAR":
                         this.extractor = null;
@@ -135,7 +148,7 @@ public class Location {
                     case "OIL":
                         this.extractor = new OilExtractor(oil);
                         this.extractingResource = Const.oil;
-                        //this.extractionTexture = new Texture("appropriatePath");
+                        this.extractionTexture = new Texture("land-rig.png");
                         break;
                     case "SOLAR":
                         this.extractor = new SolarExtractor(solar);
