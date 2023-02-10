@@ -87,62 +87,64 @@ public class GameScreen extends ScreenAdapter {
             gameClock.decTimeMod();
         }
 
-        // Start of search and Extract functions
-        // Search:
-        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            TileActor tile = grid.getSelectedTile();
-            Location location = tile.getLocation();
-
-            if (!location.getSearched()) {
-                if (playerInventory.getFunds() >= location.getSearchCost())
-                    playerInventory.charge(location.getSearchCost());
-                    location.setSearched(true);
-
-                /**
-                 * Only here to demonstrate what the Resource profile looks like, I.E. the data to display somehow to the user.
-                 *
-                 * System.out.println("Search Cost: " + location.getSearchCost())
-                 * System.out.println("Coal - Value: " + location.getCoal().getValue() + " Quantity: " + location.getCoal().getQuantity() + " Impact: " + location.getCoal().getImpact() + " Stability: " + location.getCoal().getStability() + " Extraction Cost: " + location.getCoal().getExtractionCost());
-                 * System.out.println("Gas - Value: " + location.getGas().getValue() + " Quantity: " + location.getGas().getQuantity() + " Impact: " + location.getGas().getImpact() + " Stability: " + location.getGas().getStability() + " Extraction Cost: " + location.getGas().getExtractionCost());
-                 * System.out.println("Oil - Value: " + location.getOil().getValue() + " Quantity: " + location.getOil().getQuantity() + " Impact: " + location.getOil().getImpact() + " Stability: " + location.getOil().getStability() + " Extraction Cost: " + location.getOil().getExtractionCost());
-                 * System.out.println("Solar - Value: " + location.getSolar().getValue() + " Quantity: " + location.getSolar().getQuantity() + " Impact: " + location.getSolar().getImpact() + " Stability: " + location.getSolar().getStability() + " Extraction Cost: " + location.getSolar().getExtractionCost());
-                 * System.out.println("Wind - Value: " + location.getWind().getValue() + " Quantity: " + location.getWind().getQuantity() + " Impact: " + location.getWind().getImpact() + " Stability: " + location.getWind().getStability() + " Extraction Cost: " + location.getWind().getExtractionCost());
-                 * System.out.println("Hydro - Value: " + location.getHydro().getValue() + " Quantity: " + location.getHydro().getQuantity() + " Impact: " + location.getHydro().getImpact() + " Stability: " + location.getHydro().getStability() + " Extraction Cost: " + location.getHydro().getExtractionCost());
-                 * System.out.println("Geothermal - Value: " + location.getGeothermal().getValue() + " Quantity: " + location.getGeothermal().getQuantity() + " Impact: " + location.getGeothermal().getImpact() + " Stability: " + location.getGeothermal().getStability() + " Extraction Cost: " + location.getGeothermal().getExtractionCost());
-                 * System.out.println("Nuclear - Value: " + location.getNuclear().getValue() + " Quantity: " + location.getNuclear().getQuantity() + " Impact: " + location.getNuclear().getImpact() + " Stability: " + location.getNuclear().getStability() + " Extraction Cost: " + location.getNuclear().getExtractionCost());
-                 */
-            }
-
-            System.out.println("Funds: " + playerInventory.getFunds());
-        }
-
-        // Add Oil extractor
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            TileActor tile = grid.getSelectedTile();
-            Location location = tile.getLocation();
-            String type = location.getType();
-            String path;
-            Boolean built = false;
-
-            if (location.getSearched() && playerInventory.getFunds() >= location.getOil().getExtractionCost()) {
-                if (type == Const.water) {
-                    path = "sea-rig.png";
-                } else {
-                    path = "land-rig.png";
-                }
-
-                built = grid.addExtractor(location, Const.oil, path);
-
-                if (built) {
-                    playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
-                }
-            }
-        }
-
-
-
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             System.exit(0);
+        }
+
+        // ALL CONTROLS IN HERE:
+        // IF THE GAME IS PAUSED THEY SHOULDN'T OPERATE:
+        if (!gameClock.getPauseState()) {
+            // Start of search and Extract functions
+            // Search:
+            if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+
+                if (!location.getSearched()) {
+                    if (playerInventory.getFunds() >= location.getSearchCost())
+                        playerInventory.charge(location.getSearchCost());
+                    location.setSearched(true);
+
+                    /**
+                     * Only here to demonstrate what the Resource profile looks like, I.E. the data to display somehow to the user.
+                     *
+                     * System.out.println("Search Cost: " + location.getSearchCost())
+                     * System.out.println("Coal - Value: " + location.getCoal().getValue() + " Quantity: " + location.getCoal().getQuantity() + " Impact: " + location.getCoal().getImpact() + " Stability: " + location.getCoal().getStability() + " Extraction Cost: " + location.getCoal().getExtractionCost());
+                     * System.out.println("Gas - Value: " + location.getGas().getValue() + " Quantity: " + location.getGas().getQuantity() + " Impact: " + location.getGas().getImpact() + " Stability: " + location.getGas().getStability() + " Extraction Cost: " + location.getGas().getExtractionCost());
+                     * System.out.println("Oil - Value: " + location.getOil().getValue() + " Quantity: " + location.getOil().getQuantity() + " Impact: " + location.getOil().getImpact() + " Stability: " + location.getOil().getStability() + " Extraction Cost: " + location.getOil().getExtractionCost());
+                     * System.out.println("Solar - Value: " + location.getSolar().getValue() + " Quantity: " + location.getSolar().getQuantity() + " Impact: " + location.getSolar().getImpact() + " Stability: " + location.getSolar().getStability() + " Extraction Cost: " + location.getSolar().getExtractionCost());
+                     * System.out.println("Wind - Value: " + location.getWind().getValue() + " Quantity: " + location.getWind().getQuantity() + " Impact: " + location.getWind().getImpact() + " Stability: " + location.getWind().getStability() + " Extraction Cost: " + location.getWind().getExtractionCost());
+                     * System.out.println("Hydro - Value: " + location.getHydro().getValue() + " Quantity: " + location.getHydro().getQuantity() + " Impact: " + location.getHydro().getImpact() + " Stability: " + location.getHydro().getStability() + " Extraction Cost: " + location.getHydro().getExtractionCost());
+                     * System.out.println("Geothermal - Value: " + location.getGeothermal().getValue() + " Quantity: " + location.getGeothermal().getQuantity() + " Impact: " + location.getGeothermal().getImpact() + " Stability: " + location.getGeothermal().getStability() + " Extraction Cost: " + location.getGeothermal().getExtractionCost());
+                     * System.out.println("Nuclear - Value: " + location.getNuclear().getValue() + " Quantity: " + location.getNuclear().getQuantity() + " Impact: " + location.getNuclear().getImpact() + " Stability: " + location.getNuclear().getStability() + " Extraction Cost: " + location.getNuclear().getExtractionCost());
+                     */
+                }
+
+                System.out.println("Funds: " + playerInventory.getFunds());
+            }
+
+            // Add Oil extractor
+            if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
+
+                if (location.getSearched() && playerInventory.getFunds() >= location.getOil().getExtractionCost()) {
+                    if (type == Const.water) {
+                        path = "sea-rig.png";
+                    } else {
+                        path = "land-rig.png";
+                    }
+
+                    built = grid.addExtractor(location, Const.oil, path);
+
+                    if (built) {
+                        playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
+                    }
+                }
+            }
         }
         // End of controls section.
 
