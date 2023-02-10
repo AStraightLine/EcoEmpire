@@ -11,6 +11,10 @@ public class PlayerInventory {
     private ArrayList<Extractor> extractors = new ArrayList<>();
     //private ArrayList<Offset> offsets = new ArrayList<>();
 
+    /**
+     * Creates a new inventory for the player
+     * @param initialFunds The amount of funds the player starts the game with
+     */
     public PlayerInventory(float initialFunds){
 
         this.funds = initialFunds;
@@ -20,18 +24,22 @@ public class PlayerInventory {
 
     /**
      * Updates the inventory when an extractor is upgraded
-     * @param extractorID what extractor is being upgraded
+     * @param extractor what extractor is being upgraded
      */
-    public void upgradeExtractor(int extractorID){
+    public void upgradeExtractor(Extractor extractor){
 
-        //gets the extractor that is being upgraded
-        Extractor extractorToUpdate = this.getExtractor(extractorID);
+        //Checks that the extractor is in the player's inventory
+        if(this.isExtractorInInventory(extractor)){
 
-        //Player pays for the upgrade and income is updated with the new income
-        this.funds = this.funds - extractorToUpgrade.getUpdateCost();
+            //Cost of upgrading is removed from the funds
+            //this.funds = this.funds - extractor.getUpgradeCost();
 
-        //this needs to be the difference in income(since you are upgrading instead of buying a new one)
-        this.income = this.income + extractorToUpdate.getIncomeDiff();
+            //Adds on the extra income the upgrade is generating
+            //this.income = this.income + extractor.getIncomeDiff();
+        }
+        else{
+            System.out.println("Extractor isn't in the inventory");
+        }
 
 
     }
@@ -47,26 +55,43 @@ public class PlayerInventory {
      * Adds an extractor to the player's inventory, takes price out of funds and adds income
      * @param extractor The extractor to be added to the player's inventory
      */
-    public void addExtractor(Extractor extractor){
+    public void addExtractor(Extractor extractor, double cost){
 
         this.extractors.add(extractor);
-        this.funds = this.funds - extractor.getPrice();//updates funds
-        this.income = this.income + extractor.getIncome();//updates income
+        this.funds = this.funds - extractor.getExtractionCost();//updates funds
+        this.income = this.income + extractor.getValue();//updates income
     }
 
     /**
-     * Will return a given extractor
-     *
-     * @param extractorID The ID of the extractor you want
-     * @return
+     * Will remove a given extractor from the player's inventory
+     * @param extractor The extractor you want to remove from the inventory
      */
-    public Extractor getExtractor(int extractorID){
+    public void removeExtractor(Extractor extractor){
+
+        //check that the extractor is in the inventory
+        if(isExtractorInInventory(extractor)){
+            extractors.remove(extractor);
+            System.out.println("Extractor removed");
+        }
+        else{
+            System.out.println("Extractor isn't in inventory");
+        }
+    }
+
+
+    /**
+     * Will check if the given extractor is in the player's inventory
+     *
+     * @param extractor the extractor you want to find in the inventory
+     * @return If the extractor is in the player's inventory
+     */
+    public Boolean isExtractorInInventory(Extractor extractor){
 
         try{
 
             for(int i = 0; i < (this.extractors.size()); i++){
-                if(extractors.get(i).getID().equals(extractorID)){
-                    return(extractors.get(i));
+                if(extractors.get(i).equals(extractor)){
+                    return(Boolean.TRUE);
                 }
                 else{
 
@@ -77,7 +102,7 @@ public class PlayerInventory {
             System.out.println("Unable to find extractor with that ID");
         }
 
-        return null;
+        return(Boolean.FALSE);
 
     }
 
