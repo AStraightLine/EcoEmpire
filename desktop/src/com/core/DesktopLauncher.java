@@ -7,8 +7,8 @@ import com.core.Boot;
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 
-	private static int resolutionX = 1280;
-	private static int resolutionY = 720;
+	private static int resolutionX = 1920;
+	private static int resolutionY = 1080;
 
 
 	public static void main (String[] arg) {
@@ -17,7 +17,7 @@ public class DesktopLauncher {
 		config.useVsync(true);
 		config.setTitle("EcoEmpire");
 		config.setWindowedMode(resolutionX, resolutionY);
-		//config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new Boot(resolutionX, resolutionY), config);
 	}
 }

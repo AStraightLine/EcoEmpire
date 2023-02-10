@@ -44,7 +44,7 @@ public class GameScreen extends ScreenAdapter {
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
 
         stage = new Stage(viewport);
-        this.grid = new MapGrid(150, 150, stage, inputMultiplexer);
+        this.grid = new MapGrid(350, 350, stage, inputMultiplexer);
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
@@ -97,7 +97,13 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            grid.addExtractor();
+            grid.addExtractor("OIL");
+        }
+
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            System.exit(0);
         }
 
 

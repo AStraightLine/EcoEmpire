@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.core.audio.GameSound;
+import com.core.map.extract.Extractor;
+import com.core.map.location.Location;
 import com.core.map.mapgen.MapGen;
 
 import java.util.Random;
@@ -86,7 +88,7 @@ public class MapGrid {
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
-        newGrid = mg.cellularAutomata(r.nextInt(10) + 5); //Perform the algorithm a random number of times between 5 and 15
+        newGrid = mg.cellularAutomata(300); //Perform the algorithm a random number of times between 5 and 15
         newGrid = mg.beachGen();
         grid = newGrid;
         selectedTile = grid[0][0];
@@ -166,7 +168,7 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean addExtractor() {
+    public boolean addExtractor(String resource) {
         // Can later be updated to use the Location build Extraction function and getExtractionTexture / An extraction menu once it's in place to select which Resource
         // you want to extract.
         boolean complete = false;
@@ -179,7 +181,11 @@ public class MapGrid {
 
         if(sameType && available)
         {
-            complete = selectedTile.drawExtractor();
+            Location location = selectedTile.getLocation();
+            Extractor extractor = location.buildExtractor(resource);
+
+            complete = selectedTile.drawExtractor(location.getExtractionTexture());
+
         }
 
         if(complete)
@@ -205,6 +211,5 @@ public class MapGrid {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
         textures[1] = new Texture(Gdx.files.internal("land.png"));
         textures[2] = new Texture(Gdx.files.internal("sand.png"));
-        textures[3] = new Texture(Gdx.files.internal("overlay.png"));
     }
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.core.map.location.Location;
 
 public class TileActor extends Actor {
+    //private int extractorType;
     private boolean populated = false; //if extractor is on tile
     private boolean unavailable = false;
     private Sprite extractorSprite;
@@ -24,6 +25,7 @@ public class TileActor extends Actor {
     private boolean selected = false;
     private TileActor parentTile = this;
     private boolean isParent = false;
+    //private String[] extractorFileNames = {"sea-rig.png", "land-rig.png"};
 
     public TileActor(final int row, final int column, int tileType, Texture texture) {
         this.row = row;
@@ -44,11 +46,6 @@ public class TileActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
 
-        if(populated == true)
-        {
-            extractorSprite.setTexture(extractorTexture);
-            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-        }
         if(selected == true)
         {
             selectedSprite.setTexture(selectedTexture);
@@ -61,6 +58,12 @@ public class TileActor extends Actor {
                 batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
             }
         }
+        if(populated == true)
+        {
+            extractorSprite.setTexture(extractorTexture);
+            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+        }
+
     }
     public TileActor getParentTile()
     {
@@ -115,6 +118,7 @@ public class TileActor extends Actor {
     public void setTileType(int t, Texture texture)
     {
         tileType = t;
+        location.changeTileType(t);
         this.texture = texture;
         this.sprite.setTexture(texture);
     }
@@ -123,19 +127,14 @@ public class TileActor extends Actor {
         return location;
     }
 
-    public boolean drawExtractor() //pass through extractor type probably, method not finished
+    public boolean drawExtractor(Texture extractionTexture) //pass through extractor type probably, method not finished
     {
-        if(populated == false)
+        //this.extractorType = extractorType;
+        if(!populated)
         {
+            this.extractorTexture = extractionTexture;
 
-            if(tileType==0)
-            {
-                this.extractorTexture = new Texture(Gdx.files.internal("sea-rig.png"));
-            }
-            if(tileType==1 || tileType==2)
-            {
-                this.extractorTexture = new Texture(Gdx.files.internal("land-rig.png"));
-            }
+
             this.extractorSprite = new Sprite(extractorTexture);
             populated = true;
             System.out.println("Extractor added!");

@@ -32,8 +32,8 @@ public class StartBackground{
 
         this.texture = new Texture("solar-flare.jpg");
         this.startScreen = startScreen;
-        this.width = 1280;
-        this.height = 720;
+        this.width = 1920;
+        this.height = 1080;
 
         this.body = createBody();
     }

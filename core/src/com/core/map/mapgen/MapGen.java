@@ -69,7 +69,7 @@ public class MapGen {
                     }
                     float nearbyLandPercentage = nearbyLand / max; //Get percentage of land tiles around given tile
                     TileActor t = grid[y][x];
-                    if (nearbyLandPercentage > 0.5) //If 50+% of tiles nearby are land tiles, this tile becomes a land tile
+                    if (nearbyLandPercentage > 0.624) //If 50+% of tiles nearby are land tiles, this tile becomes a land tile
                     {
                         t.setTileType(1, textures[1]);
                     }
@@ -129,9 +129,11 @@ public class MapGen {
                 }
             }
         }
-        for (int i = 0; i < r.nextInt(3) + 1; i++)
+
+        int random2 = r.nextInt(20);
+        for (int i = 0; i < 3; i++)
         {
-            refineLand(2); //Refine the noise generated for the beaches, 2 represents sand
+            refineLand(2); //Refine the noise generated for the beaches, 2 represents sand //8
         }
         return grid;
     }
