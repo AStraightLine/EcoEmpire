@@ -19,14 +19,14 @@ public class MapGen {
         textures = t;
     }
 
-    private TileActor[][] copyTiles()
+    private int[][] copyTileTypes() //Create copy of 2D array for tiles, this time only storing a tile's type
     {
-        TileActor[][] temp = new TileActor[rows][columns];
+        int[][] temp = new int[rows][columns];
         for (int y = 0; y < rows; y++)
         {
             for (int x = 0; x < columns; x++)
             {
-                temp[y][x] = grid[y][x];
+                temp[y][x] = grid[y][x].getTileType();
             }
         }
         return temp;
@@ -36,7 +36,7 @@ public class MapGen {
     {
         for (int i = 0; i < iterations; i++)
         {
-            TileActor[][] temp = copyTiles(); //Copy of the tilemap before any changes
+            int[][] temp = copyTileTypes(); //Copy of the tilemap before any changes
             for (int y = 0; y < rows; y++)
             {
                 for (int x = 0; x < columns; x++)
@@ -58,8 +58,7 @@ public class MapGen {
                                 }
                                 else
                                 {
-                                    TileActor t = temp[y + yOffset][x + xOffset];
-                                    int tType = t.getTileType(); //Check nearby tile's tile type
+                                    int tType = temp[y + yOffset][x + xOffset]; //Check nearby tile's tile type
                                     if (tType == 1) //Increment number of land tiles nearby
                                     {
                                         nearbyLand++;
@@ -130,21 +129,24 @@ public class MapGen {
                 }
             }
         }
-        refineLand(2); //Refine the noise generated for the beaches, 2 represents sand
+        for (int i = 0; i < r.nextInt(3) + 1; i++)
+        {
+            refineLand(2); //Refine the noise generated for the beaches, 2 represents sand
+        }
         return grid;
     }
 
-    //Method to expand a land tile type's area potentially
+    //Method to expand a land tile type's area potentially, aims to smooth out an area with z tile type
     public void refineLand(int z) //z is the number representing the tileType you are refining, based on cellular automata
     {
         Random r = new Random();
-        TileActor[][] temp = copyTiles(); //Get copy of current grid before changes
+        int[][] temp = copyTileTypes(); //Get copy of current grid before changes
         for (int x = 0; x < rows; x++)
         {
             for (int y = 0; y < columns; y++)
             {
-                TileActor t = temp[y][x];
-                if (t.getTileType() == 1) //Cannot change tile if tile already was a water tile, only land tiles
+                int tType = temp[y][x];
+                if (tType == 1) //Cannot change tile if tile already was a water tile, only land tiles
                 {
                     boolean touchingTileZ = false;
                     double tileZChance = 0.0; //Chance of a land tile becoming a tile of type z
@@ -162,9 +164,8 @@ public class MapGen {
                             }
                             else //Check nearby tile's type
                             {
-                                TileActor tt = temp[y + yOffset][x + xOffset];
-                                int tType = tt.getTileType();
-                                if (tType == z)
+                                int tType2 = temp[y + yOffset][x + xOffset];
+                                if (tType2 == z)
                                 {
                                     touchingTileZ = true;
                                     tileZChance = tileZChance + 0.125; //Max 8 tiles surrounding given tile, therefore a nearby tile of type Z increase change by 1/8
