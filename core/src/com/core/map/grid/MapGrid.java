@@ -228,6 +228,7 @@ public class MapGrid {
         System.out.println("X");
         unsetAvailability();
 
+        location.setExtracting(false);
         playerInventory.removeExtractor(extractor);
         selectedTile.removeExtractor();
     }
