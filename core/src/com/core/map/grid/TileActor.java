@@ -104,6 +104,14 @@ public class TileActor extends Actor {
         isParent = false;
         unavailable = true;
     }
+
+    public void setAvailable()
+    {
+        this.parentTile = this;
+        isParent = false;
+        unavailable = false;
+    }
+
     public void setAsParent()
     {
         isParent = true;
@@ -129,7 +137,6 @@ public class TileActor extends Actor {
 
     public boolean drawExtractor(Texture extractionTexture) //pass through extractor type probably, method not finished
     {
-        //this.extractorType = extractorType;
         if(!populated)
         {
             this.extractorTexture = extractionTexture;
@@ -138,6 +145,24 @@ public class TileActor extends Actor {
             this.extractorSprite = new Sprite(extractorTexture);
             populated = true;
             System.out.println("Extractor added!");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public boolean removeExtractor() //pass through extractor type probably, method not finished
+    {
+        System.out.println("Y");
+        if(populated)
+        {
+            extractorSprite = null;
+            System.out.println("Extractor removed!");
+            System.out.println("Z");
+            populated = false;
             return true;
         }
         else

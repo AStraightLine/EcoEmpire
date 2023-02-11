@@ -12,6 +12,7 @@ import com.core.audio.GameSound;
 import com.core.map.extract.Extractor;
 import com.core.map.location.Location;
 import com.core.map.mapgen.MapGen;
+import com.core.player.PlayerInventory;
 
 import java.util.Random;
 
@@ -168,6 +169,29 @@ public class MapGrid {
         }
         return true;
     }
+    public boolean unsetAvailability()
+    {
+        int row = selectedTile.getRow();
+        int column = selectedTile.getColumn();
+
+        for(int i=0; i<4; i++)
+        {
+            for(int j=0; j<4; j++)
+            {
+                if(column-j < 0 || row-i < 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    grid[row-i][column-j].setAvailable();
+                }
+            }
+        }
+        return true;
+    }
+
+
     public boolean addExtractor(Location location, String resource, String texturePath) {
         // Can later be updated to use the Location build Extraction function and getExtractionTexture / An extraction menu once it's in place to select which Resource
         // you want to extract.
@@ -196,6 +220,16 @@ public class MapGrid {
             }
         } else return false;
         return complete;
+    }
+    public void deleteExtractor(PlayerInventory playerInventory)
+    {
+        Location location = selectedTile.getLocation();
+        Extractor extractor = location.getExtractor();
+        System.out.println("X");
+        unsetAvailability();
+
+        playerInventory.removeExtractor(extractor);
+        selectedTile.removeExtractor();
     }
 
     public float getActorWidthTotal()

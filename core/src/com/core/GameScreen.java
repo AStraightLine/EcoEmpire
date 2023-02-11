@@ -145,6 +145,10 @@ public class GameScreen extends ScreenAdapter {
                     }
                 }
             }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+                grid.deleteExtractor(playerInventory);
+            }
+
         }
         // End of controls section.
 
