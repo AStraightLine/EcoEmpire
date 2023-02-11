@@ -141,7 +141,6 @@ public class TileActor extends Actor {
         {
             this.extractorTexture = extractionTexture;
 
-
             this.extractorSprite = new Sprite(extractorTexture);
             populated = true;
             System.out.println("Extractor added!");

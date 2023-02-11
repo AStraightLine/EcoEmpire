@@ -71,6 +71,7 @@ public class PlayerInventory {
         //check that the extractor is in the inventory
         if(isExtractorInInventory(extractor)){
             extractors.remove(extractor);
+            this.income = this.income - extractor.getValue();
             System.out.println("Extractor removed");
         }
         else{
