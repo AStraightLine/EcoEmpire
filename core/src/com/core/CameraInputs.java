@@ -33,26 +33,33 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     @Override
     public boolean scrolled(float amountX, float amountY) {
 
-        float beforeX = camera.position.x;
-        float beforeY = camera.position.y;
+        mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mousePos);
+
 
         if (amountY != 0)
         {
+            if(camera.zoom > defaultZoom-0.5f)
+            {
+                camera.position.set(mousePos);
+            }
+
             camera.zoom += 0.1f*amountY;
-            cameraBounds();
         }
         if (camera.zoom > defaultZoom)
         {
             camera.zoom = defaultZoom;
             camera.position.set(camera.viewportWidth /2f, camera.viewportHeight /2f, 0);
-
         }
         else if (camera.zoom < maxZoom)
         {
             camera.zoom = maxZoom;
-
         }
 
+
+
+
+        cameraBounds();
         return true;
     }
 

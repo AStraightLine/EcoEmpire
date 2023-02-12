@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.audio.GameSound;
 import com.core.map.extract.Extractor;
 import com.core.map.location.Location;
@@ -28,13 +30,15 @@ public class MapGrid {
     private InputMultiplexer inputMultiplexer;
     private float actorWidth;
     private float actorHeight;
+    private FitViewport viewport;
 
-    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer) {
+    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, FitViewport viewport) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
         this.textures = new Texture[4];
         this.inputMultiplexer = inputMultiplexer;
+        this.viewport = viewport;
     }
 
     public void create() {
@@ -45,23 +49,33 @@ public class MapGrid {
 
         initialiseTextures();
 
-        grid = new TileActor[rows][columns];
+        grid = new TileActor[columns][rows];
 
-        actorWidth = Gdx.graphics.getWidth() / rows;
-        actorHeight = Gdx.graphics.getHeight() / columns;
+        float width = viewport.getWorldWidth();
+        float height = viewport.getWorldHeight();
 
-        int middleX = (int) (Math.floor(columns / 2 * 100) / 100);
-        int middleY = (int) (Math.floor(rows / 2 * 100) / 100);
+        actorWidth = width / columns;
+        actorHeight = height / rows;
 
+        //float actorWidth = viewport.getScreenWidth() / rows;
+        //float actorHeight = viewport.getScreenHeight() / columns;
+
+        System.out.println(actorWidth);
+        System.out.println(actorHeight);
         Random r = new Random();
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        float countX = 0;
+        float countY = 0;
+
+
+        for (int i = 0; i < columns; i++) {
+            table.row().expand().fill();
+            for (int j = 0; j < rows; j++) {
                 int tType = r.nextInt(3); //Generate noise map, each tile is assigned a type of either 0 or 1, current 67% chance for land
                 if (tType > 1) {
                     tType = 1;
                 }
-                final TileActor tile = new TileActor(i, j, tType, textures[tType]);
+                final TileActor tile = new TileActor(i, j, tType);
 
                 tile.addListener(new InputListener() {
                     @Override
@@ -83,13 +97,17 @@ public class MapGrid {
 
                 grid[i][j] = tile;
 
-                table.add(tile).width(actorWidth).height(actorHeight).width(0).pad(0).height(0);
+                tile.setX(actorWidth);
+                tile.setPosition(countX, countY);
+                table.add(tile).width(0).height(0).align(Align.topRight).fill().expand();
+                countX+= actorWidth;
             }
-            table.row().expandX().fillX().expandY().fillY();
+            countX = 0;
+            countY+= actorHeight;
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
-        newGrid = mg.cellularAutomata(300); //Perform the algorithm a random number of times between 5 and 15
+        newGrid = mg.cellularAutomata(270); //Perform the algorithm a random number of times between 5 and 15
         newGrid = mg.beachGen();
         grid = newGrid;
         selectedTile = grid[0][0];

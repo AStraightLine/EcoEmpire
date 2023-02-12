@@ -21,10 +21,10 @@ public class MapGen {
 
     private int[][] copyTileTypes() //Create copy of 2D array for tiles, this time only storing a tile's type
     {
-        int[][] temp = new int[rows][columns];
-        for (int y = 0; y < rows; y++)
+        int[][] temp = new int[columns][rows];
+        for (int y = 0; y < columns; y++)
         {
-            for (int x = 0; x < columns; x++)
+            for (int x = 0; x < rows; x++)
             {
                 temp[y][x] = grid[y][x].getTileType();
             }
@@ -37,9 +37,9 @@ public class MapGen {
         for (int i = 0; i < iterations; i++)
         {
             int[][] temp = copyTileTypes(); //Copy of the tilemap before any changes
-            for (int y = 0; y < rows; y++)
+            for (int y = 0; y < columns; y++)
             {
-                for (int x = 0; x < columns; x++)
+                for (int x = 0; x < rows; x++)
                 {
                     float max = 8; //Max amount of land tiles around a single tile
                     float nearbyLand = 0;
@@ -48,7 +48,7 @@ public class MapGen {
                         {
                             for (int xOffset = -1; xOffset < 2; xOffset++)
                             {
-                                if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
+                                if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
                                 {
                                     max--; //Decrease maximum possible of land tiles if out of bounds
                                 }
@@ -71,24 +71,38 @@ public class MapGen {
                     TileActor t = grid[y][x];
                     if (nearbyLandPercentage > 0.624) //If 50+% of tiles nearby are land tiles, this tile becomes a land tile
                     {
-                        t.setTileType(1, textures[1]);
+                        t.setTileType(1);
                     }
                     else
                     {
-                        t.setTileType(0, textures[0]);
+                        t.setTileType(0);
                     }
                 }
             }
         }
+
+
+        fillGridTextures(grid);
+
         return grid;
+    }
+    public void fillGridTextures(TileActor[][] grid)
+    {
+        for (int y = 0; y < columns; y++)
+        {
+            for (int x = 0; x < rows; x++)
+            {
+                grid[y][x].setTileTexture(textures[grid[y][x].getTileType()]);
+            }
+        }
     }
 
     public TileActor[][] beachGen()
     {
         Random r = new Random();
-        for (int x = 0; x < rows; x++)
+        for (int y = 0; y < columns; y++)
         {
-            for (int y = 0; y < columns; y++)
+            for (int x = 0; x < rows; x++)
             {
                 TileActor t = grid[y][x];
                 if (t.getTileType() == 1) //Cannot be a sand tile if tile already was a water tile, only land tiles
@@ -99,7 +113,7 @@ public class MapGen {
                     {
                         for (int yOffset = -1; yOffset < 2; yOffset++)
                         {
-                            if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
+                            if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
                             {
 
                             }
@@ -123,14 +137,14 @@ public class MapGen {
                         double c = r.nextDouble(); //Get a random double value between 0 and 1 (0 inclusive, 1 exclusive)
                         if (c < beachChance) //If value is lower than chance boundary, tile becomes a sand tile
                         {
-                            t.setTileType(2, textures[2]);
+                            t.setTileType(2);
+                            t.setTileTexture(textures[2]);
                         }
                     }
                 }
             }
         }
 
-        int random2 = r.nextInt(20);
         for (int i = 0; i < 3; i++)
         {
             refineLand(2); //Refine the noise generated for the beaches, 2 represents sand //8
@@ -143,9 +157,9 @@ public class MapGen {
     {
         Random r = new Random();
         int[][] temp = copyTileTypes(); //Get copy of current grid before changes
-        for (int x = 0; x < rows; x++)
+        for (int y = 0; y < columns; y++)
         {
-            for (int y = 0; y < columns; y++)
+            for (int x = 0; x < rows; x++)
             {
                 int tType = temp[y][x];
                 if (tType == 1) //Cannot change tile if tile already was a water tile, only land tiles
@@ -156,7 +170,7 @@ public class MapGen {
                     {
                         for (int yOffset = -1; yOffset < 2; yOffset++)
                         {
-                            if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
+                            if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
                             {
 
                             }
@@ -180,7 +194,8 @@ public class MapGen {
                         double c = r.nextDouble(); //Generate random double
                         if (c < tileZChance) //If number falls within chance zone, it becomes tile of type z
                         {
-                            grid[y][x].setTileType(z, textures[z]);
+                            grid[y][x].setTileType(z);
+                            grid[y][x].setTileTexture(textures[z]);
                         }
                     }
                 }
