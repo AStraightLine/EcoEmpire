@@ -18,6 +18,7 @@ public class DesktopLauncher {
 		config.setTitle("EcoEmpire");
 		config.setWindowedMode(resolutionX, resolutionY);
 		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+		config.setWindowIcon("logo.png");
 		new Lwjgl3Application(new Boot(resolutionX, resolutionY), config);
 	}
 }
