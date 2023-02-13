@@ -31,7 +31,6 @@ public class Climate {
     }
 
     public double getClimateHealth() {
-        System.out.println(climateHealth);
         return climateHealth;
     }
 }
