@@ -61,9 +61,6 @@ public class MapGrid {
 
         Random r = new Random();
 
-        float countX = 0;
-        float countY = 0;
-
 
         for (int i = 0; i < columns; i++) {
             table.row().expand().fill();
@@ -109,22 +106,16 @@ public class MapGrid {
         selectedTile.selectTile();
         stage.addActor(table);
 
-        TileActor tileTemp;
-
         for(int i=0; i<columns; i++)
         {
             for(int j=0; j<rows; j++)
             {
-                tileTemp = grid[i][j];
-
-
-                treeCheck(tileTemp);
-
+                treeCheck(grid[i][j], 4);
             }
         }
     }
 
-    public boolean checkTileTypes(TileActor tile, int checkRadius, boolean treeCheck)
+    public boolean checkTileTypes(TileActor tile, int radius, boolean treeCheck)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
@@ -134,11 +125,11 @@ public class MapGrid {
             tileCheck = tile.getTileType();
         }
 
-        for(int i=0; i<checkRadius; i++)
+        for(int i=0; i<radius; i++)
         {
-            for(int j=0; j<checkRadius; j++)
+            for(int j=0; j<radius; j++)
             {
-                if(column-j < 0 || row-i < 0)
+                if(column-i < 0 || row-j < 0)
                 {
                     return false;
                 }
@@ -153,17 +144,14 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean treeCheck(TileActor treeTile)
+    public boolean treeCheck(TileActor treeTile, int radius)
     {
-        System.out.println("X");
-        if(checkTileTypes(treeTile,4, true))
+        if(checkTileTypes(treeTile,radius, true))
         {
-            System.out.println("Y");
-            boolean allow = checkAvailability(treeTile, 4);
+            boolean allow = checkAvailability(treeTile, radius);
             if(allow)
             {
-                System.out.println("Z");
-                setAvailability(treeTile, 4);
+                setUnavailable(treeTile, radius);
                 treeTile.initTree(textures[3]);
                 treeTile.setAsParent();
             }
@@ -199,7 +187,7 @@ public class MapGrid {
         return true;
     }
 
-    public boolean setAvailability(TileActor tile, int radius)
+    public boolean setUnavailable(TileActor tile, int radius)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
@@ -220,10 +208,10 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean unsetAvailability(int radius)
+    public boolean setAvailable(TileActor tile, int radius)
     {
-        int row = selectedTile.getRow();
-        int column = selectedTile.getColumn();
+        int row = tile.getRow();
+        int column = tile.getColumn();
 
         for(int i=0; i<radius; i++)
         {
@@ -265,7 +253,7 @@ public class MapGrid {
             complete = selectedTile.drawExtractor(texture);
             if(complete)
             {
-                setAvailability(selectedTile, 4);
+                setUnavailable(selectedTile, 4);
                 selectedTile.setAsParent();
             }
         } else return false;
@@ -275,33 +263,24 @@ public class MapGrid {
     {
         if(selectedTile.returnIsTree())
         {
-            deleteTree();
+            deleteTree(selectedTile);
         }
-
 
         Location location = selectedTile.getLocation();
         Extractor extractor = location.getExtractor();
 
-        unsetAvailability(4);
+        setAvailable(selectedTile, 4);
 
         location.setExtracting(false);
         playerInventory.removeExtractor(extractor);
         selectedTile.removeExtractor();
     }
-    public void deleteTree()
+    public void deleteTree(TileActor tile)
     {
-        unsetAvailability(3);
-        selectedTile.removeTree();
+        setAvailable(tile, 4);
+        tile.removeTree();
     }
 
-    public float getActorWidthTotal()
-    {
-        return actorWidth*columns;
-    }
-    public float getActorHeightTotal()
-    {
-        return actorHeight*rows;
-    }
     public void initialiseTextures()
     {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
