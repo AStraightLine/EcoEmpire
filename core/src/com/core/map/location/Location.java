@@ -36,7 +36,8 @@ public class Location {
 
         if (type == 0) {
             this.type = "WATER";
-        } else if (type == 1) {
+        }
+        else if (type == 1) {
             this.type = "LAND";
         }
         else if (type == 2) {
@@ -68,7 +69,8 @@ public class Location {
     {
         if (t == 0) {
             this.type = "WATER";
-        } else if (t == 1) {
+        }
+        else if (t == 1) {
             this.type = "LAND";
         }
         else if (t == 2) {
@@ -100,7 +102,7 @@ public class Location {
                     case "NUCLEAR":
                         this.extractor = null;
                         this.extractingResource = null;
-                        //this.extractionTexture = null;
+                        this.extractionTexture = null;
                         break;
                     case "OIL":
                         this.extractor = new OilExtractor(oil);

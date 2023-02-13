@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.audio.GameSound;
 import com.core.climate.Climate;
@@ -31,9 +34,11 @@ public class GameScreen extends ScreenAdapter {
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private SpriteBatch hudBatch;
+    private Stage hudStage;
     private PlayerInventory playerInventory;
     private Climate climate;
-
+    private Skin skin = new Skin();
+    private ProgressBar impactBar;
     private double startingFunds = 100.0;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
@@ -45,14 +50,20 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
-        this.climate = new Climate();
-        this.gameClock = new GameClock(playerInventory, climate);
 
+        skin.addRegions(new TextureAtlas("assets/biological-attack/skin/biological-attack-ui.atlas"));
+        skin.load(Gdx.files.internal("assets/biological-attack/skin/biological-attack-ui.json"));
+        impactBar = new ProgressBar(0.0f, 100, 0.01f, false, skin);
+
+        impactBar.setValue(100);
+        impactBar.setAnimateDuration(1);
+
+        this.climate = new Climate(impactBar);
+        this.gameClock = new GameClock(playerInventory, climate);
 
         GameSound.startBackgroundMusic(0.1F);
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
-
         stage = new Stage(viewport);
         this.grid = new MapGrid(384, 360, stage, inputMultiplexer, viewport);
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
@@ -60,6 +71,9 @@ public class GameScreen extends ScreenAdapter {
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+
+        this.hudStage = new Stage();
+        hudStage.addActor(impactBar);
     }
 
     public void resize(int width, int height)
@@ -133,21 +147,39 @@ public class GameScreen extends ScreenAdapter {
                 String type = location.getType();
                 String path;
                 Boolean built = false;
-
                 if (location.getSearched() && playerInventory.getFunds() >= location.getOil().getExtractionCost()) {
                     if (type == Const.water) {
                         path = "sea-rig.png";
                     } else {
                         path = "land-rig.png";
                     }
-
                     built = grid.addExtractor(location, Const.oil, path);
-
                     if (built) {
                         playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
                     }
                 }
             }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
+                if (location.getSearched() && playerInventory.getFunds() >= location.getNuclear().getExtractionCost()) {
+                    if (type == Const.water) {
+                        System.out.println("cant use nuclear on sea tile");
+                        return;
+                    }
+                    else {
+                        path = "Nuclear.png";
+                    }
+                    built = grid.addExtractor(location, Const.nuclear, path);
+                    if (built) {
+                        playerInventory.addExtractor(location.getExtractor(), location.getNuclear().getExtractionCost());
+                    }
+                }
+            }
+
             if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                 grid.deleteExtractor(playerInventory);
             }
@@ -158,6 +190,8 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
     }
 
+
+
     @Override
     public void render(float delta) {
         update();
@@ -167,8 +201,9 @@ public class GameScreen extends ScreenAdapter {
 
         batch.begin();
 
-        stage.draw();
         stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+
 
         batch.end();
 
@@ -176,6 +211,10 @@ public class GameScreen extends ScreenAdapter {
         drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
+
+        hudStage.act(Gdx.graphics.getDeltaTime());
+        hudStage.draw();
+
         hudBatch.end();
 
         // For debugging purposes:

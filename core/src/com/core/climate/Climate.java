@@ -1,5 +1,7 @@
 package com.core.climate;
 
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+
 import java.util.Random;
 
 public class Climate {
@@ -7,8 +9,11 @@ public class Climate {
     private double climateHealth;
     //Could have specific factors such as air pollution, water pollution etc..., need to link all those to climate health
     private Random r;
+    private ProgressBar impactBar;
 
-    public Climate() {
+    public Climate(ProgressBar impactBar) {
+        this.impactBar = impactBar;
+
         climateHealth = 100; //Start at 100% climate
         r = new Random();
     }
@@ -28,6 +33,7 @@ public class Climate {
                 climateHealth = 0; //Can't go under 100% health
             }
         }
+        impactBar.setValue((float)climateHealth);
     }
 
     public double getClimateHealth() {
