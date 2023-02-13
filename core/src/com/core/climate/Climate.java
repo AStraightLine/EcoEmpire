@@ -20,18 +20,16 @@ public class Climate {
 
     public void updateClimate(double impact) { //Pass total impact value of extractors and offsetters here (is that a word?)
         double amount = r.nextDouble() * 2; //Represents natural climate health increase or decrease, between 0 and 2% (0 inclusive, 2 exclusive)
-        int incOrDec = r.nextInt(2);
-        if (incOrDec == 1) {//1 represents an increase, 0 means decrease
-            climateHealth = climateHealth + amount - impact;
-            if (climateHealth > 100) {
-                climateHealth = 100; //Can't go over 100% health
-            }
+        int incOrDec = r.nextInt(2); //Generate random integer which is either 0 or 1
+        if (incOrDec == 1) { //1 represents a natural decrease
+            amount = amount * -1;
         }
-        else {
-            climateHealth = climateHealth - amount - impact;
-            if (climateHealth < 0) {
-                climateHealth = 0; //Can't go under 100% health
-            }
+        climateHealth = climateHealth + amount - impact;
+        if (climateHealth > 100) {
+            climateHealth = 100; //Can't go over 100% health
+        }
+        else if (climateHealth < 0) {
+            climateHealth = 0; //Can't go under 100% health
         }
         impactBar.setValue((float)climateHealth);
     }
