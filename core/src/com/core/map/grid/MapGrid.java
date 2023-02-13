@@ -110,12 +110,12 @@ public class MapGrid {
         {
             for(int j=0; j<rows; j++)
             {
-                treeCheck(grid[i][j], 4);
+                treeCheck(grid[i][j], 4, 3);
             }
         }
     }
 
-    public boolean checkTileTypes(TileActor tile, int radius, boolean treeCheck)
+    public boolean checkTileTypes(TileActor tile, int y, int x, boolean treeCheck)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
@@ -125,9 +125,9 @@ public class MapGrid {
             tileCheck = tile.getTileType();
         }
 
-        for(int i=0; i<radius; i++)
+        for(int i=0; i<x; i++)
         {
-            for(int j=0; j<radius; j++)
+            for(int j=0; j<y; j++)
             {
                 if(column-i < 0 || row-j < 0)
                 {
@@ -144,14 +144,14 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean treeCheck(TileActor treeTile, int radius)
+    public boolean treeCheck(TileActor treeTile, int y, int x)
     {
-        if(checkTileTypes(treeTile,radius, true))
+        if(checkTileTypes(treeTile, x, y, true))
         {
-            boolean allow = checkAvailability(treeTile, radius);
+            boolean allow = checkAvailability(treeTile, x, y);
             if(allow)
             {
-                setUnavailable(treeTile, radius);
+                setUnavailable(treeTile, x, y);
                 treeTile.initTree(textures[3]);
                 treeTile.setAsParent();
             }
@@ -162,14 +162,14 @@ public class MapGrid {
         return false;
     }
 
-    public boolean checkAvailability(TileActor tile, int radius)
+    public boolean checkAvailability(TileActor tile, int y, int x)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
 
-        for(int i=0; i<radius; i++)
+        for(int i=0; i<x; i++)
         {
-            for(int j=0; j<radius; j++)
+            for(int j=0; j<y; j++)
             {
                 if(column-i < 0 || row-j < 0)
                 {
@@ -187,14 +187,14 @@ public class MapGrid {
         return true;
     }
 
-    public boolean setUnavailable(TileActor tile, int radius)
+    public boolean setUnavailable(TileActor tile, int y, int x)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
 
-        for(int i=0; i<radius; i++)
+        for(int i=0; i<x; i++)
         {
-            for(int j=0; j<radius; j++)
+            for(int j=0; j<y; j++)
             {
                 if(column-i < 0 || row-j < 0)
                 {
@@ -208,14 +208,14 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean setAvailable(TileActor tile, int radius)
+    public boolean setAvailable(TileActor tile, int y, int x)
     {
         int row = tile.getRow();
         int column = tile.getColumn();
 
-        for(int i=0; i<radius; i++)
+        for(int i=0; i<y; i++)
         {
-            for(int j=0; j<radius; j++)
+            for(int j=0; j<x; j++)
             {
                 if(column-i < 0 || row-j < 0)
                 {
@@ -235,8 +235,8 @@ public class MapGrid {
         // you want to extract.
         boolean complete = false;
 
-        boolean sameType = checkTileTypes(selectedTile, 4, false);
-        boolean available = checkAvailability(selectedTile, 4);
+        boolean sameType = checkTileTypes(selectedTile, 4, 4, false);
+        boolean available = checkAvailability(selectedTile, 4, 4);
 
         Texture texture = new Texture(Gdx.files.internal(texturePath));
 
@@ -253,7 +253,7 @@ public class MapGrid {
             complete = selectedTile.drawExtractor(texture);
             if(complete)
             {
-                setUnavailable(selectedTile, 4);
+                setUnavailable(selectedTile, 4, 4);
                 selectedTile.setAsParent();
             }
         } else return false;
@@ -264,20 +264,24 @@ public class MapGrid {
         if(selectedTile.returnIsTree())
         {
             deleteTree(selectedTile);
+            return;
         }
-
         Location location = selectedTile.getLocation();
-        Extractor extractor = location.getExtractor();
 
-        setAvailable(selectedTile, 4);
+        if(location.getExtracting())
+        {
+            Extractor extractor = location.getExtractor();
 
-        location.setExtracting(false);
-        playerInventory.removeExtractor(extractor);
-        selectedTile.removeExtractor();
+            setAvailable(selectedTile, 4, 4);
+
+            location.setExtracting(false);
+            playerInventory.removeExtractor(extractor);
+            selectedTile.removeExtractor();
+        }
     }
     public void deleteTree(TileActor tile)
     {
-        setAvailable(tile, 4);
+        setAvailable(tile, 4, 3);
         tile.removeTree();
     }
 

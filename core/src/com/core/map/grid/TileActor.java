@@ -16,7 +16,6 @@ public class TileActor extends Actor {
     private boolean populated = false; //if extractor is on tile
     private boolean unavailable = false;
     private TextureRegion extractorSprite;
-    private Texture extractorTexture;
     private int tileType;
     private int row;
     private int column;
@@ -29,7 +28,6 @@ public class TileActor extends Actor {
     private TextureRegion tree;
     private boolean isTree = false;
     private boolean isParent = false;
-    //private String[] extractorFileNames = {"sea-rig.png", "land-rig.png"};
 
     public TileActor(final int column, final int row, int tileType) {
         this.column = column;
@@ -37,20 +35,19 @@ public class TileActor extends Actor {
         this.tileType = tileType;
         this.location = new Location(tileType);
 
-        //setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
         setTouchable(Touchable.enabled);
-
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        //batch.setColor(1, 0.2f, 0.2f, 1);
         batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
 
         if(populated == true)
         {
             if(isTree == true)
             {
-                batch.draw(tree, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                batch.draw(tree, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
             }
             else
             {
@@ -61,26 +58,19 @@ public class TileActor extends Actor {
         if(selected == true)
         {
             selectedSprite.setTexture(selectedTexture);
-            if(isParent)
+            if(isTree)
             {
-                if(isTree)
-                {
-                    batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-                }
-                else
-                {
-                    batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-                }
-
+                batch.draw(selectedSprite, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
+            }
+            else if(location.getExtracting())
+            {
+                batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
             }
             else
             {
                 batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
             }
         }
-
-
-
     }
     public boolean returnIsTree()
     {
