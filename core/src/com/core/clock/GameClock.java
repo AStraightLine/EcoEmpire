@@ -1,5 +1,6 @@
 package com.core.clock;
 
+import com.core.climate.Climate;
 import com.core.player.PlayerInventory;
 
 import java.time.LocalTime;
@@ -16,7 +17,7 @@ public class GameClock {
     private FundsPulseEvent fundsEventPulse;
     private ClimatePulseEvent climateEventPulse;
     private PlayerInventory playerInventory;
-
+    private Climate climate;
     private int timeMod; // Scaled from -5 to 5. Can change range if necessary. 0 is equivalent of a pause.
     private int lastTimeMod; // Last state before a pause.
     private boolean isPaused;
@@ -30,17 +31,18 @@ public class GameClock {
     private long nextFundsPulseDelay; // Time until next scheduled funds update (in milliseconds)
     private long nextClimatePulseDelay; // Time until next scheduled climate state update (in milliseconds)
 
-    public GameClock(PlayerInventory playerInventory) {
+    public GameClock(PlayerInventory playerInventory, Climate climate) {
         // ToDo: Needs to take an Inventory and a Climate model as a parameter.
         // ToDo: Pass Inventory to fundsPulseEvent.
         // ToDo: Pass Inventory and Climate to climatePulseEvent.
 
         this.playerInventory = playerInventory;
+        this.climate = climate;
 
         this.timer = new Timer();
         this.clockEvent = new ClockEvent(this);
         this.fundsEventPulse = new FundsPulseEvent(playerInventory);
-        this.climateEventPulse = new ClimatePulseEvent(playerInventory);
+        this.climateEventPulse = new ClimatePulseEvent(playerInventory, climate);
 
         this.timeMod = 1; // Change this to 0 if we wish to start the game paused and the below to "true".
         this.isPaused = false; // False means game is running. We can decide if we want to start games paused or un-paused.
@@ -73,7 +75,7 @@ public class GameClock {
         // Else rebuild the tasks with updated game speed taken into account + delays relevant to when next task should occur (how long was left to wait).
         if (!isPaused) {
             this.fundsEventPulse = new FundsPulseEvent(playerInventory);
-            this.climateEventPulse = new ClimatePulseEvent(playerInventory);
+            this.climateEventPulse = new ClimatePulseEvent(playerInventory, climate);
 
             if (timeMod > 0) {
                 timer.scheduleAtFixedRate(fundsEventPulse, nextFundsPulseDelay / timeMod, fundsPulseEventRate / timeMod);

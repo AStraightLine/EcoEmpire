@@ -22,24 +22,24 @@ public class MapGen {
     private int[][] copyTileTypes() //Create copy of 2D array for tiles, this time only storing a tile's type
     {
         int[][] temp = new int[columns][rows];
-        for (int y = 0; y < columns; y++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int x = 0; x < rows; x++)
+            for (int y = 0; y < rows; y++)
             {
-                temp[y][x] = grid[y][x].getTileType();
+                temp[x][y] = grid[x][y].getTileType();
             }
         }
         return temp;
     }
 
-    public TileActor[][] cellularAutomata(int iterations) //Map generation algorithm
+    public TileActor[][] cellularAutomata(int iterations) //Map generation algorithm, used to determine whether a tile is a land or water tile
     {
         for (int i = 0; i < iterations; i++)
         {
             int[][] temp = copyTileTypes(); //Copy of the tilemap before any changes
-            for (int y = 0; y < columns; y++)
+            for (int x = 0; x < columns; x++)
             {
-                for (int x = 0; x < rows; x++)
+                for (int y = 0; y < rows; y++)
                 {
                     float max = 8; //Max amount of land tiles around a single tile
                     float nearbyLand = 0;
@@ -48,7 +48,7 @@ public class MapGen {
                         {
                             for (int xOffset = -1; xOffset < 2; xOffset++)
                             {
-                                if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
+                                if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
                                 {
                                     max--; //Decrease maximum possible of land tiles if out of bounds
                                 }
@@ -58,7 +58,7 @@ public class MapGen {
                                 }
                                 else
                                 {
-                                    int tType = temp[y + yOffset][x + xOffset]; //Check nearby tile's tile type
+                                    int tType = temp[x + xOffset][y + yOffset]; //Check nearby tile's tile type
                                     if (tType == 1) //Increment number of land tiles nearby
                                     {
                                         nearbyLand++;
@@ -68,8 +68,8 @@ public class MapGen {
                         }
                     }
                     float nearbyLandPercentage = nearbyLand / max; //Get percentage of land tiles around given tile
-                    TileActor t = grid[y][x];
-                    if (nearbyLandPercentage > 0.624) //If 50+% of tiles nearby are land tiles, this tile becomes a land tile
+                    TileActor t = grid[x][y];
+                    if (nearbyLandPercentage > 0.624) //If 62.4+% of tiles nearby are land tiles, this tile becomes a land tile
                     {
                         t.setTileType(1);
                     }
@@ -88,11 +88,11 @@ public class MapGen {
     }
     public void fillGridTextures(TileActor[][] grid)
     {
-        for (int y = 0; y < columns; y++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int x = 0; x < rows; x++)
+            for (int y = 0; y < rows; y++)
             {
-                grid[y][x].setTileTexture(textures[grid[y][x].getTileType()]);
+                grid[x][y].setTileTexture(textures[grid[x][y].getTileType()]);
             }
         }
     }
@@ -100,11 +100,11 @@ public class MapGen {
     public TileActor[][] beachGen()
     {
         Random r = new Random();
-        for (int y = 0; y < columns; y++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int x = 0; x < rows; x++)
+            for (int y = 0; y < rows; y++)
             {
-                TileActor t = grid[y][x];
+                TileActor t = grid[x][y];
                 if (t.getTileType() == 1) //Cannot be a sand tile if tile already was a water tile, only land tiles
                 {
                     boolean touchingWater = false;
@@ -113,7 +113,7 @@ public class MapGen {
                     {
                         for (int yOffset = -1; yOffset < 2; yOffset++)
                         {
-                            if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
+                            if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
                             {
 
                             }
@@ -123,7 +123,7 @@ public class MapGen {
                             }
                             else //Check nearby tile's type
                             {
-                                TileActor tt = grid[y + yOffset][x + xOffset];
+                                TileActor tt = grid[x + xOffset][y + yOffset];
                                 int tType = tt.getTileType();
                                 if (tType == 0) //0 represents water tile
                                 {

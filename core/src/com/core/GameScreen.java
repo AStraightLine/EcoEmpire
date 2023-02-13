@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.audio.GameSound;
+import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
 import com.core.map.grid.TileActor;
@@ -31,6 +32,7 @@ public class GameScreen extends ScreenAdapter {
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private SpriteBatch hudBatch;
     private PlayerInventory playerInventory;
+    private Climate climate;
 
     private double startingFunds = 100.0;
 
@@ -43,7 +45,8 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
-        this.gameClock = new GameClock(playerInventory);
+        this.climate = new Climate();
+        this.gameClock = new GameClock(playerInventory, climate);
 
 
         GameSound.startBackgroundMusic(0.1F);
@@ -172,6 +175,7 @@ public class GameScreen extends ScreenAdapter {
         hudBatch.begin();
         drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
+        drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
         hudBatch.end();
 
         // For debugging purposes:
@@ -192,5 +196,8 @@ public class GameScreen extends ScreenAdapter {
         font.draw(batch, fundsString, x, y);
     }
 
-
+    private void drawClimate(SpriteBatch batch, double climateHealth, float x, float y) {
+        String fundsString = String.format("%,.2f", climateHealth);
+        font.draw(batch, fundsString, x, y);
+    }
 }

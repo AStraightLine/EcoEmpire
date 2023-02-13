@@ -8,6 +8,7 @@ public class PlayerInventory {
 
     private double funds;
     private double income;
+    private double climateImpact;
     private ArrayList<Extractor> extractors = new ArrayList<>();
     //private ArrayList<Offset> offsets = new ArrayList<>();
 
@@ -60,6 +61,7 @@ public class PlayerInventory {
         this.extractors.add(extractor);
         this.funds = this.funds - extractor.getExtractionCost();//updates funds
         this.income = this.income + extractor.getValue();//updates income
+        this.climateImpact = this.climateImpact + extractor.getImpact();
     }
 
     /**
@@ -72,6 +74,7 @@ public class PlayerInventory {
         if(isExtractorInInventory(extractor)){
             extractors.remove(extractor);
             this.income = this.income - extractor.getValue();
+            this.climateImpact = this.climateImpact - extractor.getImpact();
             System.out.println("Extractor removed");
         }
         else{
@@ -110,6 +113,8 @@ public class PlayerInventory {
     public double getFunds() {
         return this.funds;
     }
+
+    public  double getClimateImpact() { return this.climateImpact; }
 
     public void charge(double cost) {
         if (this.funds >= cost) {
