@@ -31,9 +31,9 @@ public class TileActor extends Actor {
     private boolean isParent = false;
     //private String[] extractorFileNames = {"sea-rig.png", "land-rig.png"};
 
-    public TileActor(final int row, final int column, int tileType) {
-        this.row = row;
+    public TileActor(final int column, final int row, int tileType) {
         this.column = column;
+        this.row = row;
         this.tileType = tileType;
         this.location = new Location(tileType);
 

@@ -117,12 +117,9 @@ public class MapGrid {
             {
                 tileTemp = grid[i][j];
 
-                Random rn = new Random();
-                int answer = rn.nextInt(3) + 1;
-                if(answer == 1)
-                {
-                    treeCheck(tileTemp);
-                }
+
+                treeCheck(tileTemp);
+
             }
         }
     }
@@ -147,7 +144,7 @@ public class MapGrid {
                 }
                 else
                 {
-                    if(grid[row-i][column-j].getTileType() != tileCheck)
+                    if(grid[column-i][row-j].getTileType() != tileCheck)
                     {
                         return false;
                     }
@@ -158,7 +155,6 @@ public class MapGrid {
     }
     public boolean treeCheck(TileActor treeTile)
     {
-        System.out.println("X");
         System.out.println("X");
         if(checkTileTypes(treeTile,4, true))
         {
@@ -187,13 +183,13 @@ public class MapGrid {
         {
             for(int j=0; j<radius; j++)
             {
-                if(column-j < 0 || row-i < 0)
+                if(column-i < 0 || row-j < 0)
                 {
                     return false;
                 }
                 else
                 {
-                    if(grid[row-i][column-j].isUnavailable())
+                    if(grid[column-i][row-j].isUnavailable())
                     {
                         return false;
                     }
@@ -212,13 +208,13 @@ public class MapGrid {
         {
             for(int j=0; j<radius; j++)
             {
-                if(column-j < 0 || row-i < 0)
+                if(column-i < 0 || row-j < 0)
                 {
                     continue;
                 }
                 else
                 {
-                    grid[row-i][column-j].setUnavailable(tile);
+                    grid[column-i][row-j].setUnavailable(tile);
                 }
             }
         }
@@ -233,13 +229,13 @@ public class MapGrid {
         {
             for(int j=0; j<radius; j++)
             {
-                if(column-j < 0 || row-i < 0)
+                if(column-i < 0 || row-j < 0)
                 {
                     continue;
                 }
                 else
                 {
-                    grid[row-i][column-j].setAvailable();
+                    grid[column-i][row-j].setAvailable();
                 }
             }
         }
