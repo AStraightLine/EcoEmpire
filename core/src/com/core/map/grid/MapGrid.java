@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,7 +37,7 @@ public class MapGrid {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
-        this.textures = new Texture[4];
+        this.textures = new Texture[8];
         this.inputMultiplexer = inputMultiplexer;
         this.viewport = viewport;
     }
@@ -57,11 +58,7 @@ public class MapGrid {
         actorWidth = width / columns;
         actorHeight = height / rows;
 
-        //float actorWidth = viewport.getScreenWidth() / rows;
-        //float actorHeight = viewport.getScreenHeight() / columns;
 
-        System.out.println(actorWidth);
-        System.out.println(actorHeight);
         Random r = new Random();
 
         float countX = 0;
@@ -76,6 +73,8 @@ public class MapGrid {
                     tType = 1;
                 }
                 final TileActor tile = new TileActor(i, j, tType);
+
+
 
                 tile.addListener(new InputListener() {
                     @Override
@@ -97,13 +96,9 @@ public class MapGrid {
 
                 grid[i][j] = tile;
 
-                tile.setX(actorWidth);
-                tile.setPosition(countX, countY);
                 table.add(tile).width(0).height(0).align(Align.topRight).fill().expand();
-                countX+= actorWidth;
             }
-            countX = 0;
-            countY+= actorHeight;
+
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
@@ -113,17 +108,38 @@ public class MapGrid {
         selectedTile = grid[0][0];
         selectedTile.selectTile();
         stage.addActor(table);
+
+        TileActor tileTemp;
+
+        for(int i=0; i<columns; i++)
+        {
+            for(int j=0; j<rows; j++)
+            {
+                tileTemp = grid[i][j];
+
+                Random rn = new Random();
+                int answer = rn.nextInt(3) + 1;
+                if(answer == 1)
+                {
+                    treeCheck(tileTemp);
+                }
+            }
+        }
     }
 
-
-    public boolean checkTileTypes()
+    public boolean checkTileTypes(TileActor tile, int checkRadius, boolean treeCheck)
     {
-        int row = selectedTile.getRow();
-        int column = selectedTile.getColumn();
-
-        for(int i=0; i<4; i++)
+        int row = tile.getRow();
+        int column = tile.getColumn();
+        int tileCheck = 1;
+        if(!treeCheck)
         {
-            for(int j=0; j<4; j++)
+            tileCheck = tile.getTileType();
+        }
+
+        for(int i=0; i<checkRadius; i++)
+        {
+            for(int j=0; j<checkRadius; j++)
             {
                 if(column-j < 0 || row-i < 0)
                 {
@@ -131,7 +147,7 @@ public class MapGrid {
                 }
                 else
                 {
-                    if(grid[row-i][column-j].getTileType() != selectedTile.getTileType())
+                    if(grid[row-i][column-j].getTileType() != tileCheck)
                     {
                         return false;
                     }
@@ -140,15 +156,36 @@ public class MapGrid {
         }
         return true;
     }
-
-    public boolean checkAvailability()
+    public boolean treeCheck(TileActor treeTile)
     {
-        int row = selectedTile.getRow();
-        int column = selectedTile.getColumn();
-
-        for(int i=0; i<4; i++)
+        System.out.println("X");
+        System.out.println("X");
+        if(checkTileTypes(treeTile,4, true))
         {
-            for(int j=0; j<4; j++)
+            System.out.println("Y");
+            boolean allow = checkAvailability(treeTile, 4);
+            if(allow)
+            {
+                System.out.println("Z");
+                setAvailability(treeTile, 4);
+                treeTile.initTree(textures[3]);
+                treeTile.setAsParent();
+            }
+            return true;
+        }
+
+
+        return false;
+    }
+
+    public boolean checkAvailability(TileActor tile, int radius)
+    {
+        int row = tile.getRow();
+        int column = tile.getColumn();
+
+        for(int i=0; i<radius; i++)
+        {
+            for(int j=0; j<radius; j++)
             {
                 if(column-j < 0 || row-i < 0)
                 {
@@ -166,14 +203,14 @@ public class MapGrid {
         return true;
     }
 
-    public boolean setAvailability()
+    public boolean setAvailability(TileActor tile, int radius)
     {
-        int row = selectedTile.getRow();
-        int column = selectedTile.getColumn();
+        int row = tile.getRow();
+        int column = tile.getColumn();
 
-        for(int i=0; i<4; i++)
+        for(int i=0; i<radius; i++)
         {
-            for(int j=0; j<4; j++)
+            for(int j=0; j<radius; j++)
             {
                 if(column-j < 0 || row-i < 0)
                 {
@@ -181,20 +218,20 @@ public class MapGrid {
                 }
                 else
                 {
-                    grid[row-i][column-j].setUnavailable(selectedTile);
+                    grid[row-i][column-j].setUnavailable(tile);
                 }
             }
         }
         return true;
     }
-    public boolean unsetAvailability()
+    public boolean unsetAvailability(int radius)
     {
         int row = selectedTile.getRow();
         int column = selectedTile.getColumn();
 
-        for(int i=0; i<4; i++)
+        for(int i=0; i<radius; i++)
         {
-            for(int j=0; j<4; j++)
+            for(int j=0; j<radius; j++)
             {
                 if(column-j < 0 || row-i < 0)
                 {
@@ -209,14 +246,13 @@ public class MapGrid {
         return true;
     }
 
-
     public boolean addExtractor(Location location, String resource, String texturePath) {
         // Can later be updated to use the Location build Extraction function and getExtractionTexture / An extraction menu once it's in place to select which Resource
         // you want to extract.
         boolean complete = false;
 
-        boolean sameType = checkTileTypes();
-        boolean available = checkAvailability();
+        boolean sameType = checkTileTypes(selectedTile, 4, false);
+        boolean available = checkAvailability(selectedTile, 4);
 
         Texture texture = new Texture(Gdx.files.internal(texturePath));
 
@@ -233,7 +269,7 @@ public class MapGrid {
             complete = selectedTile.drawExtractor(texture);
             if(complete)
             {
-                setAvailability();
+                setAvailability(selectedTile, 4);
                 selectedTile.setAsParent();
             }
         } else return false;
@@ -241,14 +277,25 @@ public class MapGrid {
     }
     public void deleteExtractor(PlayerInventory playerInventory)
     {
+        if(selectedTile.returnIsTree())
+        {
+            deleteTree();
+        }
+
+
         Location location = selectedTile.getLocation();
         Extractor extractor = location.getExtractor();
-        System.out.println("X");
-        unsetAvailability();
+
+        unsetAvailability(4);
 
         location.setExtracting(false);
         playerInventory.removeExtractor(extractor);
         selectedTile.removeExtractor();
+    }
+    public void deleteTree()
+    {
+        unsetAvailability(3);
+        selectedTile.removeTree();
     }
 
     public float getActorWidthTotal()
@@ -264,6 +311,7 @@ public class MapGrid {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
         textures[1] = new Texture(Gdx.files.internal("land.png"));
         textures[2] = new Texture(Gdx.files.internal("sand.png"));
+        textures[3] = new Texture(Gdx.files.internal("tree.png"));
     }
 
     public TileActor getSelectedTile() {

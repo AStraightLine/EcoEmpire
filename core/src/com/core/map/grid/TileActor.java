@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.core.map.location.Location;
 
+import java.util.Random;
+
 public class TileActor extends Actor {
     //private int extractorType;
     private boolean populated = false; //if extractor is on tile
@@ -24,6 +26,8 @@ public class TileActor extends Actor {
     private TextureRegion selectedSprite;
     private boolean selected = false;
     private TileActor parentTile = this;
+    private TextureRegion tree;
+    private boolean isTree = false;
     private boolean isParent = false;
     //private String[] extractorFileNames = {"sea-rig.png", "land-rig.png"};
 
@@ -44,15 +48,30 @@ public class TileActor extends Actor {
 
         if(populated == true)
         {
-            batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-        }
+            if(isTree == true)
+            {
+                batch.draw(tree, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+            }
+            else
+            {
+                batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+            }
 
+        }
         if(selected == true)
         {
             selectedSprite.setTexture(selectedTexture);
             if(isParent)
             {
-                batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                if(isTree)
+                {
+                    batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                }
+                else
+                {
+                    batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                }
+
             }
             else
             {
@@ -61,10 +80,39 @@ public class TileActor extends Actor {
         }
 
 
+
     }
+    public boolean returnIsTree()
+    {
+        return isTree;
+    }
+
     public TileActor getParentTile()
     {
         return parentTile;
+    }
+    public void initTree(Texture treeTexture)
+    {
+        this.selectedTexture = new Texture(Gdx.files.internal("overlay.png"));
+        this.selectedSprite = new TextureRegion(selectedTexture);
+        isTree = true;
+        populated = true;
+        tree = new TextureRegion(treeTexture);
+    }
+    public boolean removeTree()
+    {
+        if(populated)
+        {
+            tree = null;
+            isTree = false;
+            System.out.println("Tree removed!");
+            populated = false;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -152,12 +200,10 @@ public class TileActor extends Actor {
 
     public boolean removeExtractor() //pass through extractor type probably, method not finished
     {
-        System.out.println("Y");
         if(populated)
         {
             extractorSprite = null;
             System.out.println("Extractor removed!");
-            System.out.println("Z");
             populated = false;
             return true;
         }
