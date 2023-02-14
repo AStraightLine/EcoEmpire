@@ -12,22 +12,19 @@ import com.core.map.location.Location;
 import java.util.Random;
 
 public class TileActor extends Actor {
-    //private int extractorType;
     private boolean populated = false; //if extractor is on tile
     private boolean unavailable = false;
-    private TextureRegion extractorSprite;
+    private TextureRegion extractorTextureRegion;
     private int tileType;
     private int row;
     private int column;
     private Location location;
-    private TextureRegion sprite;
-    private Texture selectedTexture;
-    private TextureRegion selectedSprite;
+    private TextureRegion tileTextureRegion;
+    private TextureRegion selectedMarkerRegion;
     private boolean selected = false;
     private TileActor parentTile = this;
     private TextureRegion tree;
     private boolean isTree = false;
-    private boolean isParent = false;
 
     public TileActor(final int column, final int row, int tileType) {
         this.column = column;
@@ -41,7 +38,7 @@ public class TileActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //batch.setColor(1, 0.2f, 0.2f, 1);
-        batch.draw(sprite, getX(), getY(), getWidth(), getHeight());
+        batch.draw(tileTextureRegion, getX(), getY(), getWidth(), getHeight());
 
         if(populated == true)
         {
@@ -51,24 +48,23 @@ public class TileActor extends Actor {
             }
             else
             {
-                batch.draw(extractorSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                batch.draw(extractorTextureRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
             }
 
         }
         if(selected == true)
         {
-            selectedSprite.setTexture(selectedTexture);
             if(isTree)
             {
-                batch.draw(selectedSprite, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
+                batch.draw(selectedMarkerRegion, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
             }
             else if(location.getExtracting())
             {
-                batch.draw(selectedSprite, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                batch.draw(selectedMarkerRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
             }
             else
             {
-                batch.draw(selectedSprite, getX(), getY(), getWidth(), getHeight());
+                batch.draw(selectedMarkerRegion, getX(), getY(), getWidth(), getHeight());
             }
         }
     }
@@ -83,8 +79,7 @@ public class TileActor extends Actor {
     }
     public void initTree(Texture treeTexture)
     {
-        this.selectedTexture = new Texture(Gdx.files.internal("overlay.png"));
-        this.selectedSprite = new TextureRegion(selectedTexture);
+        this.selectedMarkerRegion = new TextureRegion(new Texture(Gdx.files.internal("overlay.png")));
         isTree = true;
         populated = true;
         tree = new TextureRegion(treeTexture);
@@ -104,8 +99,6 @@ public class TileActor extends Actor {
             return false;
         }
     }
-
-
     public int getRow()
     {
         return row;
@@ -116,19 +109,16 @@ public class TileActor extends Actor {
     }
     public void selectTile()
     {
-        if(selectedTexture == null)
+        if(selectedMarkerRegion == null)
         {
-            this.selectedTexture = new Texture(Gdx.files.internal("overlay.png"));
+            this.selectedMarkerRegion = new TextureRegion(new Texture(Gdx.files.internal("overlay.png")));
         }
-
-        this.selectedSprite = new TextureRegion(selectedTexture);
         this.selected = true;
     }
     public void deselectTile()
     {
         this.selected = false;
     }
-
     public int getTileType()
     {
         return tileType;
@@ -136,23 +126,14 @@ public class TileActor extends Actor {
     public void setUnavailable(TileActor parent)
     {
         this.parentTile = parent;
-        isParent = false;
         unavailable = true;
     }
 
     public void setAvailable()
     {
         this.parentTile = this;
-        isParent = false;
         unavailable = false;
     }
-
-    public void setAsParent()
-    {
-        isParent = true;
-    }
-
-
     public boolean isUnavailable()
     {
         return unavailable;
@@ -165,7 +146,7 @@ public class TileActor extends Actor {
     }
     public void setTileTexture(Texture texture)
     {
-        this.sprite = new TextureRegion(texture);
+        this.tileTextureRegion = new TextureRegion(texture);
     }
 
     public Location getLocation() {
@@ -176,32 +157,22 @@ public class TileActor extends Actor {
     {
         if(!populated)
         {
-            this.extractorSprite = new TextureRegion(extractionTexture);
+            this.extractorTextureRegion = new TextureRegion(extractionTexture);
             populated = true;
             System.out.println("Extractor added!");
             return true;
         }
-        else
-        {
-            return false;
-        }
-
+        return false;
     }
-
     public boolean removeExtractor() //pass through extractor type probably, method not finished
     {
         if(populated)
         {
-            extractorSprite = null;
+            extractorTextureRegion = null;
             System.out.println("Extractor removed!");
             populated = false;
             return true;
         }
-        else
-        {
-            return false;
-        }
-
+        return false;
     }
-
 }

@@ -20,7 +20,6 @@ import com.core.player.PlayerInventory;
 import java.util.Random;
 
 public class MapGrid {
-
     private final Stage stage;
     private Table table = new Table();
     private final Texture[] textures;
@@ -29,17 +28,13 @@ public class MapGrid {
     private int columns;
     private TileActor selectedTile;
     private InputMultiplexer inputMultiplexer;
-    private float actorWidth;
-    private float actorHeight;
-    private FitViewport viewport;
 
-    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, FitViewport viewport) {
+    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
         this.textures = new Texture[8];
         this.inputMultiplexer = inputMultiplexer;
-        this.viewport = viewport;
     }
 
     public void create() {
@@ -52,15 +47,7 @@ public class MapGrid {
 
         grid = new TileActor[columns][rows];
 
-        float width = viewport.getWorldWidth();
-        float height = viewport.getWorldHeight();
-
-        actorWidth = width / columns;
-        actorHeight = height / rows;
-
-
         Random r = new Random();
-
 
         for (int i = 0; i < columns; i++) {
             table.row().expand().fill();
@@ -71,8 +58,6 @@ public class MapGrid {
                 }
                 final TileActor tile = new TileActor(i, j, tType);
 
-
-
                 tile.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -80,20 +65,15 @@ public class MapGrid {
                         //tile.drawExtractor();
                         selectedTile.deselectTile();
                         selectedTile = tile;
-
                         selectedTile = selectedTile.getParentTile();
-
                         selectedTile.selectTile();
-
                         GameSound.playTileSelectSound();
-
                         return true;
                     }
                 });
 
                 grid[i][j] = tile;
-
-                table.add(tile).width(0).height(0).align(Align.topRight).fill().expand();
+                table.add(grid[i][j]).width(0).height(0).align(Align.topRight).fill().expand();
             }
 
         }
@@ -110,11 +90,15 @@ public class MapGrid {
         {
             for(int j=0; j<rows; j++)
             {
-                treeCheck(grid[i][j], 4, 3);
+                Random rn = new Random();
+                int answer = rn.nextInt(10) + 1;
+                if(answer == 1)
+                {
+                    tryTree(grid[i][j], 4, 3);
+                }
             }
         }
     }
-
     public boolean checkTileTypes(TileActor tile, int y, int x, boolean treeCheck)
     {
         int row = tile.getRow();
@@ -144,7 +128,7 @@ public class MapGrid {
         }
         return true;
     }
-    public boolean treeCheck(TileActor treeTile, int y, int x)
+    public boolean tryTree(TileActor treeTile, int y, int x)
     {
         if(checkTileTypes(treeTile, x, y, true))
         {
@@ -153,15 +137,11 @@ public class MapGrid {
             {
                 setUnavailable(treeTile, x, y);
                 treeTile.initTree(textures[3]);
-                treeTile.setAsParent();
             }
             return true;
         }
-
-
         return false;
     }
-
     public boolean checkAvailability(TileActor tile, int y, int x)
     {
         int row = tile.getRow();
@@ -186,7 +166,6 @@ public class MapGrid {
         }
         return true;
     }
-
     public boolean setUnavailable(TileActor tile, int y, int x)
     {
         int row = tile.getRow();
@@ -196,11 +175,7 @@ public class MapGrid {
         {
             for(int j=0; j<y; j++)
             {
-                if(column-i < 0 || row-j < 0)
-                {
-                    continue;
-                }
-                else
+                if(!(column-i < 0 || row-j < 0))
                 {
                     grid[column-i][row-j].setUnavailable(tile);
                 }
@@ -217,11 +192,7 @@ public class MapGrid {
         {
             for(int j=0; j<x; j++)
             {
-                if(column-i < 0 || row-j < 0)
-                {
-                    continue;
-                }
-                else
+                if(!(column-i < 0 || row-j < 0))
                 {
                     grid[column-i][row-j].setAvailable();
                 }
@@ -254,7 +225,6 @@ public class MapGrid {
             if(complete)
             {
                 setUnavailable(selectedTile, 4, 4);
-                selectedTile.setAsParent();
             }
         } else return false;
         return complete;
@@ -284,7 +254,6 @@ public class MapGrid {
         setAvailable(tile, 4, 3);
         tile.removeTree();
     }
-
     public void initialiseTextures()
     {
         textures[0] = new Texture(Gdx.files.internal("water.png"));
@@ -292,7 +261,6 @@ public class MapGrid {
         textures[2] = new Texture(Gdx.files.internal("sand.png"));
         textures[3] = new Texture(Gdx.files.internal("tree.png"));
     }
-
     public TileActor getSelectedTile() {
         return this.selectedTile;
     }
