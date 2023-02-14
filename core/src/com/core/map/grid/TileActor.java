@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.core.climate.Climate;
 import com.core.map.location.Location;
 
 import java.util.Random;
@@ -25,19 +26,25 @@ public class TileActor extends Actor {
     private TileActor parentTile = this;
     private TextureRegion tree;
     private boolean isTree = false;
+    private Climate climate;
+    private double cHealth;
 
-    public TileActor(final int column, final int row, int tileType) {
+    public TileActor(final int column, final int row, int tileType, Climate climate) {
         this.column = column;
         this.row = row;
         this.tileType = tileType;
         this.location = new Location(tileType);
+        this.climate = climate;
 
         setTouchable(Touchable.enabled);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //batch.setColor(1, 0.2f, 0.2f, 1);
+
+        //cHealth = climate.getClimateHealth();
+        //batch.setColor(1f, (float)(cHealth/90), (float)(cHealth/90), 1);
+
         batch.draw(tileTextureRegion, getX(), getY(), getWidth(), getHeight());
 
         if(populated == true)

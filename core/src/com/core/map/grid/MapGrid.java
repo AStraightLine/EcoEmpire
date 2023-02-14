@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.audio.GameSound;
+import com.core.climate.Climate;
 import com.core.map.extract.Extractor;
 import com.core.map.location.Location;
 import com.core.map.mapgen.MapGen;
@@ -28,13 +29,15 @@ public class MapGrid {
     private int columns;
     private TileActor selectedTile;
     private InputMultiplexer inputMultiplexer;
+    private Climate climate;
 
-    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer) {
+    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, Climate climate) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
         this.textures = new Texture[8];
         this.inputMultiplexer = inputMultiplexer;
+        this.climate = climate;
     }
 
     public void create() {
@@ -56,7 +59,7 @@ public class MapGrid {
                 if (tType > 1) {
                     tType = 1;
                 }
-                final TileActor tile = new TileActor(i, j, tType);
+                final TileActor tile = new TileActor(i, j, tType, climate);
 
                 tile.addListener(new InputListener() {
                     @Override
@@ -79,7 +82,7 @@ public class MapGrid {
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
-        newGrid = mg.cellularAutomata(250); //Perform the algorithm 250 times (270 previously
+        newGrid = mg.cellularAutomata(250); //Perform the algorithm 250 times (270 previously)
         newGrid = mg.beachGen();
         grid = newGrid;
         selectedTile = grid[0][0];
