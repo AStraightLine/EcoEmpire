@@ -79,7 +79,7 @@ public class MapGrid {
         }
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
-        newGrid = mg.cellularAutomata(270); //Perform the algorithm 270 times
+        newGrid = mg.cellularAutomata(250); //Perform the algorithm 250 times (270 previously
         newGrid = mg.beachGen();
         grid = newGrid;
         selectedTile = grid[0][0];
