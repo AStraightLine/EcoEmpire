@@ -101,7 +101,7 @@ public class MapGrid {
             for(int j=0; j<rows; j++)
             {
                 Random rn = new Random();
-                int answer = rn.nextInt(10) + 1;
+                int answer = rn.nextInt(30) + 1;
                 if(answer == 1)
                 {
                     tryTree(grid[i][j], 4, 3);

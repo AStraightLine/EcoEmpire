@@ -72,7 +72,7 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
         float beforeX = camera.position.x;
         float beforeY = camera.position.y;
 
-        camera.translate(-x,y);
+        camera.translate(-x*camera.zoom,y*camera.zoom);
 
         cameraBounds();
 
