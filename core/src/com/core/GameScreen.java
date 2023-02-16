@@ -20,6 +20,7 @@ import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
 import com.core.map.grid.TileActor;
 import com.core.map.location.Location;
+import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 
 public class GameScreen extends ScreenAdapter {
@@ -65,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
         stage = new Stage(viewport);
-        this.grid = new MapGrid(320, 270, stage, inputMultiplexer, climate); //384, 360 previously
+        this.grid = new MapGrid(320, 270, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
@@ -182,6 +183,25 @@ public class GameScreen extends ScreenAdapter {
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                 grid.deleteExtractor(playerInventory);
+            }
+
+            // Start of Offsets
+
+            // Tree is a little different as it requires a tile to be selected first, not all offsets will follow this control pattern flow
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                boolean possible = grid.tryTree(tile, 4, 3);
+
+                if (possible) {
+                    Tree tree = new Tree();
+
+                    if (playerInventory.getFunds() >= tree.getCost()) {
+                        location.setOffset(tree);
+                        location.setHasOffset(true);
+                        playerInventory.addOffset(tree);
+                    }
+                }
             }
 
         }

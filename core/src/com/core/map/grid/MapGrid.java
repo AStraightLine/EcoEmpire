@@ -16,11 +16,15 @@ import com.core.climate.Climate;
 import com.core.map.extract.Extractor;
 import com.core.map.location.Location;
 import com.core.map.mapgen.MapGen;
+import com.core.map.offset.Offset;
+import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 
 import java.util.Random;
 
 public class MapGrid {
+    private Random rand = new Random();
+
     private final Stage stage;
     private Table table = new Table();
     private final Texture[] textures;
@@ -29,15 +33,18 @@ public class MapGrid {
     private int columns;
     private TileActor selectedTile;
     private InputMultiplexer inputMultiplexer;
+    private PlayerInventory inventory;
     private Climate climate;
 
-    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, Climate climate) {
+
+    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
         this.textures = new Texture[8];
         this.inputMultiplexer = inputMultiplexer;
         this.climate = climate;
+        this.inventory = inventory;
     }
 
     public void create() {
@@ -254,8 +261,17 @@ public class MapGrid {
     }
     public void deleteTree(TileActor tile)
     {
-        setAvailable(tile, 4, 3);
-        tile.removeTree();
+        double removalCost = Math.round(((0.25 + (0.5 - 0.25) * rand.nextDouble())) * 100.0) / 100.0;
+
+        if (inventory.getFunds() >= removalCost) {
+            setAvailable(tile, 4, 3);
+            tile.removeTree();
+            if (tile.getLocation().hasOffset()) {
+                inventory.removeOffset(tile.getLocation().getOffset());
+            }
+            inventory.charge(removalCost);
+            climate.singleClimateImpact(0.125 + (0.25 - 0.125) * rand.nextDouble());
+        } // ELSE can't afford to remove tree
     }
     public void initialiseTextures()
     {

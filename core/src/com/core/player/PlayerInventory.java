@@ -1,6 +1,7 @@
 package com.core.player;
 
 import com.core.map.extract.Extractor;
+import com.core.map.offset.Offset;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public class PlayerInventory {
     private double income;
     private double climateImpact;
     private ArrayList<Extractor> extractors = new ArrayList<>();
-    //private ArrayList<Offset> offsets = new ArrayList<>();
+    private ArrayList<Offset> offsets = new ArrayList<>();
 
     /**
      * Creates a new inventory for the player
@@ -82,7 +83,6 @@ public class PlayerInventory {
         }
     }
 
-
     /**
      * Will check if the given extractor is in the player's inventory
      *
@@ -108,6 +108,34 @@ public class PlayerInventory {
 
         return(Boolean.FALSE);
 
+    }
+
+    public void addOffset(Offset offset) {
+        this.offsets.add(offset);
+        this.funds -= offset.getCost();
+        this.income -= offset.getMaintenance();
+        this.climateImpact -= offset.getEffect(); // Negative as climateImpact is deducted from climate and "effect" is a positive value.
+    }
+
+    public void removeOffset(Offset offset) {
+        if (isOffsetInInventory(offset)) {
+            this.income += offset.getMaintenance();
+            this.climateImpact += offset.getEffect();
+            offsets.remove(offset);
+        }
+    }
+
+    public boolean isOffsetInInventory(Offset offset) {
+        try {
+            for (int i = 0; i < offsets.size(); i++) {
+                if (offsets.get(i).equals(offset)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
     }
 
     public double getFunds() {

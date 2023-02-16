@@ -34,6 +34,10 @@ public class Climate {
         impactBar.setValue((float)climateHealth);
     }
 
+    public void singleClimateImpact(double impact) {
+        climateHealth -= impact;
+    }
+
     public double getClimateHealth() {
         return climateHealth;
     }

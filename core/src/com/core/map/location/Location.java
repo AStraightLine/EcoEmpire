@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.core.Const;
 import com.core.map.extract.Extractor;
 import com.core.map.extract.extractors.*;
+import com.core.map.offset.Offset;
 import com.core.map.resource.resources.*;
 
 import java.util.Random;
@@ -27,6 +28,8 @@ public class Location {
     private Wind wind;
     private Hydro hydro;
     private Geothermal geothermal;
+    private Offset offset;
+    private boolean hasOffset;
 
     public Location(int type) {
         this.searched = false;
@@ -63,6 +66,9 @@ public class Location {
         System.out.println("Geothermal - Value: " + geothermal.getValue() + " Quantity: " + geothermal.getQuantity() + " Impact: " + geothermal.getImpact() + " Stability: " + geothermal.getStability() + " Extraction Cost: " + geothermal.getExtractionCost());
         System.out.println("Nuclear - Value: " + nuclear.getValue() + " Quantity: " + nuclear.getQuantity() + " Impact: " + nuclear.getImpact() + " Stability: " + nuclear.getStability() + " Extraction Cost: " + nuclear.getExtractionCost());
         System.out.println("Search Cost: " + searchCost);*/
+
+        this.offset = null;
+        this.hasOffset = false;
     }
 
     public void changeTileType(int t)
@@ -254,5 +260,21 @@ public class Location {
 
     public void setExtractionTexture(Texture extractionTexture) {
         this.extractionTexture = extractionTexture;
+    }
+
+    public Offset getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Offset offset) {
+        this.offset = offset;
+    }
+
+    public boolean hasOffset() {
+        return hasOffset;
+    }
+
+    public void setHasOffset(boolean hasOffset) {
+        this.hasOffset = hasOffset;
     }
 }
