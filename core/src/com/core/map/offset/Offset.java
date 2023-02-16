@@ -3,9 +3,7 @@ package com.core.map.offset;
 public class Offset {
 
     private String location = null; // null by default. Some Offsets such as Trees will have a location attached but most won't.
-    private double effect, effectLowerBound, effectUpperBound;
-    private double cost, costLowerBound, costUpperBound;
-    private double maintenance, maintenanceLowerBound, maintenanceUpperBound;
+    private double effect, cost, maintenance;
 
     public Offset() {
         this.effect = 0;

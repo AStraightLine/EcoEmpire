@@ -20,6 +20,7 @@ import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
 import com.core.map.grid.TileActor;
 import com.core.map.location.Location;
+import com.core.map.offset.offsets.Lobby;
 import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 
@@ -204,6 +205,15 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
+            // Lobby
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+                Lobby lobby = new Lobby();
+                if (playerInventory.getFunds() >= lobby.getCost()) {
+                    playerInventory.addOffset(lobby);
+
+                    System.out.println("Cost: " + lobby.getCost() + " Effect: " + lobby.getEffect() + " Maintenance: " + lobby.getMaintenance());
+                }
+            }
         }
         // End of controls section.
 
