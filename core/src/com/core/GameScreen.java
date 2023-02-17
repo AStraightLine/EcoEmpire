@@ -162,6 +162,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
+            // Coal Extractor
             if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
