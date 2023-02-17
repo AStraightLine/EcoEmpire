@@ -24,6 +24,8 @@ import com.core.map.offset.offsets.Lobby;
 import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 
+import static com.core.Const.baseHealth;
+
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
@@ -290,7 +292,7 @@ public class GameScreen extends ScreenAdapter {
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
-        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / 1000) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
+        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / baseHealth) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
 
         hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();
@@ -341,8 +343,8 @@ public class GameScreen extends ScreenAdapter {
     private void drawExpectedClimateChange(SpriteBatch batch, double climateChange, float x, float y) {
         String expectedChange = "";
 
-        if (climateChange < 0) {
-            expectedChange = String.format("+%,.2f", -climateChange);
+        if (climateChange < 0) { //Only displays user influenced climate change (no natural increase/decrease)
+            expectedChange = String.format("+%,.2f", -climateChange); //Negative climate change actually means a climate increase (All climate impacts coded using positive numbers, so a bigger value means more climate decrease)
         } else if (climateChange == 0) {
             expectedChange = String.format("+%,.2f", climateChange);
         } else {

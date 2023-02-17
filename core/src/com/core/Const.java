@@ -11,5 +11,7 @@ public class Const{
     public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", geothermal = "GEOTHERMAL";
     // tile types
     public static final String water = "WATER", land = "LAND", sand = "SAND";
+    //Base climate health
+    public static final Double baseHealth = 1000.0;
 
 }
