@@ -210,8 +210,6 @@ public class GameScreen extends ScreenAdapter {
                 Lobby lobby = new Lobby();
                 if (playerInventory.getFunds() >= lobby.getCost()) {
                     playerInventory.addOffset(lobby);
-
-                    System.out.println("Cost: " + lobby.getCost() + " Effect: " + lobby.getEffect() + " Maintenance: " + lobby.getMaintenance());
                 }
             }
         }
