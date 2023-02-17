@@ -105,14 +105,13 @@ public class PlayerInventory {
         catch (Exception e){
             System.out.println("Unable to find extractor with that ID");
         }
-
         return(Boolean.FALSE);
-
     }
 
     public void addOffset(Offset offset) {
         this.offsets.add(offset);
         this.funds -= offset.getCost();
+        System.out.println(offset.getMaintenance());
         this.income -= offset.getMaintenance();
         this.climateImpact -= offset.getEffect(); // Negative as climateImpact is deducted from climate and "effect" is a positive value.
     }
@@ -143,6 +142,8 @@ public class PlayerInventory {
     }
 
     public  double getClimateImpact() { return this.climateImpact; }
+
+    public double getIncome() {return this.income; }
 
     public void charge(double cost) {
         if (this.funds >= cost) {

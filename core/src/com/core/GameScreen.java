@@ -238,6 +238,7 @@ public class GameScreen extends ScreenAdapter {
         hudBatch.begin();
         drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
+        drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
 
         hudStage.act(Gdx.graphics.getDeltaTime());
@@ -259,8 +260,27 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void drawFunds(SpriteBatch batch, double funds, float x, float y) {
-        String fundsString = String.format("£%,.2f", funds);
+        String fundsString = "";
+
+        if (funds < 0) {
+            fundsString = String.format("-£%,.2f", -funds);
+        } else {
+            fundsString = String.format("£%,.2f", funds);
+        }
+
         font.draw(batch, fundsString, x, y);
+    }
+
+    private void drawExpectedFundsChange(SpriteBatch batch, double funds, float x, float y) {
+        String expected = "";
+
+        if (funds < 0) {
+            expected = String.format("-£%,.2f", -funds);
+        } else {
+            expected = String.format("+£%,.2f", funds);
+        }
+
+        font.draw(batch, expected, x, y);
     }
 
     private void drawClimate(SpriteBatch batch, double climateHealth, float x, float y) {
