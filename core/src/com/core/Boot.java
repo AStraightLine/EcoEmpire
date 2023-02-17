@@ -54,8 +54,12 @@ public class Boot extends Game {
 	public void displayMenu(){
 		//change screen to menu screen
 		//add pause function here before changing screen
-		GameClock.setIsPaused(true);
-		gameScreen.getGameClock().handlePause();
+		if (!GameClock.getIsPaused()) {
+			GameClock.setIsPaused(true);
+			gameScreen.getGameClock().handlePause();
+
+		}
+
 		setScreen(new MainMenuScreen((orthographicCamera)));
 	}
 

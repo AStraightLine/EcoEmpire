@@ -54,7 +54,7 @@ public class MapGen {
                                 }
                                 else if (xOffset == 0 && yOffset == 0)
                                 {
-                                    //Don't to anything since this is the current tile
+                                    //Don't to anything since this is the current tile}
                                 }
                                 else
                                 {
