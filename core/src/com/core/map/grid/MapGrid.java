@@ -67,7 +67,7 @@ public class MapGrid {
                 if (tType > 1) {
                     tType = 1;
                 }
-                final TileActor tile = new TileActor(i, j, tType, climate);
+                final TileActor tile = new TileActor(i, j, tType, climate, this);
 
                 tile.addListener(new InputListener() {
                     @Override

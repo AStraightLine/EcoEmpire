@@ -29,14 +29,15 @@ public class TileActor extends Actor {
     private boolean isTree = false;
     private Climate climate;
     private double cHealth;
+    private MapGrid grid;
 
-    public TileActor(final int column, final int row, int tileType, Climate climate) {
+    public TileActor(final int column, final int row, int tileType, Climate climate, MapGrid grid) {
         this.column = column;
         this.row = row;
         this.tileType = tileType;
         this.location = new Location(tileType);
         this.climate = climate;
-
+        this.grid = grid;
         setTouchable(Touchable.enabled);
     }
 
@@ -71,7 +72,22 @@ public class TileActor extends Actor {
             }
             else
             {
-                batch.draw(selectedMarkerRegion, getX(), getY(), getWidth(), getHeight());
+                if(grid.checkTileTypes(this, 4, 4, false))
+                {
+                    if(grid.checkAvailability(this, 4, 4))
+                    {
+                        batch.draw(selectedMarkerRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                    }
+                    else
+                    {
+                        batch.draw(selectedMarkerRegion, getX(), getY(), getWidth(), getHeight());
+                    }
+
+                }
+                else
+                {
+                    batch.draw(selectedMarkerRegion, getX(), getY(), getWidth(), getHeight());
+                }
             }
         }
     }
