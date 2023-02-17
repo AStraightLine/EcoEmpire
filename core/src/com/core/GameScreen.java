@@ -67,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
         stage = new Stage(viewport);
-        this.grid = new MapGrid(320, 216, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 126 good
+        this.grid = new MapGrid(384, 360, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 126 good
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
@@ -170,9 +170,10 @@ public class GameScreen extends ScreenAdapter {
                 String path;
                 Boolean built = false;
 
-                if (location.getSearched() && playerInventory.getFunds() >= location.getCoal().getExtractionCost()) {
+                if (location.getSearched() && playerInventory.getFunds() >= location.getGas().getExtractionCost()) {
                     if (type == Const.water) {
-                        path = "sea-coal-mine.png";
+                        // NO ASSET YET
+                        //path = "sea-gas.png";
                     }
                     else {
                         path = "land-coal-mine.png";
@@ -182,6 +183,14 @@ public class GameScreen extends ScreenAdapter {
                         playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
                     }
                 }
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
             }
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
@@ -196,7 +205,7 @@ public class GameScreen extends ScreenAdapter {
                         return;
                     }
                     else {
-                        path = "Nuclear.png";
+                        path = "nuclear.png";
                     }
                     built = grid.addExtractor(location, Const.nuclear, path);
                     if (built) {
