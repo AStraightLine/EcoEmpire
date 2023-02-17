@@ -163,7 +163,7 @@ public class GameScreen extends ScreenAdapter {
             }
 
             // Coal Extractor
-            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            /*if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
                 String type = location.getType();
@@ -176,14 +176,14 @@ public class GameScreen extends ScreenAdapter {
                         //path = "sea-gas.png";
                     }
                     else {
-                        path = "land-coal-mine.png";
+                        path = "land-gas.png";
                     }
-                    built = grid.addExtractor(location, Const.coal, path);
+                    built = grid.addExtractor(location, Const.gas, path);
                     if (built) {
-                        playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
+                        playerInventory.addExtractor(location.getExtractor(), location.getGas().getExtractionCost());
                     }
                 }
-            }
+            }*/
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
                 TileActor tile = grid.getSelectedTile();
