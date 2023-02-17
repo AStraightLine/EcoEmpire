@@ -32,9 +32,6 @@ public class GameClock {
     private long nextClimatePulseDelay; // Time until next scheduled climate state update (in milliseconds)
 
     public GameClock(PlayerInventory playerInventory, Climate climate) {
-        // ToDo: Needs to take an Inventory and a Climate model as a parameter.
-        // ToDo: Pass Inventory to fundsPulseEvent.
-        // ToDo: Pass Inventory and Climate to climatePulseEvent.
 
         this.playerInventory = playerInventory;
         this.climate = climate;
@@ -46,8 +43,8 @@ public class GameClock {
 
         this.timeMod = 1; // Change this to 0 if we wish to start the game paused and the below to "true".
         this.isPaused = false; // False means game is running. We can decide if we want to start games paused or un-paused.
-        this.fundsPulseEventRate = 10000;
-        this.climatePulseEventRate = 10000;
+        this.fundsPulseEventRate = 2000;
+        this.climatePulseEventRate = 2000;
 
         schedule();
     }
@@ -56,8 +53,8 @@ public class GameClock {
     // But if we want to change when the initial update to funds and climate happens, we do that here in the "delay" parameter.
     private void schedule() {
         timer.scheduleAtFixedRate(clockEvent, 0, 1000);
-        timer.scheduleAtFixedRate(fundsEventPulse, 2500, fundsPulseEventRate);
-        timer.scheduleAtFixedRate(climateEventPulse, 5000, climatePulseEventRate);
+        timer.scheduleAtFixedRate(fundsEventPulse, 1000, fundsPulseEventRate);
+        timer.scheduleAtFixedRate(climateEventPulse, 2000, climatePulseEventRate);
     }
 
     // Called everytime the game is paused, un-paused, or when the game time is sped up / down.
