@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.core.Const;
 import com.core.audio.GameSound;
 import com.core.climate.Climate;
 import com.core.map.extract.Extractor;
@@ -101,10 +102,10 @@ public class MapGrid {
             for(int j=0; j<rows; j++)
             {
                 Random rn = new Random();
-                int answer = rn.nextInt(30) + 1;
+                int answer = rn.nextInt(1) + 1;
                 if(answer == 1)
                 {
-                    tryTree(grid[i][j], 4, 3);
+                    tryTree(grid[i][j], Const.treeY, Const.treeX);
                 }
             }
         }

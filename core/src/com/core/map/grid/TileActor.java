@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.core.Const;
 import com.core.climate.Climate;
 import com.core.map.location.Location;
 
@@ -50,7 +51,7 @@ public class TileActor extends Actor {
         {
             if(isTree == true)
             {
-                batch.draw(tree, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
+                batch.draw(tree, getX()-getWidth()*1, getY(), getWidth()*Const.treeX, getHeight()*Const.treeY);
             }
             else
             {
@@ -62,7 +63,7 @@ public class TileActor extends Actor {
         {
             if(isTree)
             {
-                batch.draw(selectedMarkerRegion, getX()-getWidth()*2, getY(), getWidth()*3, getHeight()*4);
+                batch.draw(selectedMarkerRegion, getX()-getWidth()*1, getY(), getWidth()*Const.treeX, getHeight()*Const.treeY);
             }
             else if(location.getExtracting())
             {

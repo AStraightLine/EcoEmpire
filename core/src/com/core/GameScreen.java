@@ -236,7 +236,7 @@ public class GameScreen extends ScreenAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
-                boolean possible = grid.tryTree(tile, 4, 3);
+                boolean possible = grid.tryTree(tile, Const.treeY, Const.treeX);
 
                 if (possible) {
                     Tree tree = new Tree();

@@ -10,7 +10,7 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
 {
     private OrthographicCamera camera;
     private float defaultZoom = 1f;
-    private float maxZoom = 0.2f;
+    private float maxZoom = 0.1f;
     private Vector3 mousePos = new Vector3();
     private FitViewport viewport;
 
