@@ -13,15 +13,12 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     private float maxZoom = 0.2f;
     private Vector3 mousePos = new Vector3();
     private FitViewport viewport;
-    private float worldWidth;
-    private float worldHeight;
+
     public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, FitViewport viewport)
     {
         this.camera = camera;
         this.camera.zoom = defaultZoom;
         this.viewport = viewport;
-        this.worldWidth = worldWidth;
-        this.worldHeight = worldHeight;
 
         inputMultiplexer.addProcessor(this);
     }
@@ -39,12 +36,12 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
 
         if (amountY != 0)
         {
-            if(camera.zoom > defaultZoom-0.5f)
+            if(camera.zoom > defaultZoom-0.4f)
             {
                 camera.position.set(mousePos);
             }
 
-            camera.zoom += 0.1f*amountY;
+            camera.zoom += 0.05f*amountY;
         }
         if (camera.zoom > defaultZoom)
         {
@@ -55,9 +52,6 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
         {
             camera.zoom = maxZoom;
         }
-
-
-
 
         cameraBounds();
         return true;
