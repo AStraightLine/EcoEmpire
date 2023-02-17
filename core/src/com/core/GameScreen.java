@@ -272,7 +272,7 @@ public class GameScreen extends ScreenAdapter {
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
-        drawExpectedClimateChange(hudBatch, playerInventory.getClimateImpact(), 200, Boot.INSTANCE.getScreenHeight() - 56);
+        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / 1000) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
         hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();
 
@@ -324,9 +324,13 @@ public class GameScreen extends ScreenAdapter {
         String expectedChange = "";
 
         if (climateChange < 0) {
-            expectedChange = String.format("-%,.2f", -climateChange);
-        } else {
-            expectedChange = String.format("%,.2f", climateChange);
+            expectedChange = String.format("+%,.2f", -climateChange);
+        }
+        else if (climateChange == 0) {
+            expectedChange = String.format("+%,.2f", climateChange);
+        }
+        else {
+            expectedChange = String.format("-%,.2f", climateChange);
         }
 
         font.draw(batch, expectedChange, x, y);
