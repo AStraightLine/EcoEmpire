@@ -42,7 +42,7 @@ public class TileActor extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         cHealth = climate.getClimateHealth();
-        batch.setColor((float)(cHealth/5)+1f, (float)(cHealth/350)+0.4f, (float)(cHealth/350)+0.4f, 1);
+        batch.setColor((float)(cHealth/5)+1f, (float)(cHealth/40)+0.4f, (float)(cHealth/40)+0.4f, 1);
 
         batch.draw(tileTextureRegion, getX(), getY(), getWidth(), getHeight());
 

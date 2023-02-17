@@ -163,7 +163,28 @@ public class GameScreen extends ScreenAdapter {
             }
 
             // Coal Extractor
-            /*if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
+
+                if (location.getSearched() && playerInventory.getFunds() >= location.getCoal().getExtractionCost()) {
+                    if (type == Const.water) {
+                        path = "sea-coal-mine.png";
+                    }
+                    else {
+                        path = "land-coal-mine.png";
+                    }
+                    built = grid.addExtractor(location, Const.coal, path);
+                    if (built) {
+                        playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
+                    }
+                }
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
                 String type = location.getType();
@@ -172,8 +193,7 @@ public class GameScreen extends ScreenAdapter {
 
                 if (location.getSearched() && playerInventory.getFunds() >= location.getGas().getExtractionCost()) {
                     if (type == Const.water) {
-                        // NO ASSET YET
-                        //path = "sea-gas.png";
+                        path = "sea-gas.png";
                     }
                     else {
                         path = "land-gas.png";
@@ -183,14 +203,6 @@ public class GameScreen extends ScreenAdapter {
                         playerInventory.addExtractor(location.getExtractor(), location.getGas().getExtractionCost());
                     }
                 }
-            }*/
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-                TileActor tile = grid.getSelectedTile();
-                Location location = tile.getLocation();
-                String type = location.getType();
-                String path;
-                Boolean built = false;
             }
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
