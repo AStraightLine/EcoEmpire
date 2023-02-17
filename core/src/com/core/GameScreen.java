@@ -161,6 +161,28 @@ public class GameScreen extends ScreenAdapter {
                     }
                 }
             }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
+
+                if (location.getSearched() && playerInventory.getFunds() >= location.getCoal().getExtractionCost()) {
+                    if (type == Const.water) {
+                        path = "sea-coal-mine.png";
+                    }
+                    else {
+                        path = "land-coal-mine.png";
+                    }
+                    built = grid.addExtractor(location, Const.coal, path);
+                    if (built) {
+                        playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
+                    }
+                }
+            }
+
             if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
