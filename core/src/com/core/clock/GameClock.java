@@ -20,7 +20,7 @@ public class GameClock {
     private Climate climate;
     private int timeMod; // Scaled from -5 to 5. Can change range if necessary. 0 is equivalent of a pause.
     private int lastTimeMod; // Last state before a pause.
-    private boolean isPaused;
+    private static boolean isPaused;
     private boolean pausedByPause;
 
     private long fundsPulseEventRate; // How often funds should be updated (in milliseconds)
@@ -47,6 +47,15 @@ public class GameClock {
         this.climatePulseEventRate = 2000;
 
         schedule();
+    }
+
+    //GETTER FOR IS PAUSED
+    public static boolean getIsPaused(){
+        return isPaused;
+    }
+
+    public static void setIsPaused(boolean condition){
+        isPaused = condition;
     }
 
     // Initial timer setup. Hardcoded once but never used again.
@@ -179,4 +188,6 @@ public class GameClock {
     public float getTimeElapsedInSeconds() {
         return clockEvent.getTimeElapsedInSeconds();
     }
+
+    
 }

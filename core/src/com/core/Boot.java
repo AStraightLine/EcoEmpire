@@ -3,6 +3,7 @@ package com.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.core.clock.GameClock;
 import com.core.startscreen.StartScreen;
 import jdk.javadoc.internal.tool.Start;
 
@@ -14,10 +15,13 @@ public class Boot extends Game {
 	private int resolutionX;
 	private int resolutionY;
 
+	private GameScreen gameScreen;
+
 	public Boot(int resolutionX, int resolutionY) {
 		INSTANCE = this;
 		this.resolutionX = resolutionX;
 		this.resolutionY = resolutionY;
+
 	}
 
 
@@ -32,9 +36,33 @@ public class Boot extends Game {
 	}
 
 	public void startGame(){
+		this.gameScreen = new GameScreen(orthographicCamera, resolutionX, resolutionY);
 		//will change from the start screen to the
-		setScreen(new GameScreen(orthographicCamera, resolutionX, resolutionY));
+		setScreen(this.gameScreen);
 	}
+
+	public void resumeGame(){
+
+		if (GameClock.getIsPaused()){
+			GameClock.setIsPaused(false);
+			gameScreen.getGameClock().handlePause();
+			gameScreen.getGameClock().incTimeMod();
+			setScreen(this.gameScreen);
+		}
+	}
+
+	public void displayMenu(){
+		//change screen to menu screen
+		//add pause function here before changing screen
+		GameClock.setIsPaused(true);
+		gameScreen.getGameClock().handlePause();
+		setScreen(new MainMenuScreen((orthographicCamera)));
+	}
+
+	public void displayStartScreen(){
+		setScreen(new StartScreen(orthographicCamera));
+	}
+
 
 	public int getScreenWidth() {
 		return screenWidth;

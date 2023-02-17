@@ -53,8 +53,8 @@ public class GameScreen extends ScreenAdapter {
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
 
-        skin.addRegions(new TextureAtlas("assets/biological-attack/skin/biological-attack-ui.atlas"));
-        skin.load(Gdx.files.internal("assets/biological-attack/skin/biological-attack-ui.json"));
+        skin.addRegions(new TextureAtlas("biological-attack/skin/biological-attack-ui.atlas"));
+        skin.load(Gdx.files.internal("biological-attack/skin/biological-attack-ui.json"));
         impactBar = new ProgressBar(0.0f, 1000, 0.01f, false, skin);
 
         impactBar.setValue(100);
@@ -107,7 +107,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            System.exit(0);
+            Boot.INSTANCE.displayMenu();
         }
 
         // ALL CONTROLS IN HERE:
@@ -161,50 +161,6 @@ public class GameScreen extends ScreenAdapter {
                     }
                 }
             }
-
-            // Coal Extractor
-            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-                TileActor tile = grid.getSelectedTile();
-                Location location = tile.getLocation();
-                String type = location.getType();
-                String path;
-                Boolean built = false;
-
-                if (location.getSearched() && playerInventory.getFunds() >= location.getCoal().getExtractionCost()) {
-                    if (type == Const.water) {
-                        path = "sea-coal-mine.png";
-                    }
-                    else {
-                        path = "land-coal-mine.png";
-                    }
-                    built = grid.addExtractor(location, Const.coal, path);
-                    if (built) {
-                        playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
-                    }
-                }
-            }
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-                TileActor tile = grid.getSelectedTile();
-                Location location = tile.getLocation();
-                String type = location.getType();
-                String path;
-                Boolean built = false;
-
-                if (location.getSearched() && playerInventory.getFunds() >= location.getGas().getExtractionCost()) {
-                    if (type == Const.water) {
-                        path = "sea-gas.png";
-                    }
-                    else {
-                        path = "land-gas.png";
-                    }
-                    built = grid.addExtractor(location, Const.gas, path);
-                    if (built) {
-                        playerInventory.addExtractor(location.getExtractor(), location.getGas().getExtractionCost());
-                    }
-                }
-            }
-
             if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
@@ -217,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
                         return;
                     }
                     else {
-                        path = "nuclear.png";
+                        path = "Nuclear.png";
                     }
                     built = grid.addExtractor(location, Const.nuclear, path);
                     if (built) {
@@ -236,7 +192,7 @@ public class GameScreen extends ScreenAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
-                boolean possible = grid.tryTree(tile, Const.treeY, Const.treeX);
+                boolean possible = grid.tryTree(tile, 4, 3);
 
                 if (possible) {
                     Tree tree = new Tree();
@@ -282,9 +238,8 @@ public class GameScreen extends ScreenAdapter {
         hudBatch.begin();
         drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
-        drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
-        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / 1000) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
+
         hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();
 
@@ -304,47 +259,15 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void drawFunds(SpriteBatch batch, double funds, float x, float y) {
-        String fundsString = "";
-
-        if (funds < 0) {
-            fundsString = String.format("-£%,.2f", -funds);
-        } else {
-            fundsString = String.format("£%,.2f", funds);
-        }
-
+        String fundsString = String.format("£%,.2f", funds);
         font.draw(batch, fundsString, x, y);
     }
 
-    private void drawExpectedFundsChange(SpriteBatch batch, double funds, float x, float y) {
-        String expected = "";
-
-        if (funds < 0) {
-            expected = String.format("-£%,.2f", -funds);
-        } else {
-            expected = String.format("+£%,.2f", funds);
-        }
-
-        font.draw(batch, expected, x, y);
-    }
-
     private void drawClimate(SpriteBatch batch, double climateHealth, float x, float y) {
-        String climateString = String.format("%,.2f", climateHealth);
-        font.draw(batch, climateString, x, y);
+        String fundsString = String.format("%,.2f", climateHealth);
+        font.draw(batch, fundsString, x, y);
     }
-
-    private void drawExpectedClimateChange(SpriteBatch batch, double climateChange, float x, float y) {
-        String expectedChange = "";
-
-        if (climateChange < 0) {
-            expectedChange = String.format("+%,.2f", -climateChange);
-        }
-        else if (climateChange == 0) {
-            expectedChange = String.format("+%,.2f", climateChange);
-        }
-        else {
-            expectedChange = String.format("-%,.2f", climateChange);
-        }
-
-        font.draw(batch, expectedChange, x, y);
+    public GameClock getGameClock() {
+        return gameClock;
     }
 }
