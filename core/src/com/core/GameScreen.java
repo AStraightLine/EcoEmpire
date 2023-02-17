@@ -67,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
         stage = new Stage(viewport);
-        this.grid = new MapGrid(384, 360, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 126 good
+        this.grid = new MapGrid(384, 270, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 216 good
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();

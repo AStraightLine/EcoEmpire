@@ -63,9 +63,6 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
         float x = Gdx.input.getDeltaX();
         float y = Gdx.input.getDeltaY();
 
-        float beforeX = camera.position.x;
-        float beforeY = camera.position.y;
-
         camera.translate(-x*camera.zoom,y*camera.zoom);
 
         cameraBounds();
