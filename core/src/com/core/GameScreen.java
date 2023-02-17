@@ -39,6 +39,7 @@ public class GameScreen extends ScreenAdapter {
     private Stage hudStage;
     private PlayerInventory playerInventory;
     private Climate climate;
+    private CameraInputs camImp;
     private Skin skin = new Skin();
     private ProgressBar impactBar;
     private double startingFunds = 100.0;
@@ -68,8 +69,9 @@ public class GameScreen extends ScreenAdapter {
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
         stage = new Stage(viewport);
         this.grid = new MapGrid(384, 270, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 216 good
-        CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
+        this.camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
+
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -83,7 +85,10 @@ public class GameScreen extends ScreenAdapter {
         System.out.println("resized window");
         viewport.update(width, height);
     }
-
+    public CameraInputs getCamInp()
+    {
+        return camImp;
+    }
 
 
     public void update() {
@@ -192,7 +197,7 @@ public class GameScreen extends ScreenAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
-                boolean possible = grid.tryTree(tile, 4, 3);
+                boolean possible = grid.tryTree(tile, Const.treeY, Const.treeX);
 
                 if (possible) {
                     Tree tree = new Tree();
