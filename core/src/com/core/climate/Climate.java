@@ -39,6 +39,6 @@ public class Climate {
     }
 
     public double getClimateHealth() {
-        return climateHealth;
+        return (climateHealth / 1000) * 100; //Return percentage
     }
 }
