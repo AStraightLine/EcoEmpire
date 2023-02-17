@@ -55,7 +55,7 @@ public class GameScreen extends ScreenAdapter {
 
         skin.addRegions(new TextureAtlas("assets/biological-attack/skin/biological-attack-ui.atlas"));
         skin.load(Gdx.files.internal("assets/biological-attack/skin/biological-attack-ui.json"));
-        impactBar = new ProgressBar(0.0f, 100, 0.01f, false, skin);
+        impactBar = new ProgressBar(0.0f, 1000, 0.01f, false, skin);
 
         impactBar.setValue(100);
         impactBar.setAnimateDuration(1);

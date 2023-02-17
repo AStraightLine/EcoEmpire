@@ -14,7 +14,7 @@ public class Climate {
     public Climate(ProgressBar impactBar) {
         this.impactBar = impactBar;
 
-        climateHealth = 100; //Start at 100% climate
+        climateHealth = 1000; //Start at 100% climate
         r = new Random();
     }
 
@@ -25,8 +25,8 @@ public class Climate {
             amount = amount * -1;
         }
         climateHealth = climateHealth + amount - impact;
-        if (climateHealth > 100) {
-            climateHealth = 100; //Can't go over 100% health
+        if (climateHealth > 1000) {
+            climateHealth = 1000; //Can't go over 100% health
         }
         else if (climateHealth < 0) {
             climateHealth = 0; //Can't go under 100% health
