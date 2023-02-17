@@ -67,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.viewport = new FitViewport(resolutionX, resolutionY, camera);
         stage = new Stage(viewport);
-        this.grid = new MapGrid(320, 216, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 126 good
+        this.grid = new MapGrid(384, 360, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 126 good
         CameraInputs camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
         grid.create();
@@ -163,25 +163,34 @@ public class GameScreen extends ScreenAdapter {
             }
 
             // Coal Extractor
-            if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            /*if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
                 String type = location.getType();
                 String path;
                 Boolean built = false;
 
-                if (location.getSearched() && playerInventory.getFunds() >= location.getCoal().getExtractionCost()) {
+                if (location.getSearched() && playerInventory.getFunds() >= location.getGas().getExtractionCost()) {
                     if (type == Const.water) {
-                        path = "sea-coal-mine.png";
+                        // NO ASSET YET
+                        //path = "sea-gas.png";
                     }
                     else {
-                        path = "land-coal-mine.png";
+                        path = "land-gas.png";
                     }
-                    built = grid.addExtractor(location, Const.coal, path);
+                    built = grid.addExtractor(location, Const.gas, path);
                     if (built) {
-                        playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
+                        playerInventory.addExtractor(location.getExtractor(), location.getGas().getExtractionCost());
                     }
                 }
+            }*/
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                String type = location.getType();
+                String path;
+                Boolean built = false;
             }
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
@@ -196,7 +205,7 @@ public class GameScreen extends ScreenAdapter {
                         return;
                     }
                     else {
-                        path = "Nuclear.png";
+                        path = "nuclear.png";
                     }
                     built = grid.addExtractor(location, Const.nuclear, path);
                     if (built) {
@@ -263,7 +272,7 @@ public class GameScreen extends ScreenAdapter {
         drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
-        drawExpectedClimateChange(hudBatch, playerInventory.getClimateImpact(), 200, Boot.INSTANCE.getScreenHeight() - 56);
+        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / 1000) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
         hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();
 
@@ -315,9 +324,13 @@ public class GameScreen extends ScreenAdapter {
         String expectedChange = "";
 
         if (climateChange < 0) {
-            expectedChange = String.format("-%,.2f", -climateChange);
-        } else {
-            expectedChange = String.format("%,.2f", climateChange);
+            expectedChange = String.format("+%,.2f", -climateChange);
+        }
+        else if (climateChange == 0) {
+            expectedChange = String.format("+%,.2f", climateChange);
+        }
+        else {
+            expectedChange = String.format("-%,.2f", climateChange);
         }
 
         font.draw(batch, expectedChange, x, y);
