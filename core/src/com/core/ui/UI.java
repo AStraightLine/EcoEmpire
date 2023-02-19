@@ -1,6 +1,7 @@
 package com.core.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,7 +31,7 @@ public class UI {
     private ProgressBar impactBar;
     private SelectBox extractionSelect;
 
-    public UI(ScreenViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock) {
+    public UI(ScreenViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
         this.resX = resX;
         this.resY = resY;
@@ -58,6 +59,8 @@ public class UI {
 
         stage.addActor(topUI);
         stage.addActor(sideTable);
+
+        inputMultiplexer.addProcessor(stage);
 
         populateTopTable();
         populateSideTable();
@@ -145,7 +148,7 @@ public class UI {
         extractionSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                System.out.println("XOXOX");
             }
         });
 
