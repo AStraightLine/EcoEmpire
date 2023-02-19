@@ -47,6 +47,7 @@ public class Boot extends Game {
 			GameClock.setIsPaused(false);
 			gameScreen.getGameClock().handlePause();
 			gameScreen.getGameClock().incTimeMod();
+			gameScreen.reactivateGameInputs();
 			setScreen(this.gameScreen);
 		}
 	}
@@ -55,7 +56,6 @@ public class Boot extends Game {
 		//change screen to menu screen
 		//add pause function here before changing screen
 		if (!GameClock.getIsPaused()) {
-			GameClock.setIsPaused(true);
 			gameScreen.getGameClock().handlePause();
 
 		}

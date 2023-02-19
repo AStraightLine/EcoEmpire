@@ -82,6 +82,8 @@ public class GameScreen extends ScreenAdapter {
         hudStage.addActor(impactBar);
     }
 
+    public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
+
     public void resize(int width, int height)
     {
         System.out.println("resized window");
