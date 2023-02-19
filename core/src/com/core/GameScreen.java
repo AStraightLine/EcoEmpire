@@ -295,9 +295,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        // Has its own batch (I think) so outside out begin/end
-        uiViewport.apply();
-        ui.update();
 
         batch.begin();
 
@@ -307,17 +304,16 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
 
-        hudBatch.begin();
         //drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
         //drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
         //drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
         //drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
         //drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / baseHealth) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
 
-        hudStage.act(Gdx.graphics.getDeltaTime());
-        hudStage.draw();
+        // Has its own batch (I think) so outside out begin/end
+        uiViewport.apply();
+        ui.update();
 
-        hudBatch.end();
 
         // For debugging purposes:
         this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
