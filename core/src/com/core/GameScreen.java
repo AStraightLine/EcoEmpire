@@ -93,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
 
 
         uiViewport = new ScreenViewport();
-        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock);
+        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
