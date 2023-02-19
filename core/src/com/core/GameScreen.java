@@ -40,8 +40,6 @@ public class GameScreen extends ScreenAdapter {
     private GameClock gameClock;
     private MapGrid grid;
     private InputMultiplexer inputMultiplexer = new InputMultiplexer();
-    private SpriteBatch hudBatch;
-    private Stage hudStage;
     private PlayerInventory playerInventory;
     private Climate climate;
     private CameraInputs camImp;
@@ -61,7 +59,6 @@ public class GameScreen extends ScreenAdapter {
         this.camera.position.set(new Vector3(gameWidth / 2, gameHeight / 2, 0));
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.batch = new SpriteBatch();
-        this.hudBatch = new SpriteBatch();
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
@@ -89,13 +86,6 @@ public class GameScreen extends ScreenAdapter {
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-
-        this.hudStage = new Stage();
-        hudStage.addActor(impactBar);
-
-
-
-
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
@@ -105,11 +95,6 @@ public class GameScreen extends ScreenAdapter {
         System.out.println("resized window");
         viewport.update(width/15*13, height/15*14);
     }
-    public CameraInputs getCamInp()
-    {
-        return camImp;
-    }
-
 
     public void update() {
         world.step(1 / 60f, 6, 2);
