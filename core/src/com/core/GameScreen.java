@@ -92,10 +92,8 @@ public class GameScreen extends ScreenAdapter {
         hudStage.addActor(impactBar);
 
 
+
         uiViewport = new ScreenViewport();
-        OrthographicCamera uiCam = new OrthographicCamera();
-        uiCam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
-        uiCam.setToOrtho(false);
         this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight);
 
     }

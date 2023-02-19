@@ -38,17 +38,19 @@ public class UI {
 
         stage = new Stage(viewport);
 
-
         topTable = new Table();
         sideTable = new Table();
 
         topTable.setBounds(0, resY - (resY - gameHeight), resX, resY - gameHeight);
+        sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY);
 
         topTable.add(new Label("Hello World", skin));
+        sideTable.add(new Label("Test World", skin));
 
 
 
         stage.addActor(topTable);
+        stage.addActor(sideTable);
     }
 
     public void update() {
