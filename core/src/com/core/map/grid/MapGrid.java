@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -62,6 +63,8 @@ public class MapGrid {
 
         grid = new TileActor[columns][rows];
 
+        Group tiles = new Group();
+
         Random r = new Random();
 
         for (int i = 0; i < columns; i++) {
@@ -99,7 +102,10 @@ public class MapGrid {
         grid = newGrid;
         selectedTile = grid[0][0];
         selectedTile.selectTile();
-        stage.addActor(table);
+
+        tiles.addActor(table);
+        stage.addActor(tiles);
+        tiles.setZIndex(0);
 
         for(int i=0; i<columns; i++)
         {

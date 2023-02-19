@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -30,6 +31,7 @@ public class UI {
     private Label timeLabel, fundsLabel;
     private ProgressBar impactBar;
     private SelectBox extractionSelect;
+    private Group uiGroup = new Group();
 
     public UI(ScreenViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
@@ -57,8 +59,12 @@ public class UI {
         topUI.setBounds(0, resY - (resY - gameHeight), resX, resY - gameHeight);
         topUI.addActor(topTable);
 
-        stage.addActor(topUI);
-        stage.addActor(sideTable);
+        uiGroup.addActor(sideTable);
+        uiGroup.addActor(topUI);
+        uiGroup.setZIndex(1);
+
+        stage.addActor(uiGroup);
+
 
         inputMultiplexer.addProcessor(stage);
 
@@ -143,12 +149,13 @@ public class UI {
 
     public void populateExtractionsSelection() {
         extractionSelect = new SelectBox<>(skin);
+
         String[] extractions = {"Extractions", "Coal", "Gas", "Geothermal", "Hydro", "Nuclear", "Oil", "Solar", "Wind"};
         extractionSelect.setItems(extractions);
         extractionSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("XOXOX");
+
             }
         });
 

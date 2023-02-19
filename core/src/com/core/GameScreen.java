@@ -77,6 +77,9 @@ public class GameScreen extends ScreenAdapter {
 
         //GameSound.startBackgroundMusic(0.1F);
 
+        uiViewport = new ScreenViewport();
+        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
+
         this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
         stage = new Stage(viewport);
         this.grid = new MapGrid(416, 252, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 216 good
@@ -92,8 +95,7 @@ public class GameScreen extends ScreenAdapter {
 
 
 
-        uiViewport = new ScreenViewport();
-        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
+
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
