@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class CameraInputs extends ApplicationAdapter implements InputProcessor
@@ -12,9 +13,9 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     private float defaultZoom = 1f;
     private float maxZoom = 0.1f;
     private Vector3 mousePos = new Vector3();
-    private FitViewport viewport;
+    private ExtendViewport viewport;
 
-    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, FitViewport viewport)
+    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, ExtendViewport viewport)
     {
         this.camera = camera;
         this.camera.zoom = defaultZoom;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -13,8 +14,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.core.audio.GameSound;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -23,13 +24,15 @@ import com.core.map.location.Location;
 import com.core.map.offset.offsets.Lobby;
 import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
+import com.core.ui.UI;
 
 import static com.core.Const.baseHealth;
 
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
-    private FitViewport viewport;
+    private ExtendViewport viewport;
+    private ScreenViewport uiViewport;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -44,11 +47,18 @@ public class GameScreen extends ScreenAdapter {
     private CameraInputs camImp;
     private Skin skin = new Skin();
     private ProgressBar impactBar;
+
+    private UI ui;
+    private int gameWidth, gameHeight;
+
     private double startingFunds = 100.0;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
+        Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
+        int gameWidth = (resolutionX / 15) * 13, gameHeight = (resolutionY / 15) * 14;
+
         this.camera = camera;
-        this.camera.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
+        this.camera.position.set(new Vector3(gameWidth / 2, gameHeight / 2, 0));
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.batch = new SpriteBatch();
         this.hudBatch = new SpriteBatch();
@@ -66,11 +76,11 @@ public class GameScreen extends ScreenAdapter {
         this.climate = new Climate(impactBar);
         this.gameClock = new GameClock(playerInventory, climate);
 
-        GameSound.startBackgroundMusic(0.1F);
+        //GameSound.startBackgroundMusic(0.1F);
 
-        this.viewport = new FitViewport(resolutionX, resolutionY, camera);
+        this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
         stage = new Stage(viewport);
-        this.grid = new MapGrid(384, 270, stage, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 216 good
+        this.grid = new MapGrid(384, 270, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory); //384, 360 previously //320 216 good
         this.camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
 
@@ -80,6 +90,14 @@ public class GameScreen extends ScreenAdapter {
 
         this.hudStage = new Stage();
         hudStage.addActor(impactBar);
+
+
+        uiViewport = new ScreenViewport();
+        OrthographicCamera uiCam = new OrthographicCamera();
+        uiCam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
+        uiCam.setToOrtho(false);
+        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight);
+
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
@@ -87,7 +105,7 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height)
     {
         System.out.println("resized window");
-        viewport.update(width, height);
+        viewport.update(width/15*13, height/15*14);
     }
     public CameraInputs getCamInp()
     {
@@ -277,15 +295,19 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         update();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(235/255f, 235/255f, 235/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
         batch.begin();
 
+        viewport.apply();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
+        uiViewport.apply();
+        batch.setProjectionMatrix(uiViewport.getCamera().projection);
+        ui.update();
 
         batch.end();
 

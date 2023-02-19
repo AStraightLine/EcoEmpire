@@ -37,8 +37,10 @@ public class MapGrid {
     private PlayerInventory inventory;
     private Climate climate;
 
+    private int gameWidth, gameHeight;
 
-    public MapGrid(int rows, int columns, Stage stage, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory) {
+
+    public MapGrid(int rows, int columns, Stage stage, int gameWidth, int gameHeight, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
@@ -46,11 +48,13 @@ public class MapGrid {
         this.inputMultiplexer = inputMultiplexer;
         this.climate = climate;
         this.inventory = inventory;
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
     }
 
     public void create() {
         inputMultiplexer.addProcessor(stage);
-        table.setFillParent(true);
+        table.setBounds(0, 0, gameWidth, gameHeight);
         table.left().bottom();
         table.setDebug(false);
 
