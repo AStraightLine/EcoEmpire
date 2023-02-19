@@ -69,7 +69,6 @@ public class GameScreen extends ScreenAdapter {
         skin.addRegions(new TextureAtlas("biological-attack/skin/biological-attack-ui.atlas"));
         skin.load(Gdx.files.internal("biological-attack/skin/biological-attack-ui.json"));
         impactBar = new ProgressBar(0.0f, 1000, 0.01f, false, skin);
-
         impactBar.setValue(100);
         impactBar.setAnimateDuration(1);
 
@@ -94,8 +93,7 @@ public class GameScreen extends ScreenAdapter {
 
 
         uiViewport = new ScreenViewport();
-        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight);
-
+        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock);
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
@@ -293,9 +291,13 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         update();
-        Gdx.gl.glClearColor(235/255f, 235/255f, 235/255f, 1);
+        Gdx.gl.glClearColor(25/255f, 25/255f, 25/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
+
+        // Has its own batch (I think) so outside out begin/end
+        uiViewport.apply();
+        ui.update();
 
         batch.begin();
 
@@ -303,18 +305,14 @@ public class GameScreen extends ScreenAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        uiViewport.apply();
-        batch.setProjectionMatrix(uiViewport.getCamera().projection);
-        ui.update();
-
         batch.end();
 
         hudBatch.begin();
-        drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
-        drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
-        drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
-        drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
-        drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / baseHealth) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
+        //drawTime(hudBatch, gameClock.getTimeElapsedInSeconds(), Boot.INSTANCE.getScreenWidth() - 86, Boot.INSTANCE.getScreenHeight() - 36);
+        //drawFunds(hudBatch, playerInventory.getFunds(), 86, Boot.INSTANCE.getScreenHeight() - 36);
+        //drawExpectedFundsChange(hudBatch, playerInventory.getIncome(), 200, Boot.INSTANCE.getScreenHeight() - 36);
+        //drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
+        //drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / baseHealth) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
 
         hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();

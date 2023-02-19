@@ -36,6 +36,14 @@ public class Climate {
         impactBar.setValue((float)climateHealth);
     }
 
+    public ProgressBar getImpactBar() {
+        return impactBar;
+    }
+
+    public void setImpactBar(ProgressBar bar) {
+        this.impactBar = bar;
+    }
+
     public void singleClimateImpact(double impact) {
         climateHealth -= impact;
     }
