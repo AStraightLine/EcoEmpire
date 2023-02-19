@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.core.UI.UI;
 import com.core.audio.GameSound;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
@@ -43,8 +42,8 @@ public class GameScreen extends ScreenAdapter {
     private PlayerInventory playerInventory;
     private Climate climate;
     private CameraInputs camImp;
-
-    private UI ui;
+    private Skin skin = new Skin();
+    private ProgressBar impactBar;
     private double startingFunds = 100.0;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
@@ -56,10 +55,15 @@ public class GameScreen extends ScreenAdapter {
         this.font = new BitmapFont();
         this.world = new World(new Vector2(0, 0), false);
         this.playerInventory = new PlayerInventory(startingFunds);
-        this.ui = new UI();
 
+        skin.addRegions(new TextureAtlas("biological-attack/skin/biological-attack-ui.atlas"));
+        skin.load(Gdx.files.internal("biological-attack/skin/biological-attack-ui.json"));
+        impactBar = new ProgressBar(0.0f, 1000, 0.01f, false, skin);
 
-        this.climate = new Climate(ui.getImpactBar());
+        impactBar.setValue(100);
+        impactBar.setAnimateDuration(1);
+
+        this.climate = new Climate(impactBar);
         this.gameClock = new GameClock(playerInventory, climate);
 
         GameSound.startBackgroundMusic(0.1F);
@@ -73,6 +77,9 @@ public class GameScreen extends ScreenAdapter {
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+
+        this.hudStage = new Stage();
+        hudStage.addActor(impactBar);
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause
@@ -289,8 +296,8 @@ public class GameScreen extends ScreenAdapter {
         drawClimate(hudBatch, climate.getClimateHealth(), 86, Boot.INSTANCE.getScreenHeight() - 56);
         drawExpectedClimateChange(hudBatch, (playerInventory.getClimateImpact() / baseHealth) * 100, 200, Boot.INSTANCE.getScreenHeight() - 56);
 
-        ui.getHudStage().act(Gdx.graphics.getDeltaTime());
-        ui.getHudStage().draw();
+        hudStage.act(Gdx.graphics.getDeltaTime());
+        hudStage.draw();
 
         hudBatch.end();
 
