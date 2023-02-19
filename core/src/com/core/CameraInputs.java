@@ -32,7 +32,7 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     public boolean scrolled(float amountX, float amountY) {
 
         mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        camera.unproject(mousePos);
+        viewport.unproject(mousePos);
 
 
         if (amountY != 0)
