@@ -70,7 +70,7 @@ public class MapGen {
                     }
                     float nearbyLandPercentage = nearbyLand / max; //Get percentage of land tiles around given tile
                     TileActor t = grid[x][y];
-                    if (nearbyLandPercentage > 0.624) //If 62.4+% of tiles nearby are land tiles, this tile becomes a land tile
+                    if (nearbyLandPercentage > 0.624999f) //If 62.4+% of tiles nearby are land tiles, this tile becomes a land tile
                     {
                         t.setTileType(1);
                     }
