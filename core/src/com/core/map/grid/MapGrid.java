@@ -98,7 +98,8 @@ public class MapGrid {
         MapGen mg = new MapGen(grid, rows, columns, textures);
         TileActor[][] newGrid;
         newGrid = mg.cellularAutomata(270); //Perform the algorithm 200 times (270 previously) 250 also
-        newGrid = mg.beachGen();
+        newGrid = mg.beachGen(newGrid);
+        newGrid = mg.refineWater(newGrid, 3);
         grid = newGrid;
         selectedTile = grid[0][0];
         selectedTile.selectTile();
@@ -290,6 +291,7 @@ public class MapGrid {
         textures[1] = new Texture(Gdx.files.internal("land.png"));
         textures[2] = new Texture(Gdx.files.internal("sand.png"));
         textures[3] = new Texture(Gdx.files.internal("tree.png"));
+        textures[4] = new Texture(Gdx.files.internal("water_2.png"));
     }
     public TileActor getSelectedTile() {
         return this.selectedTile;

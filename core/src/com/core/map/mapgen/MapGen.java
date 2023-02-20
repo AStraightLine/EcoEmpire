@@ -3,6 +3,7 @@ package com.core.map.mapgen;
 import com.badlogic.gdx.graphics.Texture;
 import com.core.map.grid.TileActor;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MapGen {
@@ -97,8 +98,9 @@ public class MapGen {
         }
     }
 
-    public TileActor[][] beachGen()
+    public TileActor[][] beachGen(TileActor[][] g)
     {
+        grid = g;
         Random r = new Random();
         for (int x = 0; x < columns; x++)
         {
@@ -157,11 +159,11 @@ public class MapGen {
     {
         Random r = new Random();
         int[][] temp = copyTileTypes(); //Get copy of current grid before changes
-        for (int y = 0; y < columns; y++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int x = 0; x < rows; x++)
+            for (int y = 0; y < rows; y++)
             {
-                int tType = temp[y][x];
+                int tType = temp[x][y];
                 if (tType == 1) //Cannot change tile if tile already was a water tile, only land tiles
                 {
                     boolean touchingTileZ = false;
@@ -170,7 +172,7 @@ public class MapGen {
                     {
                         for (int yOffset = -1; yOffset < 2; yOffset++)
                         {
-                            if (x + xOffset < 0 || x + xOffset >= rows || y + yOffset < 0 || y + yOffset >= columns) //Out of bounds
+                            if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
                             {
 
                             }
@@ -180,7 +182,7 @@ public class MapGen {
                             }
                             else //Check nearby tile's type
                             {
-                                int tType2 = temp[y + yOffset][x + xOffset];
+                                int tType2 = temp[x + xOffset][y + yOffset];
                                 if (tType2 == z)
                                 {
                                     touchingTileZ = true;
@@ -194,12 +196,67 @@ public class MapGen {
                         double c = r.nextDouble(); //Generate random double
                         if (c < tileZChance) //If number falls within chance zone, it becomes tile of type z
                         {
-                            grid[y][x].setTileType(z);
-                            grid[y][x].setTileTexture(textures[z]);
+                            grid[x][y].setTileType(z);
+                            grid[x][y].setTileTexture(textures[z]);
                         }
                     }
                 }
             }
         }
+    }
+
+    public TileActor[][] refineWater(TileActor[][] g, int iterations)
+    {
+        ArrayList<Integer> alteredX = new ArrayList<Integer>(); //Store x and y values of altered grid tiles
+        ArrayList<Integer> alteredY = new ArrayList<Integer>();
+        int alteredTiles = 0;
+        grid = g;
+        for (int i = 0; i < iterations; i++)
+        {
+            int[][] temp = copyTileTypes(); //Get copy of current grid before changes
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    int tType = temp[x][y];
+                    if (tType == 0) //Cannot change tile if tile already was a water tile, only land tiles
+                    {
+                        boolean nearbyLand = false;
+                        for (int xOffset = -1; xOffset < 2; xOffset++) //Scan nearby tiles
+                        {
+                            for (int yOffset = -1; yOffset < 2; yOffset++)
+                            {
+                                if (x + xOffset < 0 || x + xOffset >= columns || y + yOffset < 0 || y + yOffset >= rows) //Out of bounds
+                                {
+
+                                } else if (xOffset == 0 && yOffset == 0)
+                                {
+                                    //Do nothing since this is the current tile
+                                } else //Check nearby tile's type
+                                {
+                                    int tType2 = temp[x + xOffset][y + yOffset];
+                                    if (tType2 > 0 || tType2 == 10) {
+                                        nearbyLand = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (nearbyLand == true)
+                        {
+                            grid[x][y].setTileType(10); //10 is a placeholder value just to indicate refined water tiles
+                            alteredX.add(x);
+                            alteredY.add(y);
+                            alteredTiles++;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < alteredTiles; i++)
+        {
+            grid[alteredX.get(i)][alteredY.get(i)].setTileType(0); //Set all changed water tile types back to normal
+            grid[alteredX.get(i)][alteredY.get(i)].setTileTexture(textures[4]);
+        }
+        return grid;
     }
 }
