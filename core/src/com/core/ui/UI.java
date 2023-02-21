@@ -28,7 +28,7 @@ public class UI {
     private Climate climate;
     private GameClock clock;
 
-    private Label timeLabel, fundsLabel;
+    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange;
     private ProgressBar impactBar;
     private SelectBox extractionSelect;
     private Group uiGroup = new Group();
@@ -76,6 +76,7 @@ public class UI {
     public void update() {
         updateTime();
         updateFunds();
+        updateClimate();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
@@ -127,6 +128,18 @@ public class UI {
         fundsLabel = new Label(fundsString, skin);
         fundsLabel.setFontScale((float)1.25);
         topTable.add(fundsLabel).width(100).fillX();
+
+        funds = inventory.getIncome();
+
+        if (funds < 0) {
+            fundsString = String.format("-£%,.2f", -funds);
+        } else {
+            fundsString = String.format("+£%,.2f", funds);
+        }
+
+        expectedFundsChange = new Label(fundsString, skin);
+        expectedFundsChange.setFontScale((float)1.25);
+        topTable.add(expectedFundsChange).width(100).fillX();
     }
 
     public void updateFunds() {
@@ -140,11 +153,65 @@ public class UI {
         }
 
         fundsLabel.setText(fundsString);
+
+        funds = inventory.getIncome();
+
+        if (funds < 0) {
+            fundsString = String.format("-£%,.2f", -funds);
+        } else {
+            fundsString = String.format("+£%,.2f", funds);
+        }
+
+        expectedFundsChange.setText(fundsString);
     }
 
     public void populateClimate() {
+        Label placeholder = new Label("", skin);
+        topTable.add(placeholder).width(100).fillX();
         impactBar = climate.getImpactBar();
         topTable.add(impactBar).width(500);
+
+        double climateHealth = climate.getClimateHealth();
+        String climateString = String.format("%,.2f", climateHealth);
+        climateLabel = new Label(climateString + "%", skin);
+        climateLabel.setFontScale((float)1.25);
+        topTable.add(climateLabel).width(100).fillX();
+
+        double climateChange = inventory.getClimateImpact();
+
+        String expectedChange = "";
+
+        if (climateChange < 0) { //Only displays user influenced climate change (no natural increase/decrease)
+            expectedChange = String.format("+%,.2f", -climateChange); //Negative climate change actually means a climate increase (All climate impacts coded using positive numbers, so a bigger value means more climate decrease)
+        } else if (climateChange == 0) {
+            expectedChange = String.format("+%,.2f", climateChange);
+        } else {
+            expectedChange = String.format("-%,.2f", climateChange);
+        }
+
+        expectedClimateChange = new Label(expectedChange + "%", skin);
+        expectedClimateChange.setFontScale((float)1.25);
+        topTable.add(expectedClimateChange).width(100).fillX();
+    }
+
+    public void updateClimate() {
+        double climateHealth = climate.getClimateHealth();
+        String climateString = String.format("%,.2f", climateHealth);
+        climateLabel.setText(climateString + "%");
+
+        double climateChange = inventory.getClimateImpact();
+
+        String expectedChange = "";
+
+        if (climateChange < 0) { //Only displays user influenced climate change (no natural increase/decrease)
+            expectedChange = String.format("+%,.2f", -climateChange); //Negative climate change actually means a climate increase (All climate impacts coded using positive numbers, so a bigger value means more climate decrease)
+        } else if (climateChange == 0) {
+            expectedChange = String.format("+%,.2f", climateChange);
+        } else {
+            expectedChange = String.format("-%,.2f", climateChange);
+        }
+
+        expectedClimateChange.setText(expectedChange + "%");
     }
 
     public void populateExtractionsSelection() {
@@ -159,7 +226,7 @@ public class UI {
             }
         });
 
-        topTable.add(extractionSelect).width(100).fillX();
+        topUI.addActor(extractionSelect);
     }
 }
 
