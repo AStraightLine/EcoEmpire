@@ -40,7 +40,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public void show(){
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);
+        table.setDebug(false); //Set true for debugging
         stage.addActor(table);
 
         // temporary until we have asset manager in

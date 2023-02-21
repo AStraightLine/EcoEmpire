@@ -70,7 +70,6 @@ public class UI {
 
         populateTopTable();
         populateSideTable();
-        populateExtractionsSelection();
 
     }
 
@@ -83,8 +82,10 @@ public class UI {
 
     public void populateTopTable() {
         populateTime();
-        populateFunds();
         populateClimate();
+        topTable.row().pad(5, 0, 5, 0);
+        populateFunds();
+        populateExtractionsSelection();
     }
 
     public void populateSideTable() {
@@ -100,8 +101,7 @@ public class UI {
 
         timeLabel = new Label(timeElapsedString, skin);
         timeLabel.setFontScale((float)1.25);
-        topTable.add(timeLabel).fillX().uniformX();
-        topTable.row().pad(5, 0, 5, 0);
+        topTable.add(timeLabel).width(100).fillX();
     }
 
     public void updateTime() {
@@ -126,7 +126,7 @@ public class UI {
 
         fundsLabel = new Label(fundsString, skin);
         fundsLabel.setFontScale((float)1.25);
-        topTable.add(fundsLabel).fillX().uniformX();
+        topTable.add(fundsLabel).width(100).fillX();
     }
 
     public void updateFunds() {
@@ -144,7 +144,7 @@ public class UI {
 
     public void populateClimate() {
         impactBar = climate.getImpactBar();
-        topUI.addActor(impactBar);
+        topTable.add(impactBar).width(500);
     }
 
     public void populateExtractionsSelection() {
@@ -159,7 +159,7 @@ public class UI {
             }
         });
 
-        topUI.addActor(extractionSelect);
+        topTable.add(extractionSelect).width(100).fillX();
     }
 }
 
