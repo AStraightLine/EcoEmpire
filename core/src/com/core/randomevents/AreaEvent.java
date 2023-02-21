@@ -4,11 +4,11 @@ import com.core.map.grid.MapGrid;
 
 public abstract class AreaEvent implements RandomEvent
 {
-    private MapGrid grid;
+    private MapGrid mapGrid;
 
-    public AreaEvent(MapGrid grid)
+    public AreaEvent(MapGrid mapGrid)
     {
-        this.grid = grid;
+        this.mapGrid = mapGrid;
     }
 
     public abstract void execute();
