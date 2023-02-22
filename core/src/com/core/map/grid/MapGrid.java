@@ -314,7 +314,6 @@ public class MapGrid {
             setAvailable(tile, Const.treeY, Const.treeX);
             tile.removeTree();
             if (tile.getLocation().hasOffset()) {
-                System.out.println("CACA");
                 inventory.removeOffset(tile.getLocation().getOffset());
             }
             inventory.charge(removalCost);

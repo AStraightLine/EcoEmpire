@@ -111,7 +111,6 @@ public class PlayerInventory {
     public void addOffset(Offset offset) {
         this.offsets.add(offset);
         this.funds -= offset.getCost();
-        System.out.println(offset.getMaintenance());
         this.income -= offset.getMaintenance();
         this.climateImpact -= offset.getEffect(); // Negative as climateImpact is deducted from climate and "effect" is a positive value.
     }
