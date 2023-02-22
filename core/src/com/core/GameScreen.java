@@ -129,11 +129,13 @@ public class GameScreen extends ScreenAdapter {
                 TileActor tile = grid.getSelectedTile();
                 Location location = tile.getLocation();
 
-                if (!location.getSearched()) {
+                if (!location.getSearched() && !grid.getSelectedTile().isUnavailable()) {
                     if (playerInventory.getFunds() >= location.getSearchCost())
                         playerInventory.charge(location.getSearchCost());
                     location.setSearched(true);
                     ui.handleTileSelection(tile); // Update sideUI to show resource details
+                } else {
+                    ui.handleTileSelection(tile);
                 }
 
                 System.out.println("Funds: " + playerInventory.getFunds());
@@ -248,6 +250,7 @@ public class GameScreen extends ScreenAdapter {
                         location.setOffset(tree);
                         location.setHasOffset(true);
                         playerInventory.addOffset(tree);
+                        ui.handleTileSelection(tile);
                     }
                 }
             }
