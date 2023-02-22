@@ -37,7 +37,7 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
 
         if (amountY != 0)
         {
-            if(camera.zoom > defaultZoom-0.4f)
+            if(camera.zoom > defaultZoom-0.5f)
             {
                 camera.position.set(mousePos);
             }
