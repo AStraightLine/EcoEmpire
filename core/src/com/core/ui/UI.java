@@ -248,7 +248,7 @@ public class UI {
         } else if (!location.getSearched()) {
             Label header = new Label("You have not searched this tile.", skin);
             Label subText = new Label("", skin);
-            String searchText = "Press 'S' to search for $" + location.getSearchCost();
+            String searchText = String.format("Press 'S' to search for $%,.2f", location.getSearchCost());
             subText.setText(searchText);
 
             sideTable.add(header).pad(10).row();
@@ -262,15 +262,3 @@ public class UI {
         }
     }
 }
-
- /*
-        //add buttons to table
-        table.add(resumeGame).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0);
-        table.add(newGame).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0);
-        table.add(saveGame).fillX().uniformX();
-        table.row();
-        table.add(exit).fillX().uniformX();
-        Example from Hannah
-         */
