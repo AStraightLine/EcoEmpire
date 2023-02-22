@@ -5,6 +5,7 @@ import com.core.Const;
 import com.core.map.extract.Extractor;
 import com.core.map.extract.extractors.*;
 import com.core.map.offset.Offset;
+import com.core.map.resource.Resource;
 import com.core.map.resource.resources.*;
 
 import java.util.Random;
@@ -276,5 +277,10 @@ public class Location {
 
     public void setHasOffset(boolean hasOffset) {
         this.hasOffset = hasOffset;
+    }
+
+    public Resource[] getResourcesArray() {
+        Resource[] resources = {coal, gas, nuclear, oil, solar, wind, hydro, geothermal};
+        return resources;
     }
 }

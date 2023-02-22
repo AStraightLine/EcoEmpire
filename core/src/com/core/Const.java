@@ -9,6 +9,7 @@ public class Const{
     public static final Double infinity = Double.POSITIVE_INFINITY;
     // resources
     public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", geothermal = "GEOTHERMAL";
+    public static final String[] resourceNames = {"Coal", "Gas", "Nuclear", "Oil", "Solar", "Wind", "Hydro", "Geothermal"};
     // tile types
     public static final String water = "WATER", land = "LAND", sand = "SAND";
     //Base climate health

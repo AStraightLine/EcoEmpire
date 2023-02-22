@@ -10,10 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.core.Const;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.TileActor;
 import com.core.map.location.Location;
+import com.core.map.resource.Resource;
 import com.core.player.PlayerInventory;
 
 public class UI {
@@ -243,9 +245,7 @@ public class UI {
 
         Location location = selected.getLocation();
 
-        if (location.getSearched()) {
-
-        } else if (!location.getSearched()) {
+        if (!location.getSearched()) {
             Label header = new Label("You have not searched this tile.", skin);
             Label subText = new Label("", skin);
             String searchText = String.format("Press 'S' to search for $%,.2f", location.getSearchCost());
@@ -253,6 +253,28 @@ public class UI {
 
             sideTable.add(header).pad(10).row();
             sideTable.add(subText).pad(10).row();
+        } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
+            for (int i = 0; i < Const.resourceNames.length; i++) {
+                Resource[] resources = location.getResourcesArray(); // Array of resources following order in Const class.
+                Label resourceHeader = new Label(String.format(Const.resourceNames[i] + " : $%,.2f to extract.", resources[i].getExtractionCost()), skin);
+                Label resourceProDetails;
+
+                if (resources[i].getQuantity() == Const.infinity) {
+                    resourceProDetails = new Label(String.format("Value: $%,.2f", resources[i].getValue()) + ", Quantity: INF", skin);
+                } else {
+                    resourceProDetails = new Label(String.format("Value: $%,.2f", resources[i].getValue()) + ", Quantity: " + resources[i].getQuantity(), skin);
+                }
+
+                Label resourceConDetails = new Label(String.format("Impact: %,.2f, Stability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
+
+                resourceHeader.setAlignment(Align.topLeft);
+                resourceProDetails.setFontScale((float)0.75);
+                resourceConDetails.setFontScale((float)0.75);
+
+                sideTable.add(resourceHeader).pad(10).row();
+                sideTable.add(resourceProDetails).pad(10).row();
+                sideTable.add(resourceConDetails).pad(10).row();
+            }
         }
     }
 
