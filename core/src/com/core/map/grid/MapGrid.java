@@ -21,6 +21,7 @@ import com.core.map.mapgen.MapGen;
 import com.core.map.offset.Offset;
 import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
+import com.core.ui.UI;
 
 import java.util.Random;
 
@@ -37,11 +38,12 @@ public class MapGrid {
     private InputMultiplexer inputMultiplexer;
     private PlayerInventory inventory;
     private Climate climate;
+    private UI ui;
 
     private int gameWidth, gameHeight;
 
 
-    public MapGrid(int rows, int columns, Stage stage, int gameWidth, int gameHeight, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory) {
+    public MapGrid(int rows, int columns, Stage stage, int gameWidth, int gameHeight, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory, UI ui) {
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
@@ -51,6 +53,7 @@ public class MapGrid {
         this.inventory = inventory;
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
+        this.ui = ui;
     }
 
     public void create() {
@@ -85,6 +88,7 @@ public class MapGrid {
                         selectedTile = tile;
                         selectedTile = selectedTile.getParentTile();
                         selectedTile.selectTile();
+                        ui.handleTileSelection(selectedTile);
                         GameSound.playTileSelectSound();
                         return true;
                     }

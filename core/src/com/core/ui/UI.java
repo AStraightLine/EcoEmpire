@@ -8,9 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
+import com.core.map.grid.TileActor;
+import com.core.map.location.Location;
 import com.core.player.PlayerInventory;
 
 public class UI {
@@ -22,6 +25,7 @@ public class UI {
 
     private Stage stage;
     private HorizontalGroup topUI;
+    private VerticalGroup sideUI;
     private Table topTable, sideTable;
 
     private PlayerInventory inventory;
@@ -53,13 +57,18 @@ public class UI {
         topTable = new Table(skin);
         sideTable = new Table(skin);
 
-        sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY);
+
 
         topUI = new HorizontalGroup();
         topUI.setBounds(0, resY - (resY - gameHeight), resX, resY - gameHeight);
         topUI.addActor(topTable);
 
-        uiGroup.addActor(sideTable);
+        sideUI = new VerticalGroup();
+        sideUI.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideUI.addActor(sideTable);
+
+        uiGroup.addActor(sideUI);
         uiGroup.addActor(topUI);
         uiGroup.setZIndex(1);
 
@@ -227,6 +236,30 @@ public class UI {
         });
 
         topUI.addActor(extractionSelect);
+    }
+
+    public void handleTileSelection(TileActor selected) {
+        sideTable.reset();
+
+        Location location = selected.getLocation();
+
+        if (location.getSearched()) {
+
+        } else if (!location.getSearched()) {
+            Label header = new Label("You have not searched this tile.", skin);
+            Label subText = new Label("", skin);
+            String searchText = "Press 'S' to search for $" + location.getSearchCost();
+            subText.setText(searchText);
+
+            sideTable.add(header).pad(10).row();
+            sideTable.add(subText).pad(10).row();
+        }
+    }
+
+    public void clearTableActors(Table t) {
+        for (Actor a : t.getStage().getActors()) {
+            a.remove();
+        }
     }
 }
 
