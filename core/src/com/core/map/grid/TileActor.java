@@ -78,10 +78,7 @@ public class TileActor extends Actor {
                     if(grid.checkAvailability(this, 4, 4))
                     {
                         batch.draw(selectedMarkerRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-                        if(location.getSearched() == true)
-                        {
-                            batch.draw(searchedTextureRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
-                        }
+
                     }
                     else
                     {
