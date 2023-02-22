@@ -227,11 +227,13 @@ public class MapGrid {
                 if(!(column-i < 0 || row-j < 0))
                 {
                     grid[column-i][row-j].setUnavailable(tile);
+                    grid[column-i][row-j].getLocation().setSearched(false);
                 }
             }
         }
         return true;
     }
+
     public boolean setAvailable(TileActor tile, int y, int x)
     {
         int row = tile.getRow();

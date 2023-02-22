@@ -23,6 +23,7 @@ public class TileActor extends Actor {
     private Location location;
     private TextureRegion tileTextureRegion;
     private TextureRegion selectedMarkerRegion;
+    private TextureRegion searchedTextureRegion;
     private boolean selected = false;
     private TileActor parentTile = this;
     private TextureRegion tree;
@@ -77,6 +78,10 @@ public class TileActor extends Actor {
                     if(grid.checkAvailability(this, 4, 4))
                     {
                         batch.draw(selectedMarkerRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                        if(location.getSearched() == true)
+                        {
+                            batch.draw(searchedTextureRegion, getX()-getWidth()*3, getY(), getWidth()*4, getHeight()*4);
+                        }
                     }
                     else
                     {
@@ -87,7 +92,18 @@ public class TileActor extends Actor {
                 else
                 {
                     batch.draw(selectedMarkerRegion, getX(), getY(), getWidth(), getHeight());
+                    if(location.getSearched() == true)
+                    {
+                        batch.draw(searchedTextureRegion, getX(), getY(), getWidth(), getHeight());
+                    }
                 }
+            }
+        }
+        else
+        {
+            if(location.getSearched() == true)
+            {
+                batch.draw(searchedTextureRegion, getX(), getY(), getWidth(), getHeight());
             }
         }
     }
@@ -135,6 +151,10 @@ public class TileActor extends Actor {
         if(selectedMarkerRegion == null)
         {
             this.selectedMarkerRegion = new TextureRegion(new Texture(Gdx.files.internal("overlay.png")));
+        }
+        if(searchedTextureRegion == null)
+        {
+            this.searchedTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("searched.png")));
         }
         this.selected = true;
     }
