@@ -267,7 +267,6 @@ public class UI {
 
                 Label resourceConDetails = new Label(String.format("Impact: %,.2f, Stability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
 
-                resourceHeader.setAlignment(Align.topLeft);
                 resourceProDetails.setFontScale((float)0.75);
                 resourceConDetails.setFontScale((float)0.75);
 
@@ -275,12 +274,6 @@ public class UI {
                 sideTable.add(resourceProDetails).pad(10).row();
                 sideTable.add(resourceConDetails).pad(10).row();
             }
-        }
-    }
-
-    public void clearTableActors(Table t) {
-        for (Actor a : t.getStage().getActors()) {
-            a.remove();
         }
     }
 }
