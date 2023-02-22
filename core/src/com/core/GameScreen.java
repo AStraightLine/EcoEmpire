@@ -238,20 +238,7 @@ public class GameScreen extends ScreenAdapter {
 
             // Tree is a little different as it requires a tile to be selected first, not all offsets will follow this control pattern flow
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-                TileActor tile = grid.getSelectedTile();
-                Location location = tile.getLocation();
-                boolean possible = grid.tryTree(tile, Const.treeY, Const.treeX);
-
-                if (possible) {
-                    Tree tree = new Tree();
-
-                    if (playerInventory.getFunds() >= tree.getCost()) {
-                        location.setOffset(tree);
-                        location.setHasOffset(true);
-                        playerInventory.addOffset(tree);
-                        ui.handleTileSelection(tile);
-                    }
-                }
+                grid.addTree();
             }
 
             // Lobby
@@ -266,6 +253,8 @@ public class GameScreen extends ScreenAdapter {
 
         batch.setProjectionMatrix(camera.combined);
     }
+
+
 
 
 

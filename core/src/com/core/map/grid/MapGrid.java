@@ -111,20 +111,43 @@ public class MapGrid {
         tiles.addActor(table);
         stage.addActor(tiles);
         tiles.setZIndex(0);
-
+        inventory.setFunds(100000);
         for(int i=0; i<columns; i++)
         {
             for(int j=0; j<rows; j++)
             {
                 Random rn = new Random();
-                int answer = rn.nextInt(1) + 1;
+                int answer = rn.nextInt(8) + 1;
                 if(answer == 1)
                 {
-                    tryTree(grid[i][j], Const.treeY, Const.treeX);
+                    selectedTile = grid[i][j];
+                    addTree();
                 }
             }
         }
+        inventory.setClimateImpact(0);
+        inventory.setFunds(100);
     }
+
+    public void addTree()
+    {
+        TileActor tile = this.getSelectedTile();
+        Location location = tile.getLocation();
+        boolean possible = this.tryTree(tile, Const.treeY, Const.treeX);
+
+        if (possible) {
+            Tree tree = new Tree();
+
+            if (inventory.getFunds() >= tree.getCost()) {
+                location.setOffset(tree);
+                location.setHasOffset(true);
+                inventory.addOffset(tree);
+                ui.handleTileSelection(tile);
+            }
+        }
+    }
+
+
     public boolean checkTileTypes(TileActor tile, int y, int x, boolean treeCheck)
     {
         int row = tile.getRow();
@@ -257,12 +280,14 @@ public class MapGrid {
     }
     public void deleteExtractor(PlayerInventory playerInventory)
     {
+        Location location = selectedTile.getLocation();
         if(selectedTile.returnIsTree())
         {
             deleteTree(selectedTile);
+
             return;
         }
-        Location location = selectedTile.getLocation();
+
 
         if(location.getExtracting())
         {
@@ -283,6 +308,7 @@ public class MapGrid {
             setAvailable(tile, Const.treeY, Const.treeX);
             tile.removeTree();
             if (tile.getLocation().hasOffset()) {
+                System.out.println("CACA");
                 inventory.removeOffset(tile.getLocation().getOffset());
             }
             inventory.charge(removalCost);

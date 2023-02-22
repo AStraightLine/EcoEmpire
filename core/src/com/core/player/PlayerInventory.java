@@ -140,6 +140,14 @@ public class PlayerInventory {
     public double getFunds() {
         return this.funds;
     }
+    public void setFunds(double funds)
+    {
+        this.funds = funds;
+    }
+    public void setClimateImpact(double climateImpact)
+    {
+        this.climateImpact = climateImpact;
+    }
 
     public  double getClimateImpact() { return this.climateImpact; }
 
