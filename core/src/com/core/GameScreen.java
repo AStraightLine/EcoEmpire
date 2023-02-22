@@ -155,6 +155,7 @@ public class GameScreen extends ScreenAdapter {
                     built = grid.addExtractor(location, Const.oil, path);
                     if (built) {
                         playerInventory.addExtractor(location.getExtractor(), location.getOil().getExtractionCost());
+                        ui.handleTileSelection(tile);
                     }
                 }
             }
@@ -177,6 +178,7 @@ public class GameScreen extends ScreenAdapter {
                     built = grid.addExtractor(location, Const.coal, path);
                     if (built) {
                         playerInventory.addExtractor(location.getExtractor(), location.getCoal().getExtractionCost());
+                        ui.handleTileSelection(tile);
                     }
                 }
             }
@@ -199,6 +201,7 @@ public class GameScreen extends ScreenAdapter {
                     built = grid.addExtractor(location, Const.gas, path);
                     if (built) {
                         playerInventory.addExtractor(location.getExtractor(), location.getGas().getExtractionCost());
+                        ui.handleTileSelection(tile);
                     }
                 }
             }
@@ -220,12 +223,14 @@ public class GameScreen extends ScreenAdapter {
                     built = grid.addExtractor(location, Const.nuclear, path);
                     if (built) {
                         playerInventory.addExtractor(location.getExtractor(), location.getNuclear().getExtractionCost());
+                        ui.handleTileSelection(tile);
                     }
                 }
             }
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                 grid.deleteExtractor(playerInventory);
+                ui.handleTileSelection(grid.getSelectedTile());
             }
 
             // Start of Offsets
