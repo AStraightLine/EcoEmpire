@@ -72,23 +72,23 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     }
     public void cameraBounds()
     {
-        float cameraLeft = camera.position.x - camera.viewportWidth / 2 * camera.zoom;
-        float cameraRight = camera.position.x + camera.viewportWidth / 2 * camera.zoom;
-        float cameraBottom = camera.position.y - camera.viewportHeight / 2 * camera.zoom;
-        float cameraTop = camera.position.y + camera.viewportHeight / 2 * camera.zoom;
+        float cameraLeft = camera.position.x - viewport.getWorldWidth()/ 2 * camera.zoom;
+        float cameraRight = camera.position.x + viewport.getWorldWidth() / 2 * camera.zoom;
+        float cameraBottom = camera.position.y - viewport.getWorldHeight() / 2 * camera.zoom;
+        float cameraTop = camera.position.y + viewport.getWorldHeight() / 2 * camera.zoom;
 
         if (cameraLeft < 0) {
-            camera.position.x = camera.viewportWidth / 2 * camera.zoom;
+            camera.position.x = viewport.getWorldWidth() / 2 * camera.zoom;
         }
         if (cameraRight > viewport.getWorldWidth()) {
-            camera.position.x = viewport.getWorldWidth() - camera.viewportWidth / 2 * camera.zoom;
+            camera.position.x = viewport.getWorldWidth() - viewport.getWorldWidth() / 2 * camera.zoom;
         }
 
         if (cameraBottom < 0) {
-            camera.position.y = camera.viewportHeight / 2 * camera.zoom;
+            camera.position.y = viewport.getWorldHeight() / 2 * camera.zoom;
         }
         if (cameraTop > viewport.getWorldHeight()) {
-            camera.position.y = viewport.getWorldHeight() - camera.viewportHeight / 2 * camera.zoom;
+            camera.position.y = viewport.getWorldHeight() - viewport.getWorldHeight() / 2 * camera.zoom;
         }
     }
 

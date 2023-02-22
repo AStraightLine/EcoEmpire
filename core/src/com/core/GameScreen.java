@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -26,13 +25,11 @@ import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 import com.core.ui.UI;
 
-import static com.core.Const.baseHealth;
-
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
     private ExtendViewport viewport;
-    private ScreenViewport uiViewport;
+    private ExtendViewport uiViewport;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -53,7 +50,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
-        int gameWidth = (resolutionX / 15) * 13, gameHeight = (resolutionY / 15) * 14;
+        int gameWidth = resolutionX-256, gameHeight = resolutionY-72;
 
         this.camera = camera;
         this.camera.position.set(new Vector3(gameWidth / 2, gameHeight / 2, 0));
@@ -74,7 +71,7 @@ public class GameScreen extends ScreenAdapter {
 
         //GameSound.startBackgroundMusic(0.1F);
 
-        uiViewport = new ScreenViewport();
+        uiViewport = new ExtendViewport(resolutionX, resolutionY);
         this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
 
         this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
@@ -93,7 +90,9 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height)
     {
         System.out.println("resized window");
-        viewport.update(width/15*13, height/15*14);
+        viewport.update(width-256, height-72);
+        uiViewport.update(width, height);
+        camImp.cameraBounds();
     }
 
     public void update() {
@@ -294,6 +293,8 @@ public class GameScreen extends ScreenAdapter {
 
         // Has its own batch (I think) so outside out begin/end
         uiViewport.apply();
+
+
         ui.update();
 
 

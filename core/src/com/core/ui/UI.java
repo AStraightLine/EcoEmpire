@@ -8,8 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.core.Const;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
@@ -20,7 +19,7 @@ import com.core.player.PlayerInventory;
 
 public class UI {
 
-    private ScreenViewport viewport;
+    private ExtendViewport viewport;
     private int resX, resY, gameWidth, gameHeight;
 
     private Skin skin;
@@ -39,7 +38,7 @@ public class UI {
     private SelectBox extractionSelect;
     private Group uiGroup = new Group();
 
-    public UI(ScreenViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
+    public UI(ExtendViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
         this.resX = resX;
         this.resY = resY;
