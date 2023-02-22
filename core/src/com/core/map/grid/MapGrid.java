@@ -133,19 +133,23 @@ public class MapGrid {
     {
         TileActor tile = this.getSelectedTile();
         Location location = tile.getLocation();
+        if(!(inventory.getFunds() >= 2.5) || location.hasOffset()==true)
+        {
+            return;
+        }
+
         boolean possible = this.tryTree(tile, Const.treeY, Const.treeX);
 
-        if (possible) {
-            Tree tree = new Tree();
+        Tree tree = new Tree();
 
-            if (inventory.getFunds() >= tree.getCost()) {
-                location.setOffset(tree);
-                location.setHasOffset(true);
-                inventory.addOffset(tree);
-                ui.handleTileSelection(tile);
-            }
-        }
+
+        location.setOffset(tree);
+        location.setHasOffset(true);
+        inventory.addOffset(tree);
+        ui.handleTileSelection(tile);
+
     }
+
 
 
     public boolean checkTileTypes(TileActor tile, int y, int x, boolean treeCheck)
