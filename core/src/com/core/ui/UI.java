@@ -275,6 +275,28 @@ public class UI {
                 sideTable.add(resourceProDetails).pad(10).row();
                 sideTable.add(resourceConDetails).pad(10).row();
             }
+        } else if (location.getExtracting()) { // Location already has an extractor built.
+            String resource = location.getExtractingResource();
+            resource = resource.substring(0,1) + resource.substring(1, resource.length()).toLowerCase();
+
+            Label extractingHeader = new Label(String.format("Extracting " + resource + " for $%,.2f", location.getExtractor().getValue()), skin);
+            Label extractionProDetails = new Label("", skin);
+            Label extractionConDetails = new Label("", skin);
+
+            extractionConDetails.setText(String.format("%,.2f Impact, %d Stability", location.getExtractor().getImpact(), location.getExtractor().getStability()));
+
+            if (location.getExtractor().getQuantity() == Const.infinity) {
+                extractionProDetails.setText("Infinite quantity");
+            } else {
+                extractionProDetails.setText(location.getExtractor().getQuantity() + " remaining");
+            }
+
+            extractionProDetails.setFontScale((float)0.85);
+            extractionConDetails.setFontScale((float)0.85);
+
+            sideTable.add(extractingHeader).pad(10).row();;
+            sideTable.add(extractionConDetails).pad(10).row();;
+            sideTable.add(extractionProDetails).pad(10).row();;
         }
     }
 
