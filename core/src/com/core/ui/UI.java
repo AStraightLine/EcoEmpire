@@ -21,7 +21,7 @@ import com.core.player.PlayerInventory;
 
 public class UI {
 
-    private ExtendViewport viewport;
+    private FitViewport viewport;
     private int resX, resY, gameWidth, gameHeight;
 
     private Skin skin;
@@ -41,7 +41,7 @@ public class UI {
     private float heightBound;
     private float widthBound;
 
-    public UI(ExtendViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
+    public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
         this.resX = resX;
         this.resY = resY;
@@ -258,11 +258,11 @@ public class UI {
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
 
-                treeDetails.setFontScaleX((float)0.8);
-                treeSubDetails.setFontScaleX((float)0.8);
+                treeDetails.setFontScale((float)0.8);
+                treeSubDetails.setFontScale((float)0.8);
 
-                sideTable.add(treeHeader).row();
-                sideTable.add(treeDetails).row();
+                sideTable.add(treeHeader).height(resY/100).pad(10).row();
+                sideTable.add(treeDetails).height(resY/100).pad(10).row();
 
                 if (location.hasOffset()) { // Tree is an offset, not a tree spawned by world gen
                     // ASSUMING ITS ONLY POSSIBLE TO BUILD TREE TYPE FOR NOW
@@ -270,7 +270,7 @@ public class UI {
                 } else {
                     treeSubDetails.setText("But no climate impact");
                 }
-                sideTable.add(treeSubDetails).row();
+                sideTable.add(treeSubDetails).height(resY/100).pad(10).row();
 
             } else { // NO TREE TO CLEAR
                 Label header = new Label("You have not searched this tile.", skin);
@@ -278,8 +278,8 @@ public class UI {
                 String searchText = String.format("Press 'S' to search for $%,.2f", location.getSearchCost());
                 subText.setText(searchText);
 
-                sideTable.add(header).pad(10).row();
-                sideTable.add(subText).pad(10).row();
+                sideTable.add(header).height(resY/100).pad(10).row();
+                sideTable.add(subText).height(resY/100).pad(10).row();
             }
         } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
             for (int i = 0; i < Const.resourceNames.length; i++) {
@@ -298,9 +298,9 @@ public class UI {
                 resourceProDetails.setFontScale((float)0.75);
                 resourceConDetails.setFontScale((float)0.75);
 
-                sideTable.add(resourceHeader).pad(10).row();
-                sideTable.add(resourceProDetails).pad(10).row();
-                sideTable.add(resourceConDetails).pad(10).row();
+                sideTable.add(resourceHeader).height(resY/100).pad(10).row();
+                sideTable.add(resourceProDetails).height(resY/100).pad(10).row();
+                sideTable.add(resourceConDetails).height(resY/100).pad(10).row();
             }
         } else if (location.getExtracting()) { // Location already has an extractor built.
             String resource = location.getExtractingResource();
@@ -321,9 +321,9 @@ public class UI {
             extractionProDetails.setFontScale((float)0.85);
             extractionConDetails.setFontScale((float)0.85);
 
-            sideTable.add(extractingHeader).pad(10).row();;
-            sideTable.add(extractionConDetails).pad(10).row();;
-            sideTable.add(extractionProDetails).pad(10).row();;
+            sideTable.add(extractingHeader).height(resY/100).pad(10).row();;
+            sideTable.add(extractionConDetails).height(resY/100).pad(10).row();;
+            sideTable.add(extractionProDetails).height(resY/100).pad(10).row();;
         }
     }
 }

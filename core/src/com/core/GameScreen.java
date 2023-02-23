@@ -29,8 +29,8 @@ import com.core.ui.UI;
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
-    private ExtendViewport viewport;
-    private ExtendViewport uiViewport;
+    private FitViewport viewport;
+    private FitViewport uiViewport;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -72,10 +72,10 @@ public class GameScreen extends ScreenAdapter {
 
         //GameSound.startBackgroundMusic(0.1F);
 
-        uiViewport = new ExtendViewport(resolutionX, resolutionY);
+        uiViewport = new FitViewport(resolutionX, resolutionY);
         this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
 
-        this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
+        this.viewport = new FitViewport(gameWidth, gameHeight, camera);
 
 
         stage = new Stage(viewport);
