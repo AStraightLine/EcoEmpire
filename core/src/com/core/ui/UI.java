@@ -248,7 +248,7 @@ public class UI {
 
     public void handleTileSelection(TileActor selected) {
         sideTable.reset();
-
+        sideTable.debug();
         Location location = selected.getLocation();
 
         if (!location.getSearched()) {
@@ -258,11 +258,11 @@ public class UI {
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
 
-                treeDetails.setFontScaleX((float)0.8);
-                treeSubDetails.setFontScaleX((float)0.8);
+                treeDetails.setFontScale((float)0.8);
+                treeSubDetails.setFontScale((float)0.8);
 
-                sideTable.add(treeHeader).row();
-                sideTable.add(treeDetails).row();
+                sideTable.add(treeHeader).pad(10).width(210).row();
+                sideTable.add(treeDetails).pad(10).width(210).row();
 
                 if (location.hasOffset()) { // Tree is an offset, not a tree spawned by world gen
                     // ASSUMING ITS ONLY POSSIBLE TO BUILD TREE TYPE FOR NOW
@@ -270,7 +270,7 @@ public class UI {
                 } else {
                     treeSubDetails.setText("But no climate impact");
                 }
-                sideTable.add(treeSubDetails).row();
+                sideTable.add(treeSubDetails).width(widthBound).pad(10).width(210).row();
 
             } else { // NO TREE TO CLEAR
                 Label header = new Label("You have not searched this tile.", skin);
@@ -278,8 +278,8 @@ public class UI {
                 String searchText = String.format("Press 'S' to search for $%,.2f", location.getSearchCost());
                 subText.setText(searchText);
 
-                sideTable.add(header).pad(10).row();
-                sideTable.add(subText).pad(10).row();
+                sideTable.add(header).width(widthBound).pad(10).width(210).row();
+                sideTable.add(subText).width(widthBound).pad(10).width(210).row();
             }
         } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
             for (int i = 0; i < Const.resourceNames.length; i++) {
