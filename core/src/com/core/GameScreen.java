@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -50,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
-        int gameWidth = resolutionX-256, gameHeight = resolutionY-72;
+        int gameWidth = (int)(resolutionX-resolutionX*0.13f), gameHeight = (int)(resolutionY-resolutionY*0.06f);
 
         this.camera = camera;
         this.camera.position.set(new Vector3(gameWidth / 2, gameHeight / 2, 0));
@@ -90,7 +91,7 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height)
     {
         System.out.println("resized window");
-        viewport.update(width-256, height-72);
+        viewport.update((int)(width-width*0.13f), (int)(height-height*0.06f));
         uiViewport.update(width, height);
         camImp.cameraBounds();
     }

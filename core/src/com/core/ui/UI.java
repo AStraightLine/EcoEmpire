@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Const;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
@@ -23,7 +25,6 @@ public class UI {
     private int resX, resY, gameWidth, gameHeight;
 
     private Skin skin;
-
     private Stage stage;
     private HorizontalGroup topUI;
     private VerticalGroup sideUI;
@@ -37,6 +38,8 @@ public class UI {
     private ProgressBar impactBar;
     private SelectBox extractionSelect;
     private Group uiGroup = new Group();
+    private float heightBound;
+    private float widthBound;
 
     public UI(ExtendViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
@@ -57,16 +60,18 @@ public class UI {
 
         topTable = new Table(skin);
         sideTable = new Table(skin);
-
+        topTable.setDebug(false);
 
 
         topUI = new HorizontalGroup();
-        topUI.setBounds(0, resY - (resY - gameHeight), resX, resY - gameHeight);
+        topUI.setBounds(0, 0, resX, resY);
         topUI.addActor(topTable);
+        topUI.align(Align.topLeft);
 
         sideUI = new VerticalGroup();
-        sideUI.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
-        sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideUI.setBounds(0, 0, resX, resY);
+        //sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideUI.top().right();
         sideUI.addActor(sideTable);
 
         uiGroup.addActor(sideUI);
@@ -75,6 +80,8 @@ public class UI {
 
         stage.addActor(uiGroup);
 
+        heightBound = resY*0.06f/2;
+        widthBound = resX*0.13f/2;
 
         inputMultiplexer.addProcessor(stage);
 
@@ -94,7 +101,7 @@ public class UI {
     public void populateTopTable() {
         populateTime();
         populateClimate();
-        topTable.row().pad(5, 0, 5, 0);
+        topTable.row().pad(0, 0, 5, 0);
         populateFunds();
         populateExtractionsSelection();
     }
@@ -111,8 +118,8 @@ public class UI {
         String timeElapsedString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
         timeLabel = new Label(timeElapsedString, skin);
-        timeLabel.setFontScale((float)1.25);
-        topTable.add(timeLabel).width(100).fillX();
+        timeLabel.setFontScale((float)1);
+        topTable.add(timeLabel).width(100).height(heightBound).fillX();
     }
 
     public void updateTime() {
@@ -136,8 +143,8 @@ public class UI {
         }
 
         fundsLabel = new Label(fundsString, skin);
-        fundsLabel.setFontScale((float)1.25);
-        topTable.add(fundsLabel).width(100).fillX();
+        fundsLabel.setFontScale((float)1);
+        topTable.add(fundsLabel).width(100).height(heightBound).fillX();
 
         funds = inventory.getIncome();
 
@@ -148,8 +155,8 @@ public class UI {
         }
 
         expectedFundsChange = new Label(fundsString, skin);
-        expectedFundsChange.setFontScale((float)1.25);
-        topTable.add(expectedFundsChange).width(100).fillX();
+        expectedFundsChange.setFontScale((float)1);
+        topTable.add(expectedFundsChange).height(heightBound).width(100).fillX();
     }
 
     public void updateFunds() {
@@ -179,12 +186,12 @@ public class UI {
         Label placeholder = new Label("", skin);
         topTable.add(placeholder).width(100).fillX();
         impactBar = climate.getImpactBar();
-        topTable.add(impactBar).width(500);
+        topTable.add(impactBar).width(500).height(heightBound);
 
         double climateHealth = climate.getClimateHealth();
         String climateString = String.format("%,.2f", climateHealth);
         climateLabel = new Label(climateString + "%", skin);
-        climateLabel.setFontScale((float)1.25);
+        climateLabel.setFontScale((float)1);
         topTable.add(climateLabel).width(100).fillX();
 
         double climateChange = inventory.getClimateImpact();
@@ -200,7 +207,7 @@ public class UI {
         }
 
         expectedClimateChange = new Label(expectedChange + "%", skin);
-        expectedClimateChange.setFontScale((float)1.25);
+        expectedClimateChange.setFontScale((float)1);
         topTable.add(expectedClimateChange).width(100).fillX();
     }
 
@@ -251,8 +258,8 @@ public class UI {
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
 
-                treeDetails.setFontScale((float)0.8);
-                treeSubDetails.setFontScale((float)0.8);
+                treeDetails.setFontScaleX((float)0.8);
+                treeSubDetails.setFontScaleX((float)0.8);
 
                 sideTable.add(treeHeader).row();
                 sideTable.add(treeDetails).row();
