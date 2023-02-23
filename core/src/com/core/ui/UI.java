@@ -248,7 +248,7 @@ public class UI {
 
     public void handleTileSelection(TileActor selected) {
         sideTable.reset();
-        sideTable.debug();
+        //sideTable.debug();
         Location location = selected.getLocation();
 
         if (!location.getSearched()) {
