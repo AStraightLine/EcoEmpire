@@ -21,7 +21,7 @@ public class Climate {
     }
 
     public void updateClimate(double impact) { //Pass total impact value of extractors and offsetters here (is that a word?)
-        double amount = r.nextDouble() * 2; //Represents natural climate health increase or decrease, between 0 and 2% (0 inclusive, 2 exclusive)
+        double amount = r.nextDouble() * 10; //Represents natural climate health increase or decrease, between 0 and 1% (0 inclusive, 2 exclusive)
         int incOrDec = r.nextInt(2); //Generate random integer which is either 0 or 1
         if (incOrDec == 1) { //1 represents a natural decrease
             amount = amount * -1;
