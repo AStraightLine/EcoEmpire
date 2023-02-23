@@ -139,14 +139,16 @@ public class MapGrid {
         }
 
         boolean possible = this.tryTree(tile, Const.treeY, Const.treeX);
+        if(possible == true)
+        {
+            Tree tree = new Tree();
 
-        Tree tree = new Tree();
+            location.setOffset(tree);
+            location.setHasOffset(true);
+            inventory.addOffset(tree);
+            ui.handleTileSelection(tile);
+        }
 
-
-        location.setOffset(tree);
-        location.setHasOffset(true);
-        inventory.addOffset(tree);
-        ui.handleTileSelection(tile);
 
     }
 
