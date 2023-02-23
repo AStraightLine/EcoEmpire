@@ -71,7 +71,7 @@ public class UI {
         topUI.align(Align.topLeft);
 
         sideUI = new VerticalGroup();
-        sideUI.setBounds(0, 0, resX, resY);
+        sideUI.setBounds(0, 0, resX, gameHeight);
         //sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
         sideUI.top().right();
         sideUI.addActor(sideTable);
