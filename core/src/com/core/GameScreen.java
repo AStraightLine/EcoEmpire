@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -28,8 +29,8 @@ import com.core.ui.UI;
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
-    private ExtendViewport viewport;
-    private ExtendViewport uiViewport;
+    private FitViewport viewport;
+    private FitViewport uiViewport;
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -50,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
-        int gameWidth = resolutionX-256, gameHeight = resolutionY-72;
+        int gameWidth = (int)(resolutionX-resolutionX*0.13f), gameHeight = (int)(resolutionY-resolutionY*0.06f);
 
         this.camera = camera;
         this.camera.position.set(new Vector3(gameWidth / 2, gameHeight / 2, 0));
@@ -71,12 +72,14 @@ public class GameScreen extends ScreenAdapter {
 
         //GameSound.startBackgroundMusic(0.1F);
 
-        uiViewport = new ExtendViewport(resolutionX, resolutionY);
+        uiViewport = new FitViewport(resolutionX, resolutionY);
         this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
 
-        this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
+        this.viewport = new FitViewport(gameWidth, gameHeight, camera);
+
+
         stage = new Stage(viewport);
-        this.grid = new MapGrid(416, 252, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory, ui); //384, 360 previously //320 216 good
+        this.grid = new MapGrid(334, 203, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory, ui); //384, 360 previously //320 216 good //416 252
         this.camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
 
@@ -90,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
     public void resize(int width, int height)
     {
         System.out.println("resized window");
-        viewport.update(width-256, height-72);
+        viewport.update((int)(width-width*0.13f), (int)(height-height*0.06f));
         uiViewport.update(width, height);
         camImp.cameraBounds();
     }

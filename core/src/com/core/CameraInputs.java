@@ -13,9 +13,9 @@ public class CameraInputs extends ApplicationAdapter implements InputProcessor
     private float defaultZoom = 1f;
     private float maxZoom = 0.1f;
     private Vector3 mousePos = new Vector3();
-    private ExtendViewport viewport;
+    private FitViewport viewport;
 
-    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, ExtendViewport viewport)
+    public CameraInputs(OrthographicCamera camera, InputMultiplexer inputMultiplexer, FitViewport viewport)
     {
         this.camera = camera;
         this.camera.zoom = defaultZoom;

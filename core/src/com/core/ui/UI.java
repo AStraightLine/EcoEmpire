@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Const;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
@@ -21,11 +23,10 @@ import static com.core.Const.baseHealth;
 
 public class UI {
 
-    private ExtendViewport viewport;
+    private FitViewport viewport;
     private int resX, resY, gameWidth, gameHeight;
 
     private Skin skin;
-
     private Stage stage;
     private HorizontalGroup topUI;
     private VerticalGroup sideUI;
@@ -39,8 +40,10 @@ public class UI {
     private ProgressBar impactBar;
     private SelectBox extractionSelect;
     private Group uiGroup = new Group();
+    private float heightBound;
+    private float widthBound;
 
-    public UI(ExtendViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
+    public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
         this.resX = resX;
         this.resY = resY;
@@ -59,16 +62,18 @@ public class UI {
 
         topTable = new Table(skin);
         sideTable = new Table(skin);
-
+        topTable.setDebug(false);
 
 
         topUI = new HorizontalGroup();
-        topUI.setBounds(0, resY - (resY - gameHeight), resX, resY - gameHeight);
+        topUI.setBounds(0, 0, resX, resY);
         topUI.addActor(topTable);
+        topUI.align(Align.topLeft);
 
         sideUI = new VerticalGroup();
-        sideUI.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
-        sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideUI.setBounds(0, 0, resX, resY);
+        //sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
+        sideUI.top().right();
         sideUI.addActor(sideTable);
 
         uiGroup.addActor(sideUI);
@@ -77,6 +82,8 @@ public class UI {
 
         stage.addActor(uiGroup);
 
+        heightBound = resY*0.06f/2;
+        widthBound = resX*0.13f/2;
 
         inputMultiplexer.addProcessor(stage);
 
@@ -95,7 +102,7 @@ public class UI {
 
     public void populateTopTable() {
         populateClimate();
-        topTable.row().pad(5, 0, 5, 0);
+        topTable.row().pad(0, 0, 5, 0);
         populateFunds();
         populateExtractionsSelection();
         populateTime();
@@ -282,7 +289,7 @@ public class UI {
         sideTable.reset();
         String fontColour;
         Double funds = inventory.getFunds();
-
+        //sideTable.debug();
         Location location = selected.getLocation();
 
         if (!location.getSearched()) {
@@ -305,7 +312,6 @@ public class UI {
                     treeSubDetails.setText("But no climate impact");
                 }
                 sideTable.add(treeSubDetails).expand().left().row();
-
             } else { // NO TREE TO CLEAR
                 Label header = new Label("You have not searched this tile.", skin);
                 Label subText = new Label("", skin);
@@ -319,6 +325,7 @@ public class UI {
 
                 sideTable.add(header).pad(10).row();
                 sideTable.add(subText).expand().left().pad(10).row();
+
             }
         } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
             for (int i = 0; i < Const.resourceNames.length; i++) {
