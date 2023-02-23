@@ -291,9 +291,9 @@ public class UI {
         //sideTable.debug();
         Location location = selected.getLocation();
 
-        if (!location.getSearched()) {
+        if (!location.getSearched() && !location.getExtracting()) {
             // Handle Tree case
-            if (selected.isUnavailable()) {
+            if (selected.isUnavailable() ) {
                 Label treeHeader = new Label("Forested", skin);
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
