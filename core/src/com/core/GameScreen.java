@@ -76,8 +76,10 @@ public class GameScreen extends ScreenAdapter {
         this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
 
         this.viewport = new ExtendViewport(gameWidth, gameHeight, camera);
+
+
         stage = new Stage(viewport);
-        this.grid = new MapGrid(416, 252, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory, ui); //384, 360 previously //320 216 good
+        this.grid = new MapGrid(334, 203, stage, gameWidth, gameHeight, inputMultiplexer, climate, playerInventory, ui); //384, 360 previously //320 216 good //416 252
         this.camImp = new CameraInputs(camera, inputMultiplexer, viewport);
         camImp.create();
 
