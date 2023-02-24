@@ -299,10 +299,10 @@ public class UI {
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
 
-                treeDetails.setFontScale((float)0.8);
-                treeSubDetails.setFontScale((float)0.8);
+                //.setFontScale((float)0.8);
+                //treeSubDetails.setFontScale((float)0.8);
 
-                sideTable.add(treeHeader).pad(10).row();
+                sideTable.add(treeHeader).expand().pad(10).row();
                 sideTable.add(treeDetails).expand().left().pad(10).row(); //.expand().direction() aligns an actor to a direction, can combine directions
 
                 if (location.hasOffset()) { // Tree is an offset, not a tree spawned by world gen
@@ -347,8 +347,8 @@ public class UI {
 
                 Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
 
-                resourceProDetails.setFontScale((float)0.75);
-                resourceConDetails.setFontScale((float)0.75);
+                resourceProDetails.setFontScale((float)0.85);
+                resourceConDetails.setFontScale((float)0.85);
 
                 sideTable.add(resourceHeader).pad(10).row();
                 sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
@@ -370,8 +370,8 @@ public class UI {
                 extractionProDetails.setText(location.getExtractor().getQuantity() + " remaining");
             }
 
-            extractionProDetails.setFontScale((float)0.85);
-            extractionConDetails.setFontScale((float)0.85);
+            extractionProDetails.setFontScale((float)0.95);
+            extractionConDetails.setFontScale((float)0.95);
 
             sideTable.add(extractingHeader).pad(10).row();;
             sideTable.add(extractionConDetails).expand().left().pad(10).row();;
