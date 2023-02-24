@@ -62,8 +62,6 @@ public class UI {
 
         topTable = new Table(skin);
         sideTable = new Table(skin);
-        topTable.setDebug(false);
-
 
         topUI = new HorizontalGroup();
         topUI.setBounds(0, 0, resX, resY);
@@ -71,9 +69,9 @@ public class UI {
         topUI.align(Align.topLeft);
 
         sideUI = new VerticalGroup();
-        sideUI.setBounds(0, 0, resX, gameHeight);
+        sideUI.setBounds(gameWidth, 0, resX - gameWidth, gameHeight);
         //sideTable.setBounds(gameWidth, 0, resX - gameWidth, resY - topUI.getHeight());
-        sideUI.top().right();
+        sideUI.top().left();
         sideUI.addActor(sideTable);
 
         uiGroup.addActor(sideUI);
@@ -90,6 +88,9 @@ public class UI {
         populateTopTable();
         populateSideTable();
 
+        //topTable.debug();
+        //topUI.debug();
+        //sideUI.debug();
     }
 
     public void update() {
@@ -301,8 +302,8 @@ public class UI {
                 treeDetails.setFontScale((float)0.8);
                 treeSubDetails.setFontScale((float)0.8);
 
-                sideTable.add(treeHeader).row();
-                sideTable.add(treeDetails).expand().left().row(); //.expand().direction() aligns an actor to a direction, can combine directions
+                sideTable.add(treeHeader).pad(10).row();
+                sideTable.add(treeDetails).expand().left().pad(10).row(); //.expand().direction() aligns an actor to a direction, can combine directions
 
                 if (location.hasOffset()) { // Tree is an offset, not a tree spawned by world gen
                     // ASSUMING ITS ONLY POSSIBLE TO BUILD TREE TYPE FOR NOW
@@ -310,7 +311,7 @@ public class UI {
                 } else {
                     treeSubDetails.setText("But no climate impact");
                 }
-                sideTable.add(treeSubDetails).expand().left().row();
+                sideTable.add(treeSubDetails).expand().left().pad(10).row();
             } else { // NO TREE TO CLEAR
                 Label header = new Label("You have not searched this tile.", skin);
                 Label subText = new Label("", skin);
@@ -339,19 +340,19 @@ public class UI {
                 }
 
                 if (resources[i].getQuantity() == Const.infinity) {
-                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + ", Quantity: INF", skin);
+                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + "\nQuantity: INF", skin);
                 } else {
-                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + ", Quantity: " + resources[i].getQuantity(), skin);
+                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + "\nQuantity: " + resources[i].getQuantity(), skin);
                 }
 
-                Label resourceConDetails = new Label(String.format("Impact: %,.2f, Stability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
+                Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
 
                 resourceProDetails.setFontScale((float)0.75);
                 resourceConDetails.setFontScale((float)0.75);
 
                 sideTable.add(resourceHeader).pad(10).row();
-                sideTable.add(resourceProDetails).expand().left().pad(10).row();
-                sideTable.add(resourceConDetails).expand().left().pad(10).row();
+                sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
+                sideTable.add(resourceConDetails).expand().left().padLeft(10).row();
             }
         } else if (location.getExtracting()) { // Location already has an extractor built.
             String resource = location.getExtractingResource();
@@ -361,7 +362,7 @@ public class UI {
             Label extractionProDetails = new Label("", skin);
             Label extractionConDetails = new Label("", skin);
 
-            extractionConDetails.setText(String.format("%,.2f Impact, %d Stability", location.getExtractor().getImpact(), location.getExtractor().getStability()));
+            extractionConDetails.setText(String.format("Impact: %,.2f\nStability: %d", location.getExtractor().getImpact(), location.getExtractor().getStability()));
 
             if (location.getExtractor().getQuantity() == Const.infinity) {
                 extractionProDetails.setText("Infinite quantity");

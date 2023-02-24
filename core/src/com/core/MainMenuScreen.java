@@ -76,6 +76,7 @@ public class MainMenuScreen extends ScreenAdapter {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Gdx.app.exit();
+                System.exit(0);
             }
         });
 
