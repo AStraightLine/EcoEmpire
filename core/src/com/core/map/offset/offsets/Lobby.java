@@ -22,9 +22,8 @@ public class Lobby extends Offset {
         maintenanceLowerBound = 0;
         maintenanceUpperBound = 1.75;
         double tmpMaintenance = maintenanceBaseCost + (maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble()));
-        setMaintenance(((getEffect() + tmpMaintenance) - (getEffect() / tmpMaintenance)) * 2);
-
-
+        double mod = rand.nextInt(3) + 1;
+        setMaintenance((((tmpMaintenance + effectUpperBound) * mod) - ((effectUpperBound - getEffect()) * mod)) / 3);
 
         setCost(10); // Standard cost but maintenance dependent on effect. Have to buy into politicians council
         this.costLowerBound = getCost() + getMaintenance();
