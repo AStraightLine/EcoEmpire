@@ -330,19 +330,20 @@ public class UI {
         } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
             for (int i = 0; i < Const.resourceNames.length; i++) {
                 Resource[] resources = location.getResourcesArray(); // Array of resources following order in Const class.
-                Label resourceHeader = new Label(String.format(Const.resourceNames[i] + " : $%,.2f to extract.", resources[i].getExtractionCost()), skin);
-                Label resourceProDetails;
 
-                if (funds < resources[i].getValue()) {
+                if (funds < resources[i].getExtractionCost()) {
                     fontColour = "RED";
                 } else {
                     fontColour = "";
                 }
 
+                Label resourceHeader = new Label(String.format(Const.resourceNames[i] + " :[" + fontColour + "] $%,.2f[] to extract.", resources[i].getExtractionCost()), skin);
+                Label resourceProDetails;
+
                 if (resources[i].getQuantity() == Const.infinity) {
-                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + "\nQuantity: INF", skin);
+                    resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: INF", skin);
                 } else {
-                    resourceProDetails = new Label(String.format("Value: [" + fontColour + "] $%,.2f []", resources[i].getValue()) + "\nQuantity: " + resources[i].getQuantity(), skin);
+                    resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: " + resources[i].getQuantity(), skin);
                 }
 
                 Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
