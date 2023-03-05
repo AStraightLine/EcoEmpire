@@ -26,6 +26,11 @@ import com.core.map.offset.offsets.Tree;
 import com.core.player.PlayerInventory;
 import com.core.ui.UI;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
@@ -86,6 +91,7 @@ public class GameScreen extends ScreenAdapter {
         grid.create();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        ui.setGrid(grid);
     }
 
     public void reactivateGameInputs() {Gdx.input.setInputProcessor(inputMultiplexer);} //Needed to allow the player to use game inputs after a pause

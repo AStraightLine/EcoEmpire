@@ -324,11 +324,11 @@ public class MapGrid {
     }
     public void initialiseTextures()
     {
-        textures[0] = new Texture(Gdx.files.internal("water.png"));
-        textures[1] = new Texture(Gdx.files.internal("land.png"));
-        textures[2] = new Texture(Gdx.files.internal("sand.png"));
+        textures[0] = new Texture(Gdx.files.internal("water.jpg"));
+        textures[1] = new Texture(Gdx.files.internal("land.jpg"));
+        textures[2] = new Texture(Gdx.files.internal("sand.jpg"));
         textures[3] = new Texture(Gdx.files.internal("tree.png"));
-        textures[4] = new Texture(Gdx.files.internal("water_2.png"));
+        textures[4] = new Texture(Gdx.files.internal("water_2.jpg"));
     }
     public TileActor getSelectedTile() {
         return this.selectedTile;

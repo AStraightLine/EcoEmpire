@@ -1,6 +1,7 @@
 package com.core.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,10 +15,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Const;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
+import com.core.map.grid.MapGrid;
 import com.core.map.grid.TileActor;
 import com.core.map.location.Location;
 import com.core.map.resource.Resource;
 import com.core.player.PlayerInventory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.core.Const.baseHealth;
 
@@ -32,6 +38,7 @@ public class UI {
     private VerticalGroup sideUI;
     private Table topTable, sideTable;
 
+    private MapGrid grid;
     private PlayerInventory inventory;
     private Climate climate;
     private GameClock clock;
@@ -42,6 +49,7 @@ public class UI {
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
+
 
     public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
@@ -278,11 +286,96 @@ public class UI {
         extractionSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                String extractResource = (String)extractionSelect.getSelected();
+                extractResource = extractResource.toUpperCase();
 
+                handleExtractSelection(extractResource);
             }
         });
 
         topUI.addActor(extractionSelect);
+    }
+
+    private void handleExtractSelection(String resource) {
+        TileActor tile = grid.getSelectedTile();
+        Location location = tile.getLocation();
+        String path;
+        Boolean built = false;
+        double price = getResourcePrice(resource, location);
+        boolean buildable = checkBuildable(resource, location);
+
+        if (location.getSearched() && inventory.getFunds() >= price) {
+            if (buildable) {
+                path = getPath(resource, location.getType());
+                if (path != "") {
+                    built = grid.addExtractor(location, resource, path);
+
+                    if (built) {
+                        inventory.addExtractor(location.getExtractor(), price);
+                        handleTileSelection(tile);
+                    }
+                }
+            }
+        }
+    }
+
+    private double getResourcePrice(String resource, Location location) {
+        switch (resource) {
+            case Const.coal:
+                return location.getCoal().getExtractionCost();
+            case Const.gas:
+                return location.getGas().getExtractionCost();
+            case Const.nuclear:
+                return location.getNuclear().getExtractionCost();
+            case Const.oil:
+                return location.getOil().getExtractionCost();
+            case Const.solar:
+                return location.getSolar().getExtractionCost();
+            case Const.wind:
+                return location.getWind().getExtractionCost();
+            case Const.hydro:
+                return location.getHydro().getExtractionCost();
+            case Const.geothermal:
+                return location.getGeothermal().getExtractionCost();
+        }
+
+        return Const.infinity;
+    }
+
+    private boolean checkBuildable(String resource, Location location) {
+        String type = location.getType();
+
+        switch (resource) {
+            case Const.coal:
+            case Const.geothermal:
+            case Const.hydro:
+            case Const.wind:
+            case Const.gas:
+            case Const.oil:
+                return true;
+            case Const.nuclear:
+            case Const.solar:
+                if (type == Const.land) {
+                    return true;
+                } else return false;
+        }
+
+        return false;
+    }
+
+    private String getPath(String resource, String type) {
+        String path = "";
+        ArrayList possiblePaths = Const.paths.get(resource);
+        if (possiblePaths.size() == 1) {
+            return (String)possiblePaths.get(0);
+        } else if (possiblePaths.size() > 1) {
+            if (type == Const.land) {
+                return (String)possiblePaths.get(0);
+            } else if (type == Const.water) {
+                return (String)possiblePaths.get(1);
+            }
+        }
+        return path;
     }
 
     public void handleTileSelection(TileActor selected) {
@@ -294,7 +387,7 @@ public class UI {
 
         if (!location.getSearched() && !location.getExtracting()) {
             // Handle Tree case
-            if (selected.isUnavailable() ) {
+            if (selected.isUnavailable()) {
                 Label treeHeader = new Label("Forested", skin);
                 Label treeDetails = new Label("Removal will come at a cost", skin);
                 Label treeSubDetails = new Label("", skin);
@@ -348,8 +441,8 @@ public class UI {
 
                 Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
 
-                resourceProDetails.setFontScale((float)0.85);
-                resourceConDetails.setFontScale((float)0.85);
+                resourceProDetails.setFontScale((float) 0.85);
+                resourceConDetails.setFontScale((float) 0.85);
 
                 sideTable.add(resourceHeader).pad(10).row();
                 sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
@@ -357,7 +450,7 @@ public class UI {
             }
         } else if (location.getExtracting()) { // Location already has an extractor built.
             String resource = location.getExtractingResource();
-            resource = resource.substring(0,1) + resource.substring(1, resource.length()).toLowerCase();
+            resource = resource.substring(0, 1) + resource.substring(1, resource.length()).toLowerCase();
 
             Label extractingHeader = new Label(String.format("Extracting " + resource + " for $%,.2f", location.getExtractor().getValue()), skin);
             Label extractionProDetails = new Label("", skin);
@@ -371,12 +464,19 @@ public class UI {
                 extractionProDetails.setText(location.getExtractor().getQuantity() + " remaining");
             }
 
-            extractionProDetails.setFontScale((float)0.95);
-            extractionConDetails.setFontScale((float)0.95);
+            extractionProDetails.setFontScale((float) 0.95);
+            extractionConDetails.setFontScale((float) 0.95);
 
-            sideTable.add(extractingHeader).pad(10).row();;
-            sideTable.add(extractionConDetails).expand().left().pad(10).row();;
-            sideTable.add(extractionProDetails).expand().left().pad(10).row();;
+            sideTable.add(extractingHeader).pad(10).row();
+            ;
+            sideTable.add(extractionConDetails).expand().left().pad(10).row();
+            ;
+            sideTable.add(extractionProDetails).expand().left().pad(10).row();
+            ;
         }
+    }
+
+    public void setGrid(MapGrid grid) {
+        this.grid = grid;
     }
 }
