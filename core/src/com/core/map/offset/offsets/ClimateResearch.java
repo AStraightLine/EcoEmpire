@@ -11,12 +11,12 @@ public class ClimateResearch extends Offset {
     private double maintenanceLowerBound, maintenanceUpperBound;
 
     public ClimateResearch() {
-        this.effectLowerBound = 10;
-        this.effectUpperBound = 50;
+        this.effectLowerBound = 2;
+        this.effectUpperBound = 7;
         setEffect((effectLowerBound + ((effectUpperBound - effectLowerBound) * rand.nextDouble())));
 
-        this.costLowerBound = 20;
-        this.costUpperBound = 60;
+        this.costLowerBound = 40;
+        this.costUpperBound = 100;
         setCost(Math.round((costLowerBound + ((costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
 
         setMaintenance(0);

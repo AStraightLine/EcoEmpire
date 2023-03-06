@@ -15,11 +15,11 @@ public class SolarGeoengineering extends Offset {
         this.effectUpperBound = 100;
         setEffect((effectLowerBound + ((effectUpperBound - effectLowerBound) * rand.nextDouble())));
 
-        this.costLowerBound = 100;
-        this.costUpperBound = 300;
+        this.costLowerBound = 400;
+        this.costUpperBound = 600;
         setCost(Math.round((costLowerBound + ((costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
 
-        this.maintenanceLowerBound = 50;
+        this.maintenanceLowerBound = 60;
         this.maintenanceUpperBound = 100;
         setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
