@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.core.Const.baseHealth;
+import static com.core.Const.offsetNames;
 
 public class UI {
 
@@ -45,7 +46,8 @@ public class UI {
 
     private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText;
     private ProgressBar impactBar;
-    private SelectBox extractionSelect;
+    private SelectBox extractionSelect, offsetSelect;
+    private TextButton offsets, addOffset;
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
@@ -114,6 +116,7 @@ public class UI {
         topTable.row().pad(0, 0, 5, 0);
         populateFunds();
         populateExtractionsSelection();
+        populateOffsets();
         populateTime();
     }
 
@@ -361,6 +364,42 @@ public class UI {
         }
 
         return false;
+    }
+
+    public void populateOffsets() {
+        offsets = new TextButton("Offsets", skin);
+        offsetSelect = new SelectBox<>(skin);
+        offsetSelect.setItems(offsetNames);
+        offsetSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+        addOffset = new TextButton("Add offset", skin);
+        addOffset.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+        offsets.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sideTable.reset();
+                Label title = new Label("Offsets" , skin);
+                sideTable.add(title).row();
+                for (int i = 0; i < Const.offsetNames.length; i++) {
+                    Label o = new Label(offsetNames[i], skin);
+                    Label effect = new Label("Effect:\nCost:\n Maintenance cost:", skin);
+                    sideTable.add(o).row();
+                    sideTable.add(effect).row();
+                }
+                sideTable.add(offsetSelect).row();
+                sideTable.add(addOffset);
+            }
+        });
+        topUI.addActor(offsets);
     }
 
     private String getPath(String resource, String type) {
