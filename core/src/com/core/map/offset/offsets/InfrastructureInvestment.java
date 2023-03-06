@@ -21,6 +21,6 @@ public class InfrastructureInvestment extends Offset {
 
         this.maintenanceLowerBound = 1;
         this.maintenanceUpperBound = 2;
-        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceUpperBound) * rand.nextDouble())) * 100.0) / 100.0);
+        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }

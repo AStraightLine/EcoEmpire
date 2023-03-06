@@ -21,6 +21,6 @@ public class TransportInvestment extends Offset {
 
         this.maintenanceLowerBound = 2;
         this.maintenanceUpperBound = 5;
-        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceUpperBound) * rand.nextDouble())) * 100.0) / 100.0);
+        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }

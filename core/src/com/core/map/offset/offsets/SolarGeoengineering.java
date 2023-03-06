@@ -21,6 +21,6 @@ public class SolarGeoengineering extends Offset {
 
         this.maintenanceLowerBound = 50;
         this.maintenanceUpperBound = 100;
-        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceUpperBound) * rand.nextDouble())) * 100.0) / 100.0);
+        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }
