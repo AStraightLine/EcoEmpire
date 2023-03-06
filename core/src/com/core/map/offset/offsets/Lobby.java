@@ -28,6 +28,6 @@ public class Lobby extends Offset {
         setCost(10); // Standard cost but maintenance dependent on effect. Have to buy into politicians council
         this.costLowerBound = getCost() + getMaintenance();
         this.costUpperBound = this.costLowerBound * 2;
-        setCost(Math.round(((costLowerBound + (costUpperBound - costLowerBound) * rand.nextDouble()) * 100.0) / 100.0));
+        setCost(Math.round(((costLowerBound + (costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }

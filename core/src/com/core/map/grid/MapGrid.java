@@ -130,13 +130,13 @@ public class MapGrid {
         inventory.setFunds(100);
     }
 
-    public void addTree(Tree tree)
+    public boolean addTree(Tree tree)
     {
         TileActor tile = this.getSelectedTile();
         Location location = tile.getLocation();
-        if(!(inventory.getFunds() >= 2.5) || location.hasOffset()==true)
+        if(!(inventory.getFunds() >= 2.5) || location.hasOffset()==true || tile.isUnavailable()  == true || tile.getTileType() != 1)
         {
-            return;
+            return false;
         }
 
         boolean possible = this.tryTree(tile, Const.treeY, Const.treeX);
@@ -148,7 +148,7 @@ public class MapGrid {
             inventory.addOffset(tree);
             ui.handleTileSelection(tile);
         }
-
+        return true;
 
     }
 

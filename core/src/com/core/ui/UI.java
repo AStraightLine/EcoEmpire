@@ -47,7 +47,7 @@ public class UI {
     private Climate climate;
     private GameClock clock;
 
-    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText;
+    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage;
     private ProgressBar impactBar;
     private SelectBox extractionSelect, offsetSelect;
     private TextButton offsets, addOffset;
@@ -63,12 +63,6 @@ public class UI {
     private TransportInvestment ti = new TransportInvestment();
     private Tree t = new Tree();
     private Offset[] oOptions = {cc, cr, ii, l, sg, ti, t};
-    double[] offsetLBCost = {30.00, 20.00, 10.00, 10.00, 100.00, 20.00, 0.50};
-    double[] offsetUBCost = {60.00, 60.00, 15.00, 10.00, 300.00, 30.00, 2.50};
-    double[] offsetLBEffect = {10, 10, 1, 0.25, 10, 5, 0.125};
-    double[] offsetUBEffect = {30, 50, 4, 2, 100, 20, 0.25};
-    double[] offsetLBMain = {5, 0, 1, 0.25, 50, 2, 0};
-    double[] offsetUBMain = {10, 0, 2, 2, 100, 5, 0};
 
 
     public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
@@ -95,6 +89,7 @@ public class UI {
         topUI.setBounds(0, 0, resX, resY);
         topUI.addActor(topTable);
         topUI.align(Align.topLeft);
+        topUI.space(10);
 
         sideUI = new VerticalGroup();
         sideUI.setBounds(gameWidth, 0, resX - gameWidth, gameHeight);
@@ -385,70 +380,99 @@ public class UI {
     }
 
     public void populateOffsets() {
-        offsets = new TextButton("Offsets", skin);
+        offsets = new TextButton("Offsets", skin); //Button to bring up offsets UI
         offsetSelect = new SelectBox<>(skin);
         String[] temp = {"Select offset", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment", "Tree"};
         offsetSelect.setItems(temp);
         offsetSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                selectedOffset = offsetSelect.getSelectedIndex();
+                selectedOffset = offsetSelect.getSelectedIndex(); //Change the selected offset
             }
         });
         addOffset = new TextButton("Add offset", skin);
         addOffset.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                commitOffset(selectedOffset);
+                commitOffset(selectedOffset); //When user clicks add offset button, add the offset to the inventory
             }
         });
         offsets.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sideTable.reset();
-                Label title = new Label("Offsets" , skin);
-                sideTable.add(title).row();
-                String fontColour = "";
-                for (int i = 0; i < Const.offsetNames.length; i++) {
-                    Label o = new Label(offsetNames[i], skin);
-                    if (inventory.getFunds() < oOptions[i].getCost()) {
-                        fontColour = "RED";
-                    } else {
-                        fontColour = "";
-                    }
-                    Label effect = new Label("Effect: " + oOptions[i].getEffect() + "\nCost: [" + fontColour + "]$" + oOptions[i].getCost() + "[]\nMaintenance cost: $" + oOptions[i].getMaintenance(), skin);
-                    sideTable.add(o).row();
-                    sideTable.add(effect).row();
-                }
-                sideTable.add(offsetSelect).row();
-                sideTable.add(addOffset);
+                offsetDetails(); //Output offset details
             }
         });
         topUI.addActor(offsets);
     }
 
-    public void commitOffset(int offset) {
-        if (offset == 1) {
+    //Output offset details to side UI
+    private void offsetDetails() {
+        sideTable.reset();
+        Label title = new Label("Offsets", skin);
+        errorMessage = new Label("", skin);
+        sideTable.add(title).row();
+        String fontColour = "";
+        for (int i = 0; i < Const.offsetNames.length; i++) {
+            Label o = new Label(offsetNames[i], skin);
+            if (inventory.getFunds() < oOptions[i].getCost()) {
+                fontColour = "RED";
+            } else {
+                fontColour = "";
+            }
+            Label effect = new Label(String.format("Effect: %,.2f\nCost: [" + fontColour + "]$%,.2f[]\nMaintenance cost: $%,.2f", oOptions[i].getEffect(), oOptions[i].getCost(), oOptions[i].getMaintenance()), skin);
+            effect.setFontScale((float) 0.85);
+            sideTable.add(o).row();
+            sideTable.add(effect).expand().left().pad(10).row();
+        }
+        sideTable.add(offsetSelect).padLeft(10).row();
+        sideTable.add(addOffset).pad(10).row();
+        sideTable.add(errorMessage);
+    }
+
+    private void commitOffset(int offset) {
+        if (offset == 0) {
+            errorMessage.setText("Please select an offset");
+            return;
+        }
+        else if (offset == 1 && inventory.getFunds() >= cc.getCost()) { //Carbon capture
             inventory.addOffset(cc);
         }
-        else if (offset == 2) {
+        else if (offset == 2 && inventory.getFunds() >= cr.getCost()) { //Climate research
             inventory.addOffset(cr);
         }
-        else if (offset == 3) {
+        else if (offset == 3 && inventory.getFunds() >= ii.getCost()) { //Infrastructure investment
             inventory.addOffset(ii);
         }
-        else if (offset == 4) {
+        else if (offset == 4 && inventory.getFunds() >= l.getCost()) { //Lobby
             inventory.addOffset(l);
         }
-        else if (offset == 5) {
+        else if (offset == 5 && inventory.getFunds() >= sg.getCost()) { //Solar Geoengineering
             inventory.addOffset(sg);
         }
-        else if (offset == 6) {
+        else if (offset == 6 && inventory.getFunds() >= ti.getCost()) { //Transport Investment
             inventory.addOffset(ti);
         }
-        else if (offset == 7) {
-            grid.addTree(t);
+        else if (offset == 7 && inventory.getFunds() >= t.getCost()) { //Tree
+            boolean added = grid.addTree(t);
+            if (added == false) {
+                errorMessage.setText("Cannot place tree here");
+                return;
+            }
         }
+        else {
+            return;
+        }
+        cc = new CarbonCapture(); //Reroll offsets once an offset has been selected
+        cr = new ClimateResearch();
+        ii = new InfrastructureInvestment();
+        l = new Lobby();
+        sg = new SolarGeoengineering();
+        ti = new TransportInvestment();
+        t = new Tree();
+        Offset[] temp = {cc, cr, ii, l, sg, ti, t};
+        oOptions = temp;
+        offsetDetails();
     }
 
     private String getPath(String resource, String type) {

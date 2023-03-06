@@ -13,14 +13,14 @@ public class InfrastructureInvestment extends Offset {
     public InfrastructureInvestment() {
         this.effectLowerBound = 1;
         this.effectUpperBound = 4;
-        setEffect((effectLowerBound + (effectUpperBound - effectLowerBound * rand.nextDouble())));
+        setEffect((effectLowerBound + ((effectUpperBound - effectLowerBound) * rand.nextDouble())));
 
         this.costLowerBound = 10;
         this.costUpperBound = 15;
-        setCost(Math.round(costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
+        setCost(Math.round((costLowerBound + ((costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
 
         this.maintenanceLowerBound = 1;
         this.maintenanceUpperBound = 2;
-        setMaintenance(Math.round(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble())));
+        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceUpperBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }

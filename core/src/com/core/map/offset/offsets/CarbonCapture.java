@@ -13,14 +13,14 @@ public class CarbonCapture extends Offset {
     public CarbonCapture() {
         this.effectLowerBound = 10;
         this.effectUpperBound = 30;
-        setEffect((effectLowerBound + (effectUpperBound - effectLowerBound * rand.nextDouble())));
+        setEffect((effectLowerBound + ((effectUpperBound - effectLowerBound) * rand.nextDouble())));
 
         this.costLowerBound = 30;
         this.costUpperBound = 60;
-        setCost(Math.round(costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
+        setCost(Math.round((costLowerBound + ((costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
 
         this.maintenanceLowerBound = 5;
         this.maintenanceUpperBound = 10;
-        setMaintenance(Math.round(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble())));
+        setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
     }
 }
