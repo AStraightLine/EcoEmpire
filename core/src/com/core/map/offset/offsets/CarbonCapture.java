@@ -17,10 +17,10 @@ public class CarbonCapture extends Offset {
 
         this.costLowerBound = 30;
         this.costUpperBound = 60;
-        setCost((costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
+        setCost(Math.round(costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
 
         this.maintenanceLowerBound = 5;
         this.maintenanceUpperBound = 10;
-        setMaintenance(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble()));
+        setMaintenance(Math.round(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble())));
     }
 }

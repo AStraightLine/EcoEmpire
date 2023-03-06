@@ -17,7 +17,7 @@ public class ClimateResearch extends Offset {
 
         this.costLowerBound = 20;
         this.costUpperBound = 60;
-        setCost((costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
+        setCost(Math.round(costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
 
         setMaintenance(0);
     }

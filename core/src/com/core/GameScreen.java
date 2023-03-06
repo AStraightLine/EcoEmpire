@@ -247,7 +247,8 @@ public class GameScreen extends ScreenAdapter {
 
             // Tree is a little different as it requires a tile to be selected first, not all offsets will follow this control pattern flow
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-                grid.addTree();
+                Tree tree = new Tree();
+                grid.addTree(tree);
             }
 
             // Lobby

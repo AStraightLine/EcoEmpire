@@ -121,7 +121,8 @@ public class MapGrid {
                 if(answer == 1)
                 {
                     selectedTile = grid[i][j];
-                    addTree();
+                    Tree tree = new Tree();
+                    addTree(tree);
                 }
             }
         }
@@ -129,7 +130,7 @@ public class MapGrid {
         inventory.setFunds(100);
     }
 
-    public void addTree()
+    public void addTree(Tree tree)
     {
         TileActor tile = this.getSelectedTile();
         Location location = tile.getLocation();
@@ -141,7 +142,6 @@ public class MapGrid {
         boolean possible = this.tryTree(tile, Const.treeY, Const.treeX);
         if(possible == true)
         {
-            Tree tree = new Tree();
 
             location.setOffset(tree);
             location.setHasOffset(true);

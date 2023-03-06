@@ -17,10 +17,10 @@ public class InfrastructureInvestment extends Offset {
 
         this.costLowerBound = 10;
         this.costUpperBound = 15;
-        setCost((costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
+        setCost(Math.round(costLowerBound + (costUpperBound - costLowerBound * rand.nextDouble())));
 
         this.maintenanceLowerBound = 1;
         this.maintenanceUpperBound = 2;
-        setMaintenance(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble()));
+        setMaintenance(Math.round(maintenanceLowerBound + (maintenanceUpperBound = maintenanceUpperBound * rand.nextDouble())));
     }
 }

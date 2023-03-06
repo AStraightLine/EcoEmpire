@@ -18,6 +18,9 @@ import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
 import com.core.map.grid.TileActor;
 import com.core.map.location.Location;
+import com.core.map.offset.Offset;
+import com.core.map.offset.offsets.*;
+import com.core.map.offset.offsets.Tree;
 import com.core.map.resource.Resource;
 import com.core.player.PlayerInventory;
 
@@ -51,6 +54,21 @@ public class UI {
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
+    private int selectedOffset;
+    private CarbonCapture cc = new CarbonCapture();
+    private ClimateResearch cr = new ClimateResearch();
+    private InfrastructureInvestment ii = new InfrastructureInvestment();
+    private Lobby l = new Lobby();
+    private SolarGeoengineering sg = new SolarGeoengineering();
+    private TransportInvestment ti = new TransportInvestment();
+    private Tree t = new Tree();
+    private Offset[] oOptions = {cc, cr, ii, l, sg, ti, t};
+    double[] offsetLBCost = {30.00, 20.00, 10.00, 10.00, 100.00, 20.00, 0.50};
+    double[] offsetUBCost = {60.00, 60.00, 15.00, 10.00, 300.00, 30.00, 2.50};
+    double[] offsetLBEffect = {10, 10, 1, 0.25, 10, 5, 0.125};
+    double[] offsetUBEffect = {30, 50, 4, 2, 100, 20, 0.25};
+    double[] offsetLBMain = {5, 0, 1, 0.25, 50, 2, 0};
+    double[] offsetUBMain = {10, 0, 2, 2, 100, 5, 0};
 
 
     public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
@@ -369,18 +387,19 @@ public class UI {
     public void populateOffsets() {
         offsets = new TextButton("Offsets", skin);
         offsetSelect = new SelectBox<>(skin);
-        offsetSelect.setItems(offsetNames);
+        String[] temp = {"Select offset", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment", "Tree"};
+        offsetSelect.setItems(temp);
         offsetSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                selectedOffset = offsetSelect.getSelectedIndex();
             }
         });
         addOffset = new TextButton("Add offset", skin);
         addOffset.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                commitOffset(selectedOffset);
             }
         });
         offsets.addListener(new ChangeListener() {
@@ -389,9 +408,15 @@ public class UI {
                 sideTable.reset();
                 Label title = new Label("Offsets" , skin);
                 sideTable.add(title).row();
+                String fontColour = "";
                 for (int i = 0; i < Const.offsetNames.length; i++) {
                     Label o = new Label(offsetNames[i], skin);
-                    Label effect = new Label("Effect:\nCost:\n Maintenance cost:", skin);
+                    if (inventory.getFunds() < oOptions[i].getCost()) {
+                        fontColour = "RED";
+                    } else {
+                        fontColour = "";
+                    }
+                    Label effect = new Label("Effect: " + oOptions[i].getEffect() + "\nCost: [" + fontColour + "]$" + oOptions[i].getCost() + "[]\nMaintenance cost: $" + oOptions[i].getMaintenance(), skin);
                     sideTable.add(o).row();
                     sideTable.add(effect).row();
                 }
@@ -400,6 +425,30 @@ public class UI {
             }
         });
         topUI.addActor(offsets);
+    }
+
+    public void commitOffset(int offset) {
+        if (offset == 1) {
+            inventory.addOffset(cc);
+        }
+        else if (offset == 2) {
+            inventory.addOffset(cr);
+        }
+        else if (offset == 3) {
+            inventory.addOffset(ii);
+        }
+        else if (offset == 4) {
+            inventory.addOffset(l);
+        }
+        else if (offset == 5) {
+            inventory.addOffset(sg);
+        }
+        else if (offset == 6) {
+            inventory.addOffset(ti);
+        }
+        else if (offset == 7) {
+            grid.addTree(t);
+        }
     }
 
     private String getPath(String resource, String type) {
