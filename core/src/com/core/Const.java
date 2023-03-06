@@ -12,7 +12,7 @@ public class Const{
     // resources
     public static final String coal = "COAL", gas = "GAS", nuclear = "NUCLEAR", oil = "OIL", solar = "SOLAR", wind = "WIND", hydro = "HYDRO", geothermal = "GEOTHERMAL";
     public static final String[] resourceNames = {"Coal", "Gas", "Nuclear", "Oil", "Solar", "Wind", "Hydro", "Geothermal"};
-    public static final String[] offsetNames = {"Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "TransportInvesment", "Tree"};
+    public static final String[] offsetNames = {"Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment", "Tree"};
     // tile types
     public static final String water = "WATER", land = "LAND", sand = "SAND";
     //Base climate health
