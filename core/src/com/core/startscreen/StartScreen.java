@@ -5,10 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Boot;
 
 public class StartScreen extends ScreenAdapter{
@@ -17,7 +20,10 @@ public class StartScreen extends ScreenAdapter{
     private SpriteBatch batch;
     private World world;
 
+    private Texture texture;
     private StartBackground startBackground;
+    private FitViewport viewport;
+    private Stage stage;
 
     public StartScreen(OrthographicCamera camera){
 
@@ -27,7 +33,12 @@ public class StartScreen extends ScreenAdapter{
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,0), false);
 
-        this.startBackground = new StartBackground(this);
+        this.texture = new Texture("solar-flare.jpg");
+        this.viewport = new FitViewport(1920, 1080, camera);
+
+        this.stage = new Stage(viewport);
+
+        //this.startBackground = new StartBackground(this);
 
     }
 
@@ -56,7 +67,7 @@ public class StartScreen extends ScreenAdapter{
 
         batch.begin();
 
-        this.startBackground.render(batch);
+        batch.draw(texture, 0, 0, 1920, 1080);
 
         batch.end();
     }
