@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,7 +21,8 @@ public class StartScreen extends ScreenAdapter{
     private SpriteBatch batch;
     private World world;
 
-    private Texture texture;
+    private Texture texture = new Texture("solar-flare.jpg");;
+    private TextureRegion region = new TextureRegion(texture, 0, 0, 1200, 720);
     private StartBackground startBackground;
     private FitViewport viewport;
     private Stage stage;
@@ -33,7 +35,6 @@ public class StartScreen extends ScreenAdapter{
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,0), false);
 
-        this.texture = new Texture("solar-flare.jpg");
         this.viewport = new FitViewport(1920, 1080, camera);
 
         this.stage = new Stage(viewport);
@@ -67,7 +68,7 @@ public class StartScreen extends ScreenAdapter{
 
         batch.begin();
 
-        batch.draw(texture, 0, 0, 1920, 1080);
+        batch.draw(region, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
         batch.end();
     }
