@@ -30,7 +30,7 @@ public class StartBackground{
         this.x = 0;
         this.y = 0;
 
-        this.texture = new Texture("solar-flare.jpg");
+        this.texture = new Texture("start-screen.png");
         this.startScreen = startScreen;
         this.width = 1920;
         this.height = 1080;
