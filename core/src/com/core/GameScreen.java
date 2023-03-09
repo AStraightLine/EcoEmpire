@@ -287,9 +287,10 @@ public class GameScreen extends ScreenAdapter {
 
         if(end == true)
         {
+            //endBatch.setProjectionMatrix(camera.combined);
             endBatch.begin();
-            endBatch.setProjectionMatrix(camera.combined);
-            endBatch.draw(endScreen, camera.viewportWidth/2 - endScreen.getWidth()/2, camera.viewportHeight/2 - endScreen.getHeight()/2);
+
+            endBatch.draw(endScreen, uiViewport.getScreenWidth()/2 - endScreen.getWidth()/2, uiViewport.getScreenHeight()/2 - endScreen.getHeight()/2);
             endBatch.end();
 
             if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
