@@ -105,8 +105,6 @@ public class MapGrid {
         newGrid = mg.beachGen(newGrid);
         newGrid = mg.refineWater(newGrid, 3);
         grid = newGrid;
-        selectedTile = grid[0][0];
-        selectedTile.selectTile();
 
         tiles.addActor(table);
         stage.addActor(tiles);
@@ -128,6 +126,10 @@ public class MapGrid {
         }
         inventory.setClimateImpact(0);
         inventory.setFunds(100);
+
+        selectedTile.deselectTile();
+        selectedTile = grid[0][0];
+        selectedTile.selectTile();
     }
 
     public boolean addTree(Tree tree)
