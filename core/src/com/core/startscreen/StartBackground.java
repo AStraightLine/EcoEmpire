@@ -43,7 +43,7 @@ public class StartBackground{
 
 
     public void render(SpriteBatch batch){
-        batch.draw(texture,x,y,width,height);
+        batch.draw(texture, Gdx.graphics.getWidth()/2 - texture.getWidth()/2, Gdx.graphics.getHeight()/2 - texture.getHeight()/2);
     }
     private Body createBody(){
 
