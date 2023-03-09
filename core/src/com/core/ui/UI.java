@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.core.Const.baseHealth;
-import static com.core.Const.offsetNames;
+import static com.core.Const.*;
 
 public class UI {
 
@@ -47,14 +46,14 @@ public class UI {
     private Climate climate;
     private GameClock clock;
 
-    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage;
+    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage, title, subTitle, totalOCost, totalOImpact, totalOMain;
     private ProgressBar impactBar;
-    private SelectBox extractionSelect, offsetSelect;
-    private TextButton offsets, addOffset;
+    private SelectBox extractionSelect, offsetSelect, currentOffsets;
+    private TextButton offsets, addOffset, manageOffsets;
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
-    private int selectedOffset;
+    private int selectedOffset, selectedOType;
     private CarbonCapture cc = new CarbonCapture();
     private ClimateResearch cr = new ClimateResearch();
     private InfrastructureInvestment ii = new InfrastructureInvestment();
@@ -380,10 +379,11 @@ public class UI {
     }
 
     public void populateOffsets() {
-        offsets = new TextButton("Offsets", skin); //Button to bring up offsets UI
+        offsets = new TextButton("Add Offsets", skin); //Button to bring up offsets UI
         offsetSelect = new SelectBox<>(skin);
         String[] temp = {"Select offset", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment", "Tree"};
         offsetSelect.setItems(temp);
+        manageOffsets = new TextButton("Current offsets", skin);
         offsetSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -403,13 +403,22 @@ public class UI {
                 offsetDetails(); //Output offset details
             }
         });
+        manageOffsets = new TextButton("Manage Offsets", skin);
+        manageOffsets.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                manageOffsets();
+            }
+        });
+        currentOffsets = new SelectBox<>(skin);
         topUI.addActor(offsets);
+        topUI.addActor(manageOffsets);
     }
 
     //Output offset details to side UI
     private void offsetDetails() {
         sideTable.reset();
-        Label title = new Label("Offsets", skin);
+        title = new Label("Offsets", skin);
         errorMessage = new Label("", skin);
         sideTable.add(title).row();
         String fontColour = "";
@@ -473,6 +482,77 @@ public class UI {
         Offset[] temp = {cc, cr, ii, l, sg, ti, t};
         oOptions = temp;
         offsetDetails();
+    }
+
+    private void manageOffsets() {
+        sideTable.reset();
+        title = new Label("Manage offsets", skin);
+        final String[] oNames = {"Offset type", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment"};
+        currentOffsets.setItems(oNames);
+        currentOffsets.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                selectedOType = currentOffsets.getSelectedIndex();
+                oTypeDetails(selectedOType);
+            }
+        });
+        subTitle = new Label("", skin);
+        totalOCost = new Label("", skin);
+        totalOImpact = new Label("", skin);
+        totalOMain = new Label("", skin);
+        sideTable.add(title).row();
+        sideTable.add(currentOffsets).pad(10).left().row();
+        sideTable.add(subTitle).row();
+        sideTable.add(totalOImpact).pad(10).left().row();
+        sideTable.add(totalOCost).pad(10).left().row();
+        sideTable.add(totalOMain).pad(10).left().row();
+    }
+
+    private void oTypeDetails(int o) {
+        double cost = 0, impact = 0, maintenance = 0;
+        int counter = 1;
+        ArrayList<Offset> cOffsets = inventory.getOffsets();
+        ArrayList<Offset> offsetsOfType = new ArrayList<>();
+        ArrayList<String> tempNames = new ArrayList<>();
+        Class c = Location.class; //Placeholder, need to assign something at start
+        if (o == 1) {
+            subTitle.setText("Carbon Capture");
+            c = CarbonCapture.class;
+        }
+        else if (o == 2) {
+            subTitle.setText("Climate Research");
+            c = ClimateResearch.class;
+        }
+        else if (o == 3) {
+            subTitle.setText("Infrastructure Investment");
+            c = InfrastructureInvestment.class;
+        }
+        else if (o == 4) {
+            subTitle.setText("Lobby");
+            c = Lobby.class;
+        }
+        else if (o == 5) {
+            subTitle.setText("Solar Geoengineering");
+            c = SolarGeoengineering.class;
+        }
+        else if (o == 6) {
+            subTitle.setText("Transport Investment");
+            c = TransportInvestment.class;
+        }
+        for (int i = 0; i < cOffsets.size(); i++) {
+            System.out.println(cOffsets.get(i).getClass());
+            if (cOffsets.get(i).getClass() == c) {
+                cost = cost + cOffsets.get(i).getCost();
+                impact = impact + cOffsets.get(i).getEffect();
+                maintenance = maintenance + cOffsets.get(i).getMaintenance();
+                offsetsOfType.add(cOffsets.get(i));
+                tempNames.add(Integer.toString(counter));
+                counter++;
+            }
+        }
+        totalOCost.setText(String.format("Total cost: $%,.2f", cost));
+        totalOImpact.setText(String.format("Total impact: %,.2f", impact));
+        totalOMain.setText(String.format("Total maintenance cost: $%,.2f", maintenance));
     }
 
     private String getPath(String resource, String type) {

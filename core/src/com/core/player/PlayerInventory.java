@@ -158,4 +158,7 @@ public class PlayerInventory {
         }
     }
 
+    public ArrayList<Offset> getOffsets() {
+        return offsets;
+    }
 }

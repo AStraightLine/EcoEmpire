@@ -43,6 +43,7 @@ public class StartScreen extends ScreenAdapter{
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             //quits the game
             Gdx.app.exit();
+            System.exit(0);
         }
 
     }
