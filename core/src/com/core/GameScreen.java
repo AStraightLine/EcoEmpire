@@ -3,7 +3,9 @@ package com.core;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -48,6 +50,9 @@ public class GameScreen extends ScreenAdapter {
     private CameraInputs camImp;
     private Skin skin = new Skin();
     private ProgressBar impactBar;
+    private Sprite endScreen;
+    private boolean end = false;
+    private SpriteBatch endBatch = new SpriteBatch();
 
     private UI ui;
     private int gameWidth, gameHeight;
@@ -108,6 +113,14 @@ public class GameScreen extends ScreenAdapter {
         world.step(1 / 60f, 6, 2);
 
         this.camera.update();
+
+        if(climate.getClimateHealth() <= 0)
+        {
+            gameClock.handlePause();
+
+            this.endScreen = new Sprite(new Texture("endScreen.png"));
+            end = true;
+        }
 
         // Start of controls section:
         // Pause:
@@ -271,6 +284,16 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+
+        if(end == true)
+        {
+            endBatch.begin();
+            endBatch.draw(endScreen, Gdx.graphics.getWidth()/2 - endScreen.getWidth()/2, Gdx.graphics.getHeight()/2 - endScreen.getHeight()/2);
+            endBatch.end();
+            inputMultiplexer.clear();
+            return;
+        }
+
         update();
         Gdx.gl.glClearColor(25/255f, 25/255f, 25/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -282,6 +305,9 @@ public class GameScreen extends ScreenAdapter {
         viewport.apply();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+
+
 
         batch.end();
 

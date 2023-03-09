@@ -128,7 +128,7 @@ public class MapGrid {
         inventory.setFunds(100);
 
         selectedTile.deselectTile();
-        selectedTile = grid[0][0];
+        selectedTile = grid[101][167];
         selectedTile.selectTile();
     }
 
