@@ -27,7 +27,7 @@ public class StartScreen extends ScreenAdapter{
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,0), false);
 
-        this.startBackground = new StartBackground(this);
+        this.startBackground = new StartBackground(this, camera);
 
     }
 

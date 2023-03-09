@@ -4,6 +4,8 @@ package com.core.startscreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,12 +26,13 @@ public class StartBackground{
     private StartScreen startScreen;
     private Texture texture;
     private PolygonShape shape;
+    private OrthographicCamera camera;
 
-    public StartBackground(StartScreen startScreen){
+    public StartBackground(StartScreen startScreen, OrthographicCamera camera){
 
         this.x = 0;
         this.y = 0;
-
+        this.camera = camera;
         this.texture = new Texture("start-screen.png");
         this.startScreen = startScreen;
         this.width = 1920;
@@ -43,7 +46,8 @@ public class StartBackground{
 
 
     public void render(SpriteBatch batch){
-        batch.draw(texture, Gdx.graphics.getWidth()/2 - texture.getWidth()/2, Gdx.graphics.getHeight()/2 - texture.getHeight()/2);
+        batch.setProjectionMatrix(camera.combined);
+        batch.draw(texture, camera.viewportWidth/2 - texture.getWidth()/2, camera.viewportHeight/2 - texture.getHeight()/2);
     }
     private Body createBody(){
 
