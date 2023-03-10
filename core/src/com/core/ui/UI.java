@@ -494,7 +494,7 @@ public class UI {
         currentOffsets.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                selectedOType = currentOffsets.getSelectedIndex();
+                selectedOType = currentOffsets.getSelectedIndex(); //User selects an offset type from drop down
                 oTypeDetails();
             }
         });
@@ -504,10 +504,27 @@ public class UI {
         totalOMain = new Label("", skin);
         chooseOffset = new Label("Choose offset", skin);
         chosenOffset = new SelectBox(skin);
+        chosenOffset.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                cOffset = offsetsOfType.get(chosenOffset.getSelectedIndex()); //Choose specific offset
+                cOffsetCost.setText(String.format("Offset cost: $%,.2f", cOffset.getCost()));
+                cOffsetImpact.setText(String.format("Offset impact: %,.2f", cOffset.getEffect()));
+                cOffsetMain.setText(String.format("Offset maintenance cost: $%,.2f", cOffset.getMaintenance()));
+                deleteOffset.setVisible(true);
+            }
+        });
         cOffsetCost = new Label("", skin);
         cOffsetImpact = new Label("", skin);
         cOffsetMain = new Label("", skin);
         deleteOffset = new TextButton("Delete Offset", skin);
+        deleteOffset.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                inventory.removeOffset(cOffset);
+                oTypeDetails();
+            }
+        });
         totalOCost.setFontScale((float) 0.85);
         totalOImpact.setFontScale((float) 0.85);
         totalOMain.setFontScale((float) 0.85);
@@ -551,7 +568,7 @@ public class UI {
         offsetsOfType = new ArrayList<>();
         ArrayList<Integer> tempNames = new ArrayList<>();
         Class c = Class.class; //Placeholder, need to assign something at start
-        if (selectedOType == 1) {
+        if (selectedOType == 1) { //Store appropriate offset class type based on what user has selected
             subTitle.setText("Carbon Capture");
             c = CarbonCapture.class;
         }
@@ -579,8 +596,7 @@ public class UI {
             return;
         }
         for (int i = 0; i < cOffsets.size(); i++) {
-            System.out.println(cOffsets.get(i).getClass());
-            if (cOffsets.get(i).getClass() == c) {
+            if (cOffsets.get(i).getClass() == c) { //Narrow down offsets array to only offsets of selected type
                 cost = cost + cOffsets.get(i).getCost();
                 impact = impact + cOffsets.get(i).getEffect();
                 maintenance = maintenance + cOffsets.get(i).getMaintenance();
@@ -595,31 +611,10 @@ public class UI {
         totalOMain.setText(String.format("Total maintenance cost: $%,.2f", maintenance));
         if (counter > 1) {
             chosenOffset.setItems(temp);
-            chosenOffset.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    cOffset = offsetsOfType.get(chosenOffset.getSelectedIndex());
-                    chosenOffsetDetails();
-                }
-            });
+            chosenOffset.setSelectedIndex(0); //Does not always trigger change listener for some reason
             chooseOffset.setVisible(true);
             chosenOffset.setVisible(true);
         }
-
-    }
-
-    private void chosenOffsetDetails() {
-        cOffsetCost.setText(String.format("Offset cost: $%,.2f", cOffset.getCost()));
-        cOffsetImpact.setText(String.format("Offset impact: %,.2f", cOffset.getEffect()));
-        cOffsetMain.setText(String.format("Offset maintenance cost: $%,.2f", cOffset.getMaintenance()));
-        deleteOffset.setVisible(true);
-        deleteOffset.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                inventory.removeOffset(cOffset);
-                oTypeDetails();
-            }
-        });
     }
 
     private String getPath(String resource, String type) {
