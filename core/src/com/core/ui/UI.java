@@ -723,7 +723,13 @@ public class UI {
             String resource = location.getExtractingResource();
             resource = resource.substring(0, 1) + resource.substring(1, resource.length()).toLowerCase();
 
-            Label extractingHeader = new Label(String.format("Extracting " + resource + " for $%,.2f", location.getExtractor().getValue()), skin);
+            Label extractorTitle = new Label(resource + " extractor", skin);
+            Label extractingHeader = new Label("", skin);
+            if (location.getExtractor().getDisabled()) {
+                extractingHeader.setText("Extractor is disabled");
+            } else {
+                extractingHeader.setText(String.format("Extracting " + resource + " for $%,.2f", location.getExtractor().getValue()));
+            }
             Label extractionProDetails = new Label("", skin);
             Label extractionConDetails = new Label("", skin);
 
@@ -738,7 +744,8 @@ public class UI {
             extractionProDetails.setFontScale((float) 0.95);
             extractionConDetails.setFontScale((float) 0.95);
 
-            sideTable.add(extractingHeader).pad(10).row();
+            sideTable.add(extractorTitle).expand().padLeft(10).row();
+            sideTable.add(extractingHeader).expand().left().pad(10).row();
             ;
             sideTable.add(extractionConDetails).expand().left().pad(10).row();
             ;

@@ -16,5 +16,6 @@ public class FundsPulseEvent extends PulseEvent {
         // ToDo: Call update on Inventory for funds.
         // ToDo: Call fundsExtract on each Extraction from Inventory.
         playerInventory.updateFunds();
+        playerInventory.extractFromExtractors();
     }
 }

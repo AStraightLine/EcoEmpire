@@ -9,10 +9,6 @@ public class GeothermalExtractor extends Extractor {
         super(resource);
     }
 
-    @Override
-    public void extractFunds() {
-
-    }
 
     @Override
     public void extractClimate() {

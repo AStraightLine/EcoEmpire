@@ -10,11 +10,6 @@ public class TidalExtractor extends Extractor {
     }
 
     @Override
-    public void extractFunds() {
-
-    }
-
-    @Override
     public void extractClimate() {
 
     }

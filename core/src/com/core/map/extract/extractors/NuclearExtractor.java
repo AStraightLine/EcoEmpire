@@ -10,10 +10,6 @@ public class NuclearExtractor extends Extractor {
         super(resource);
     }
 
-    @Override
-    public void extractFunds() {
-
-    }
 
     @Override
     public void extractClimate() {

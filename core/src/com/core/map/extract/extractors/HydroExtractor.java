@@ -10,11 +10,6 @@ public class HydroExtractor extends Extractor {
     }
 
     @Override
-    public void extractFunds() {
-
-    }
-
-    @Override
     public void extractClimate() {
 
     }

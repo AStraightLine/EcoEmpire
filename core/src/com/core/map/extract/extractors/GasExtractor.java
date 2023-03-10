@@ -9,10 +9,6 @@ public class GasExtractor extends Extractor {
         super(resource);
     }
 
-    @Override
-    public void extractFunds() {
-
-    }
 
     @Override
     public void extractClimate() {

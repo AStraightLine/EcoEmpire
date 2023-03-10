@@ -161,4 +161,15 @@ public class PlayerInventory {
     public ArrayList<Offset> getOffsets() {
         return offsets;
     }
+
+    public void extractFromExtractors() {
+        int statusCode;
+        for (int i = 0; i < extractors.size(); i++) {
+            statusCode = extractors.get(i).extractFunds();
+            if (statusCode == 1) {
+                income = income - extractors.get(i).getValue();
+                climateImpact = climateImpact - extractors.get(i).getImpact();
+            }
+        }
+    }
 }

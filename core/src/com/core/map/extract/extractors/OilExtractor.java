@@ -9,10 +9,6 @@ public class OilExtractor extends Extractor {
         super(resource);
     }
 
-    @Override
-    public void extractFunds() {
-
-    }
 
     @Override
     public void extractClimate() {
