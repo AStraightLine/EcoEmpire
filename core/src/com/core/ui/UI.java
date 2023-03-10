@@ -46,10 +46,10 @@ public class UI {
     private Climate climate;
     private GameClock clock;
 
-    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage, title, subTitle, totalOCost, totalOImpact, totalOMain;
+    private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage, title, subTitle, totalOCost, totalOImpact, totalOMain, cOffsetCost, cOffsetImpact, cOffsetMain, chooseOffset;
     private ProgressBar impactBar;
-    private SelectBox extractionSelect, offsetSelect, currentOffsets;
-    private TextButton offsets, addOffset, manageOffsets;
+    private SelectBox extractionSelect, offsetSelect, currentOffsets, chosenOffset;
+    private TextButton offsets, addOffset, manageOffsets, deleteOffset;
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
@@ -62,6 +62,8 @@ public class UI {
     private TransportInvestment ti = new TransportInvestment();
     private Tree t = new Tree();
     private Offset[] oOptions = {cc, cr, ii, l, sg, ti, t};
+    private ArrayList<Offset> offsetsOfType, cOffsets;
+    private Offset cOffset;
 
 
     public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
@@ -129,6 +131,7 @@ public class UI {
         populateFunds();
         populateExtractionsSelection();
         populateOffsets();
+        populateManageOffsets();
         populateTime();
     }
 
@@ -484,60 +487,96 @@ public class UI {
         offsetDetails();
     }
 
-    private void manageOffsets() {
-        sideTable.reset();
+    private void populateManageOffsets() {
         title = new Label("Manage offsets", skin);
-        final String[] oNames = {"Offset type", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment"};
+        String[] oNames = {"Offset type", "Carbon Capture", "Climate Research", "Infrastructure Investment", "Lobby", "Solar Geoengineering", "Transport Investment"};
         currentOffsets.setItems(oNames);
         currentOffsets.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 selectedOType = currentOffsets.getSelectedIndex();
-                oTypeDetails(selectedOType);
+                oTypeDetails();
             }
         });
         subTitle = new Label("", skin);
         totalOCost = new Label("", skin);
         totalOImpact = new Label("", skin);
         totalOMain = new Label("", skin);
+        chooseOffset = new Label("Choose offset", skin);
+        chosenOffset = new SelectBox(skin);
+        cOffsetCost = new Label("", skin);
+        cOffsetImpact = new Label("", skin);
+        cOffsetMain = new Label("", skin);
+        deleteOffset = new TextButton("Delete Offset", skin);
+        totalOCost.setFontScale((float) 0.85);
+        totalOImpact.setFontScale((float) 0.85);
+        totalOMain.setFontScale((float) 0.85);
+        cOffsetCost.setFontScale((float) 0.85);
+        cOffsetImpact.setFontScale((float) 0.85);
+        cOffsetMain.setFontScale((float) 0.85);
+    }
+
+    private void manageOffsets() {
+        sideTable.reset();
         sideTable.add(title).row();
         sideTable.add(currentOffsets).pad(10).left().row();
         sideTable.add(subTitle).row();
         sideTable.add(totalOImpact).pad(10).left().row();
         sideTable.add(totalOCost).pad(10).left().row();
         sideTable.add(totalOMain).pad(10).left().row();
+        sideTable.add(chooseOffset).row();
+        sideTable.add(chosenOffset).pad(10).left().row();
+        sideTable.add(cOffsetImpact).pad(10).left().row();
+        sideTable.add(cOffsetCost).pad(10).left().row();
+        sideTable.add(cOffsetMain).pad(10).left().row();
+        sideTable.add(deleteOffset);
+        chooseOffset.setVisible(false);
+        chosenOffset.setVisible(false);
+        deleteOffset.setVisible(false);
     }
 
-    private void oTypeDetails(int o) {
+    private void oTypeDetails() {
+        totalOCost.setText("");
+        totalOImpact.setText("");
+        totalOMain.setText("");
+        cOffsetCost.setText("");
+        cOffsetImpact.setText("");
+        cOffsetMain.setText("");
+        chooseOffset.setVisible(false);
+        chosenOffset.setVisible(false);
+        deleteOffset.setVisible(false);
         double cost = 0, impact = 0, maintenance = 0;
         int counter = 1;
-        ArrayList<Offset> cOffsets = inventory.getOffsets();
-        ArrayList<Offset> offsetsOfType = new ArrayList<>();
-        ArrayList<String> tempNames = new ArrayList<>();
-        Class c = Location.class; //Placeholder, need to assign something at start
-        if (o == 1) {
+        cOffsets = inventory.getOffsets();
+        offsetsOfType = new ArrayList<>();
+        ArrayList<Integer> tempNames = new ArrayList<>();
+        Class c = Class.class; //Placeholder, need to assign something at start
+        if (selectedOType == 1) {
             subTitle.setText("Carbon Capture");
             c = CarbonCapture.class;
         }
-        else if (o == 2) {
+        else if (selectedOType == 2) {
             subTitle.setText("Climate Research");
             c = ClimateResearch.class;
         }
-        else if (o == 3) {
+        else if (selectedOType == 3) {
             subTitle.setText("Infrastructure Investment");
             c = InfrastructureInvestment.class;
         }
-        else if (o == 4) {
+        else if (selectedOType == 4) {
             subTitle.setText("Lobby");
             c = Lobby.class;
         }
-        else if (o == 5) {
+        else if (selectedOType == 5) {
             subTitle.setText("Solar Geoengineering");
             c = SolarGeoengineering.class;
         }
-        else if (o == 6) {
+        else if (selectedOType == 6) {
             subTitle.setText("Transport Investment");
             c = TransportInvestment.class;
+        }
+        else {
+            return;
         }
         for (int i = 0; i < cOffsets.size(); i++) {
             System.out.println(cOffsets.get(i).getClass());
@@ -546,13 +585,41 @@ public class UI {
                 impact = impact + cOffsets.get(i).getEffect();
                 maintenance = maintenance + cOffsets.get(i).getMaintenance();
                 offsetsOfType.add(cOffsets.get(i));
-                tempNames.add(Integer.toString(counter));
+                tempNames.add(counter);
                 counter++;
             }
         }
+        Object[] temp = tempNames.toArray();
         totalOCost.setText(String.format("Total cost: $%,.2f", cost));
         totalOImpact.setText(String.format("Total impact: %,.2f", impact));
         totalOMain.setText(String.format("Total maintenance cost: $%,.2f", maintenance));
+        if (counter > 1) {
+            chosenOffset.setItems(temp);
+            chosenOffset.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    cOffset = offsetsOfType.get(chosenOffset.getSelectedIndex());
+                    chosenOffsetDetails();
+                }
+            });
+            chooseOffset.setVisible(true);
+            chosenOffset.setVisible(true);
+        }
+
+    }
+
+    private void chosenOffsetDetails() {
+        cOffsetCost.setText(String.format("Offset cost: $%,.2f", cOffset.getCost()));
+        cOffsetImpact.setText(String.format("Offset impact: %,.2f", cOffset.getEffect()));
+        cOffsetMain.setText(String.format("Offset maintenance cost: $%,.2f", cOffset.getMaintenance()));
+        deleteOffset.setVisible(true);
+        deleteOffset.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                inventory.removeOffset(cOffset);
+                oTypeDetails();
+            }
+        });
     }
 
     private String getPath(String resource, String type) {
