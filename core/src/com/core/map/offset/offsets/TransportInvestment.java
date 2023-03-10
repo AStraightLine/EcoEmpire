@@ -22,5 +22,7 @@ public class TransportInvestment extends Offset {
         this.maintenanceLowerBound = 3;
         this.maintenanceUpperBound = 5;
         setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
+
+        this.setRemovalCost(0);
     }
 }

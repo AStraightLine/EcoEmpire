@@ -42,6 +42,7 @@ public class MainMenuScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.setDebug(false); //Set true for debugging
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
 
         // temporary until we have asset manager in
         Skin skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.core.Boot;
 
 public class StartScreen extends ScreenAdapter{
@@ -18,6 +20,7 @@ public class StartScreen extends ScreenAdapter{
     private World world;
 
     private StartBackground startBackground;
+    private Stage stage;
 
     public StartScreen(OrthographicCamera camera){
 
@@ -28,6 +31,8 @@ public class StartScreen extends ScreenAdapter{
         this.world = new World(new Vector2(0,0), false);
 
         this.startBackground = new StartBackground(this, camera);
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
     }
 

@@ -22,5 +22,7 @@ public class CarbonCapture extends Offset {
         this.maintenanceLowerBound = 25;
         this.maintenanceUpperBound = 35;
         setMaintenance(Math.round((maintenanceLowerBound + ((maintenanceUpperBound - maintenanceLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
+
+        this.setRemovalCost(0);
     }
 }

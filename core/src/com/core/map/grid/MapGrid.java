@@ -312,7 +312,7 @@ public class MapGrid {
     }
     public void deleteTree(TileActor tile)
     {
-        double removalCost = Math.round(((0.25 + (0.5 - 0.25) * rand.nextDouble())) * 100.0) / 100.0;
+        double removalCost = tile.getLocation().getOffset().getRemovalCost();
 
         if (inventory.getFunds() >= removalCost) {
             setAvailable(tile, Const.treeY, Const.treeX);

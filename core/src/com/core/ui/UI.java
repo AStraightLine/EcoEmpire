@@ -521,6 +521,7 @@ public class UI {
         deleteOffset.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                inventory.charge(cOffset.getRemovalCost());
                 inventory.removeOffset(cOffset);
                 oTypeDetails();
             }
@@ -632,7 +633,7 @@ public class UI {
         return path;
     }
 
-    public void handleTileSelection(TileActor selected) {
+    public void handleTileSelection(final TileActor selected) {
         sideTable.reset();
         String fontColour;
         Double funds = inventory.getFunds();
@@ -642,9 +643,24 @@ public class UI {
         if (!location.getSearched() && !location.getExtracting()) {
             // Handle Tree case
             if (selected.isUnavailable()) {
+                double remCost = location.getOffset().getRemovalCost();
+                if (remCost > inventory.getFunds()) {
+                    fontColour = "RED";
+                } else {
+                    fontColour = "";
+                }
+
                 Label treeHeader = new Label("Forested", skin);
-                Label treeDetails = new Label("Removal will come at a cost", skin);
+                Label treeDetails = new Label(String.format("Removal will cost [" + fontColour + "]$%,.2f", remCost), skin);
                 Label treeSubDetails = new Label("", skin);
+                TextButton dTree = new TextButton("Delete tree", skin);
+                dTree.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        grid.deleteTree(selected);
+                        handleTileSelection(selected);
+                    }
+                });
 
                 //.setFontScale((float)0.8);
                 //treeSubDetails.setFontScale((float)0.8);
@@ -659,6 +675,7 @@ public class UI {
                     treeSubDetails.setText("But no climate impact");
                 }
                 sideTable.add(treeSubDetails).expand().left().pad(10).row();
+                sideTable.add(dTree);
             } else { // NO TREE TO CLEAR
                 Label header = new Label("You have not searched this tile.", skin);
                 Label subText = new Label("", skin);

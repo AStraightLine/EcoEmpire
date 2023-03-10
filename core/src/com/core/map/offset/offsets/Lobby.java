@@ -29,5 +29,7 @@ public class Lobby extends Offset {
         this.costLowerBound = getCost() + getMaintenance();
         this.costUpperBound = this.costLowerBound * 2;
         setCost(Math.round(((costLowerBound + (costUpperBound - costLowerBound) * rand.nextDouble())) * 100.0) / 100.0);
+
+        this.setRemovalCost(0);
     }
 }

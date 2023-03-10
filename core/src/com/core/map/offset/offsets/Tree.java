@@ -10,6 +10,7 @@ public class Tree extends Offset {
 
     private double effectLowerBound, effectUpperBound;
     private double costLowerBound, costUpperBound;
+    private double removalCost;
 
     public Tree() {
         super();
@@ -27,5 +28,9 @@ public class Tree extends Offset {
 
         // No maintenance cost
         this.setMaintenance(0);
+
+        //Removal cost
+        this.setRemovalCost(Math.round(((0.25 + (0.5 - 0.25) * rand.nextDouble())) * 100.0) / 100.0);
     }
+
 }
