@@ -114,7 +114,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.camera.update();
 
-        if(climate.getClimateHealth() <= 0)
+        if(climate.getClimateHealth() <= 0 || playerInventory.getFunds() < 0)
         {
             gameClock.handlePause();
 
