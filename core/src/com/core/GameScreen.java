@@ -60,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
     private Sprite searchHereFirstSprite;
     private Sprite insufficientFundsSprite;
     private Sprite notEnoughSpaceSprite;
+    private Sprite cantPlaceTreeSprite;
 
     private UI ui;
     private int gameWidth, gameHeight;
@@ -69,6 +70,7 @@ public class GameScreen extends ScreenAdapter {
     private Boolean insufficientFunds = false;
     private Boolean searchHereFirst = false;
     private Boolean enoughSpace = true;
+    private Boolean cantPlaceTree = false;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
@@ -366,6 +368,15 @@ public class GameScreen extends ScreenAdapter {
 
         }
 
+        if(this.cantPlaceTree == true){
+            playerActionBatch.begin();
+            playerActionBatch.draw(this.cantPlaceTreeSprite, Gdx.graphics.getWidth() / 2 - cantPlaceTreeSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - cantPlaceTreeSprite.getHeight() / 2);
+            playerActionBatch.end();
+            if(this.gameClock.getTimeElapsedInSeconds() > (this.startDisplayedTime + Const.ON_SCREEN_TIME)){
+                this.cantPlaceTree = false;
+            }
+        }
+
         // For debugging purposes:
         this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
     }
@@ -441,6 +452,18 @@ public class GameScreen extends ScreenAdapter {
         this.notEnoughSpaceSprite = new Sprite(new Texture("more-space-required-to-build-here.png"));
         this.enoughSpace = false;
         this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
+
+    }
+
+    public void cantPlaceTree(){
+        if(gameClock.getTimeElapsedInSeconds() > 10){//this 10 assumes that the user wont try and place a tree in the first 10 seconds of the map loading
+            //When the game starts it tries placing trees using the same method as the user
+            //So at the beginning it will always say you can't place a tree before the game has even started
+            //that is what this if statement gets rid of
+            this.cantPlaceTreeSprite = new Sprite(new Texture("you-cant-place-a-tree-here.png"));
+            this.cantPlaceTree = true;
+            this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
+        }
 
     }
 

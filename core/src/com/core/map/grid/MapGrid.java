@@ -153,6 +153,10 @@ public class MapGrid {
             inventory.addOffset(tree);
             ui.handleTileSelection(tile);
         }
+        else{
+            this.gameScreen.cantPlaceTree();
+        }
+
         return true;
 
     }
