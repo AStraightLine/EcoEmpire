@@ -52,15 +52,15 @@ public class Boot extends Game {
 		}
 	}
 
-	public void displayMenu(){
+	public void displayMenu(Boolean end){
 		//change screen to menu screen
 		//add pause function here before changing screen
 		if (!GameClock.getIsPaused()) {
 			gameScreen.getGameClock().handlePause();
 
 		}
+		setScreen(new MainMenuScreen(orthographicCamera,end));
 
-		setScreen(new MainMenuScreen((orthographicCamera)));
 	}
 
 	public void displayStartScreen(){

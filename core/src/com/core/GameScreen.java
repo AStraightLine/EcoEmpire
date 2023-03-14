@@ -138,7 +138,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Boot.INSTANCE.displayMenu();
+            Boot.INSTANCE.displayMenu(end);
         }
 
         // ALL CONTROLS IN HERE:
@@ -291,8 +291,9 @@ public class GameScreen extends ScreenAdapter {
             endBatch.draw(endScreen, Gdx.graphics.getWidth()/2 - endScreen.getWidth()/2, Gdx.graphics.getHeight()/2 - endScreen.getHeight()/2);
             endBatch.end();
 
+
             if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-                Boot.INSTANCE.displayMenu();
+                Boot.INSTANCE.displayMenu(end);
             }
 
             return;
