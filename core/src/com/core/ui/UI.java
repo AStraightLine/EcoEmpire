@@ -23,6 +23,7 @@ import com.core.map.offset.offsets.*;
 import com.core.map.offset.offsets.Tree;
 import com.core.map.resource.Resource;
 import com.core.player.PlayerInventory;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -725,6 +726,14 @@ public class UI {
 
             Label extractorTitle = new Label(resource + " extractor", skin);
             Label extractingHeader = new Label("", skin);
+            TextButton sellExtractor = new TextButton("Sell Extractor for $"+ EXTRACTOR_SELL_PRICE, skin);
+            sellExtractor.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    grid.deleteExtractor(inventory);
+                    handleTileSelection(selected);
+                }
+            });
             if (location.getExtractor().getDisabled()) {
                 extractingHeader.setText("Extractor is disabled");
             } else {
@@ -751,6 +760,7 @@ public class UI {
             ;
             sideTable.add(extractionProDetails).expand().left().pad(10).row();
             ;
+            sideTable.add(sellExtractor).expand().padLeft(10).row();
         }
     }
 

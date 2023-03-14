@@ -1,5 +1,6 @@
 package com.core.player;
 
+import com.core.Const;
 import com.core.map.extract.Extractor;
 import com.core.map.offset.Offset;
 
@@ -75,6 +76,7 @@ public class PlayerInventory {
         if(isExtractorInInventory(extractor)){
             extractors.remove(extractor);
             this.income = this.income - extractor.getValue();
+            this.funds = this.funds + Const.EXTRACTOR_SELL_PRICE;
             this.climateImpact = this.climateImpact - extractor.getImpact();
             System.out.println("Extractor removed");
         }

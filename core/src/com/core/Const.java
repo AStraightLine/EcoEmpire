@@ -18,6 +18,7 @@ public class Const{
     //Base climate health
     public static final Double baseHealth = 1000.0;
 
+    public static final Double EXTRACTOR_SELL_PRICE = 25.0;
     // Extractor paths
     public static final Map<String, ArrayList<String>> paths;
     static {
