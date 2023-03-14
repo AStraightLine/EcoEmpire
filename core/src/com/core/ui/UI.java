@@ -711,7 +711,7 @@ public class UI {
             for (int i = 0; i < Const.resourceNames.length; i++) {
                 Resource[] resources = location.getResourcesArray(); // Array of resources following order in Const class.
 
-                if(Const.resourceNames[i].equals("Nuclear") && location.getType().equals("WATER")){
+                if((Const.resourceNames[i].equals("Nuclear") || Const.resourceNames[i].equals("Solar")) && location.getType().equals("WATER")){
                     //Ignore nuclear in the list of things that can be built at sea
 
                 }else{
