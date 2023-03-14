@@ -164,6 +164,8 @@ public class GameScreen extends ScreenAdapter {
                         playerInventory.charge(location.getSearchCost());
                         location.setSearched(true);
                         ui.handleTileSelection(tile); // Update sideUI to show resource details
+                    }else{
+                        this.displayInsufficientFunds();
                     }
                 } else {
                     ui.handleTileSelection(tile);
