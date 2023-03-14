@@ -57,7 +57,7 @@ public class GameScreen extends ScreenAdapter {
 
     private SpriteBatch playerActionBatch = new SpriteBatch();
     private float startDisplayedTime;
-    private Sprite buildBeforeSearch;
+    private Sprite searchHereFirstSprite;
     private Sprite insufficientFundsSprite;
 
 
@@ -67,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
     private double startingFunds = 100.0;
 
     private Boolean insufficientFunds = false;
+    private Boolean searchHereFirst = false;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
@@ -307,13 +308,6 @@ public class GameScreen extends ScreenAdapter {
             return;
         }
 
-        if(drawActionCorrection){
-            playerActionBatch.begin();
-            playerActionBatch.draw(buildBeforeSearch,Gdx.graphics.getWidth()/2 - buildBeforeSearch.getWidth()/2, Gdx.graphics.getHeight()/2 - buildBeforeSearch.getHeight()/2);
-            playerActionBatch.end();
-        }
-
-
         update();
         Gdx.gl.glClearColor(25/255f, 25/255f, 25/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -349,6 +343,15 @@ public class GameScreen extends ScreenAdapter {
             playerActionBatch.end();
             if(this.gameClock.getTimeElapsedInSeconds() > (this.startDisplayedTime + Const.ON_SCREEN_TIME)){
                 this.insufficientFunds = false;
+            }
+        }
+
+        if(this.searchHereFirst == true){
+            playerActionBatch.begin();
+            playerActionBatch.draw(this.searchHereFirstSprite,Gdx.graphics.getWidth() / 2 - searchHereFirstSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - searchHereFirstSprite.getHeight() / 2);
+            playerActionBatch.end();
+            if(this.gameClock.getTimeElapsedInSeconds() > (this.startDisplayedTime + Const.ON_SCREEN_TIME)){
+                this.searchHereFirst = false;
             }
         }
 
@@ -412,6 +415,14 @@ public class GameScreen extends ScreenAdapter {
         this.insufficientFundsSprite = new Sprite(new Texture("insufficient-funds.png"));
         this.insufficientFunds = true;
         this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
+    }
+
+    public void displaySearchHereFirst(){
+
+        this.searchHereFirstSprite = new Sprite(new Texture("you-need-to-search-here-first.png"));
+        this.searchHereFirst = true;
+        this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
+
     }
 
 

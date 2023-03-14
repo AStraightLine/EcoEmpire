@@ -341,7 +341,13 @@ public class UI {
                 }
             }
         }else{
-            this.gameScreen.displayInsufficientFunds();
+            if(inventory.getFunds() < price){
+                this.gameScreen.displayInsufficientFunds();
+            }
+            if(location.getSearched() == false){
+                this.gameScreen.displaySearchHereFirst();
+            }
+
         }
     }
 
