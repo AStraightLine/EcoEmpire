@@ -59,7 +59,7 @@ public class GameScreen extends ScreenAdapter {
     private float startDisplayedTime;
     private Sprite searchHereFirstSprite;
     private Sprite insufficientFundsSprite;
-
+    private Sprite notEnoughSpaceSprite;
 
     private UI ui;
     private int gameWidth, gameHeight;
@@ -68,6 +68,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Boolean insufficientFunds = false;
     private Boolean searchHereFirst = false;
+    private Boolean enoughSpace = true;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
@@ -355,6 +356,16 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
+        if(this.enoughSpace == false){
+            playerActionBatch.begin();
+            playerActionBatch.draw(this.notEnoughSpaceSprite, Gdx.graphics.getWidth() / 2 - notEnoughSpaceSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - notEnoughSpaceSprite.getHeight() / 2);
+            playerActionBatch.end();
+            if(this.gameClock.getTimeElapsedInSeconds() > (this.startDisplayedTime + Const.ON_SCREEN_TIME)){
+                this.enoughSpace = true;
+            }
+
+        }
+
         // For debugging purposes:
         this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
     }
@@ -425,6 +436,13 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    public void displayNoSpace(){
+
+        this.notEnoughSpaceSprite = new Sprite(new Texture("more-space-required-to-build-here.png"));
+        this.enoughSpace = false;
+        this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
+
+    }
 
     public GameClock getGameClock() {
         return gameClock;

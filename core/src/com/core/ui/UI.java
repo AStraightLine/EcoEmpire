@@ -68,6 +68,7 @@ public class UI {
     private Offset[] oOptions = {cc, cr, ii, l, sg, ti, t};
     private ArrayList<Offset> offsetsOfType, cOffsets;
     private Offset cOffset;
+    private TextButton[] extractorButtons;
 
     public UI(FitViewport viewport,GameScreen gameScreen, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
@@ -340,6 +341,7 @@ public class UI {
                     }
                 }
             }
+
         }else{
             if(inventory.getFunds() < price){
                 this.gameScreen.displayInsufficientFunds();
@@ -732,12 +734,15 @@ public class UI {
 
                     Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
 
+                    createExtractorButtons();
+
                     resourceProDetails.setFontScale((float) 0.85);
                     resourceConDetails.setFontScale((float) 0.85);
 
                     sideTable.add(resourceHeader).pad(10).row();
                     sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
                     sideTable.add(resourceConDetails).expand().left().padLeft(10).row();
+                    sideTable.add(this.extractorButtons[i]).expand().left().padLeft(10).row();
                 }
 
 
@@ -786,6 +791,102 @@ public class UI {
             sideTable.add(sellExtractor).expand().padLeft(10).row();
         }
     }
+
+    private void createExtractorButtons(){
+
+        TextButton buildCoal = new TextButton("Build Coal", skin);
+        TextButton buildOil = new TextButton("Build Oil", skin);
+        TextButton buildGas = new TextButton("Build Gas", skin);
+        TextButton buildNuclear = new TextButton("Build Nuclear", skin);
+        TextButton buildSolar = new TextButton("Build Solar", skin);
+        TextButton buildWind = new TextButton("Build Wind", skin);
+        TextButton buildHydro = new TextButton("Build Hydro", skin);
+        TextButton buildGeothermal = new TextButton("Build Geothermal", skin);
+
+        buildCoal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Coal";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildOil.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Oil";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildGas.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Gas";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildNuclear.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Nuclear";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildSolar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Solar";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildWind.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Wind";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildHydro.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Hydro";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+        buildGeothermal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                String extractResource = "Geothermal";
+                extractResource = extractResource.toUpperCase();
+
+                handleExtractSelection(extractResource);
+            }
+        });
+
+        this.extractorButtons = new TextButton[]{buildCoal, buildGas, buildNuclear, buildOil, buildSolar, buildWind, buildHydro, buildGeothermal};
+    }
+
 
     public void setGrid(MapGrid grid) {
         this.grid = grid;
