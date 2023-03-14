@@ -288,7 +288,10 @@ public class MapGrid {
             {
                 setUnavailable(selectedTile, 4, 4);
             }
-        } else return false;
+        } else{
+            this.gameScreen.displayNoSpace();
+            return false;
+        }
         return complete;
     }
     public void deleteExtractor(PlayerInventory playerInventory)

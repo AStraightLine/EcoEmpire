@@ -485,6 +485,7 @@ public class UI {
             boolean added = grid.addTree(t);
             if (added == false) {
                 errorMessage.setText("Cannot place tree here");
+                //this.gameScreen.displayNoSpace();
                 return;
             }
         }
