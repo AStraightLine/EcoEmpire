@@ -52,12 +52,20 @@ public class GameScreen extends ScreenAdapter {
     private ProgressBar impactBar;
     private Sprite endScreen;
     private boolean end = false;
+    private boolean drawActionCorrection = false;
     private SpriteBatch endBatch = new SpriteBatch();
+
+    private SpriteBatch playerActionBatch = new SpriteBatch();
+    private Sprite buildBeforeSearch;
+    private Sprite insufficientFundsSprite;
+
 
     private UI ui;
     private int gameWidth, gameHeight;
 
     private double startingFunds = 100.0;
+
+    private Boolean insufficientFunds = false;
 
     public GameScreen(OrthographicCamera camera, int resolutionX, int resolutionY) {
         Rectangle levelBounds = new Rectangle(0, 0, 800, 600);
@@ -83,7 +91,7 @@ public class GameScreen extends ScreenAdapter {
         //GameSound.startBackgroundMusic(0.1F);
 
         uiViewport = new FitViewport(resolutionX, resolutionY);
-        this.ui = new UI(uiViewport, resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
+        this.ui = new UI(uiViewport,this,resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
 
         this.viewport = new FitViewport(gameWidth, gameHeight, camera);
 
@@ -279,9 +287,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-
-
-
     @Override
     public void render(float delta) {
 
@@ -298,6 +303,20 @@ public class GameScreen extends ScreenAdapter {
 
             return;
         }
+
+        if (insufficientFunds == true) {
+            playerActionBatch.begin();
+            playerActionBatch.draw(this.insufficientFundsSprite, Gdx.graphics.getWidth() / 2 - insufficientFundsSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - insufficientFundsSprite.getHeight() / 2);
+            playerActionBatch.end();
+        }
+
+
+        if(drawActionCorrection){
+            playerActionBatch.begin();
+            playerActionBatch.draw(buildBeforeSearch,Gdx.graphics.getWidth()/2 - buildBeforeSearch.getWidth()/2, Gdx.graphics.getHeight()/2 - buildBeforeSearch.getHeight()/2);
+            playerActionBatch.end();
+        }
+
 
         update();
         Gdx.gl.glClearColor(25/255f, 25/255f, 25/255f, 1);
@@ -383,6 +402,13 @@ public class GameScreen extends ScreenAdapter {
 
         font.draw(batch, expectedChange, x, y);
     }
+
+    public void displayInsufficientFunds(){
+
+        this.insufficientFundsSprite = new Sprite(new Texture("insufficient-funds.png"));
+        this.insufficientFunds = true;
+    }
+
 
     public GameClock getGameClock() {
         return gameClock;

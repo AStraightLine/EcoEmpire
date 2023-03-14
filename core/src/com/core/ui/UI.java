@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Const;
+import com.core.GameScreen;
+import com.core.audio.GameSound;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -35,6 +37,7 @@ public class UI {
 
     private FitViewport viewport;
     private int resX, resY, gameWidth, gameHeight;
+    private GameScreen gameScreen;
 
     private Skin skin;
     private Stage stage;
@@ -66,9 +69,9 @@ public class UI {
     private ArrayList<Offset> offsetsOfType, cOffsets;
     private Offset cOffset;
 
-
-    public UI(FitViewport viewport, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
+    public UI(FitViewport viewport,GameScreen gameScreen, int resX, int resY, int gameWidth, int gameHeight, PlayerInventory inventory, Climate climate, GameClock clock, InputMultiplexer inputMultiplexer) {
         this.viewport = viewport;
+        this.gameScreen = gameScreen;
         this.resX = resX;
         this.resY = resY;
         this.gameWidth = gameWidth;
@@ -306,6 +309,7 @@ public class UI {
         extractionSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 String extractResource = (String)extractionSelect.getSelected();
                 extractResource = extractResource.toUpperCase();
 
@@ -336,6 +340,8 @@ public class UI {
                     }
                 }
             }
+        }else{
+            this.gameScreen.displayInsufficientFunds();
         }
     }
 
