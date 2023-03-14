@@ -301,6 +301,7 @@ public class UI {
         extractionSelect = new SelectBox<>(skin);
 
         String[] extractions = {"Extractions", "Coal", "Gas", "Geothermal", "Hydro", "Nuclear", "Oil", "Solar", "Wind"};
+
         extractionSelect.setItems(extractions);
         extractionSelect.addListener(new ChangeListener() {
             @Override
@@ -692,35 +693,44 @@ public class UI {
                 sideTable.add(subText).expand().left().pad(10).row();
 
             }
-        } else if (location.getSearched() && !location.getExtracting()) { // Searched but no extractor built: show resource details
+        } else if (location.getSearched() && !location.getExtracting()) {
+            // Searched but no extractor built: show resource details
             for (int i = 0; i < Const.resourceNames.length; i++) {
                 Resource[] resources = location.getResourcesArray(); // Array of resources following order in Const class.
 
-                if (funds < resources[i].getExtractionCost()) {
-                    fontColour = "RED";
-                } else {
-                    fontColour = "";
+                if(Const.resourceNames[i].equals("Nuclear") && location.getType().equals("WATER")){
+                    //Ignore nuclear in the list of things that can be built at sea
+
+                }else{
+                    if (funds < resources[i].getExtractionCost()) {
+                        fontColour = "RED";
+                    } else {
+                        fontColour = "";
+                    }
+
+                    Label resourceHeader = new Label(String.format(Const.resourceNames[i] + " :[" + fontColour + "] $%,.2f[] to extract.", resources[i].getExtractionCost()), skin);
+                    Label resourceProDetails;
+
+                    if (resources[i].getQuantity() == Const.infinity) {
+                        resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: INF", skin);
+                    } else {
+                        resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: " + resources[i].getQuantity(), skin);
+                    }
+
+                    Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
+
+                    resourceProDetails.setFontScale((float) 0.85);
+                    resourceConDetails.setFontScale((float) 0.85);
+
+                    sideTable.add(resourceHeader).pad(10).row();
+                    sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
+                    sideTable.add(resourceConDetails).expand().left().padLeft(10).row();
                 }
 
-                Label resourceHeader = new Label(String.format(Const.resourceNames[i] + " :[" + fontColour + "] $%,.2f[] to extract.", resources[i].getExtractionCost()), skin);
-                Label resourceProDetails;
 
-                if (resources[i].getQuantity() == Const.infinity) {
-                    resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: INF", skin);
-                } else {
-                    resourceProDetails = new Label(String.format("Value: $%,.2f ", resources[i].getValue()) + "\nQuantity: " + resources[i].getQuantity(), skin);
-                }
-
-                Label resourceConDetails = new Label(String.format("Impact: %,.2f\nStability: %d", resources[i].getImpact(), resources[i].getStability()), skin);
-
-                resourceProDetails.setFontScale((float) 0.85);
-                resourceConDetails.setFontScale((float) 0.85);
-
-                sideTable.add(resourceHeader).pad(10).row();
-                sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
-                sideTable.add(resourceConDetails).expand().left().padLeft(10).row();
             }
-        } else if (location.getExtracting()) { // Location already has an extractor built.
+        } else if (location.getExtracting()) {
+            // Location already has an extractor built.
             String resource = location.getExtractingResource();
             resource = resource.substring(0, 1) + resource.substring(1, resource.length()).toLowerCase();
 
