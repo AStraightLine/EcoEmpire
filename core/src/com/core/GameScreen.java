@@ -56,6 +56,7 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch endBatch = new SpriteBatch();
 
     private SpriteBatch playerActionBatch = new SpriteBatch();
+    private float startDisplayedTime;
     private Sprite buildBeforeSearch;
     private Sprite insufficientFundsSprite;
 
@@ -304,13 +305,6 @@ public class GameScreen extends ScreenAdapter {
             return;
         }
 
-        if (insufficientFunds == true) {
-            playerActionBatch.begin();
-            playerActionBatch.draw(this.insufficientFundsSprite, Gdx.graphics.getWidth() / 2 - insufficientFundsSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - insufficientFundsSprite.getHeight() / 2);
-            playerActionBatch.end();
-        }
-
-
         if(drawActionCorrection){
             playerActionBatch.begin();
             playerActionBatch.draw(buildBeforeSearch,Gdx.graphics.getWidth()/2 - buildBeforeSearch.getWidth()/2, Gdx.graphics.getHeight()/2 - buildBeforeSearch.getHeight()/2);
@@ -347,6 +341,14 @@ public class GameScreen extends ScreenAdapter {
 
         ui.update();
 
+        if (this.insufficientFunds == true) {
+            playerActionBatch.begin();
+            playerActionBatch.draw(this.insufficientFundsSprite, Gdx.graphics.getWidth() / 2 - insufficientFundsSprite.getWidth() / 2, Gdx.graphics.getHeight() / 2 - insufficientFundsSprite.getHeight() / 2);
+            playerActionBatch.end();
+            if(this.gameClock.getTimeElapsedInSeconds() > (this.startDisplayedTime + Const.ON_SCREEN_TIME)){
+                this.insufficientFunds = false;
+            }
+        }
 
         // For debugging purposes:
         this.box2DDebugRenderer.render(world, camera.combined.scl(Const.PPM));
@@ -407,6 +409,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.insufficientFundsSprite = new Sprite(new Texture("insufficient-funds.png"));
         this.insufficientFunds = true;
+        this.startDisplayedTime = this.gameClock.getTimeElapsedInSeconds();
     }
 
 

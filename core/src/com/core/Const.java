@@ -19,6 +19,8 @@ public class Const{
     public static final Double baseHealth = 1000.0;
 
     public static final Double EXTRACTOR_SELL_PRICE = 25.0;
+
+    public static final int ON_SCREEN_TIME = 1;//in seconds
     // Extractor paths
     public static final Map<String, ArrayList<String>> paths;
     static {
