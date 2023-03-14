@@ -481,6 +481,7 @@ public class UI {
             }
         }
         else {
+            this.gameScreen.displayInsufficientFunds();
             return;
         }
         cc = new CarbonCapture(); //Reroll offsets once an offset has been selected

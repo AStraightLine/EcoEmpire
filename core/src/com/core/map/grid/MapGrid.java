@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.core.Const;
+import com.core.GameScreen;
 import com.core.audio.GameSound;
 import com.core.climate.Climate;
 import com.core.map.extract.Extractor;
@@ -41,9 +42,11 @@ public class MapGrid {
     private UI ui;
 
     private int gameWidth, gameHeight;
+    private GameScreen gameScreen;
 
 
-    public MapGrid(int rows, int columns, Stage stage, int gameWidth, int gameHeight, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory, UI ui) {
+    public MapGrid(GameScreen gameScreen, int rows, int columns, Stage stage, int gameWidth, int gameHeight, InputMultiplexer inputMultiplexer, Climate climate, PlayerInventory inventory, UI ui) {
+        this.gameScreen = gameScreen;
         this.stage = stage;
         this.rows = rows;
         this.columns = columns;
@@ -322,7 +325,9 @@ public class MapGrid {
             }
             inventory.charge(removalCost);
             climate.singleClimateImpact(0.125 + (0.25 - 0.125) * rand.nextDouble());
-        } // ELSE can't afford to remove tree
+        }else { // ELSE can't afford to remove tree
+            this.gameScreen.displayInsufficientFunds();
+        }
     }
     public void initialiseTextures()
     {
