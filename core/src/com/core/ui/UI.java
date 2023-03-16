@@ -134,7 +134,7 @@ public class UI {
         populateClimate();
         topTable.row().pad(0, 0, 5, 0);
         populateFunds();
-        populateExtractionsSelection();
+        //populateExtractionsSelection();
         populateOffsets();
         populateManageOffsets();
         populateTime();
