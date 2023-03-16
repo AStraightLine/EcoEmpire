@@ -53,7 +53,7 @@ public class UI {
     private Label timeLabel, fundsLabel, climateLabel, expectedFundsChange, expectedClimateChange, climateText, fundsText, errorMessage, title, subTitle, totalOCost, totalOImpact, totalOMain, cOffsetCost, cOffsetImpact, cOffsetMain, chooseOffset;
     private ProgressBar impactBar;
     private SelectBox extractionSelect, offsetSelect, currentOffsets, chosenOffset;
-    private TextButton offsets, addOffset, manageOffsets, deleteOffset;
+    private TextButton offsets, addOffset, manageOffsets, deleteOffset, search;
     private Group uiGroup = new Group();
     private float heightBound;
     private float widthBound;
@@ -339,6 +339,10 @@ public class UI {
                         inventory.addExtractor(location.getExtractor(), price);
                         handleTileSelection(tile);
                     }
+                    else
+                    {
+
+                    }
                 }
             }
 
@@ -410,6 +414,7 @@ public class UI {
             }
         });
         addOffset = new TextButton("Add offset", skin);
+
         addOffset.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -422,6 +427,29 @@ public class UI {
                 offsetDetails(); //Output offset details
             }
         });
+
+        search = new TextButton("SEARCH", skin);
+        search.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                TileActor tile = grid.getSelectedTile();
+                Location location = tile.getLocation();
+                if (!clock.getPauseState()) {
+                    if (!location.getSearched() && !grid.getSelectedTile().isUnavailable()) {
+                        if (inventory.getFunds() >= location.getSearchCost()) {
+                            inventory.charge(location.getSearchCost());
+                            location.setSearched(true);
+                            handleTileSelection(tile); // Update sideUI to show resource details
+                        } else {
+                            gameScreen.displayInsufficientFunds();
+                        }
+                    } else {
+                        handleTileSelection(tile);
+                    }
+                }
+            }
+        });
+
         manageOffsets = new TextButton("Manage Offsets", skin);
         manageOffsets.addListener(new ChangeListener() {
             @Override
@@ -430,6 +458,7 @@ public class UI {
             }
         });
         currentOffsets = new SelectBox<>(skin);
+        topUI.addActor(search);
         topUI.addActor(offsets);
         topUI.addActor(manageOffsets);
     }

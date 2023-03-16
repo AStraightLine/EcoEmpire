@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.core.audio.GameSound;
 import com.core.climate.Climate;
 import com.core.clock.GameClock;
 import com.core.map.grid.MapGrid;
@@ -93,7 +94,7 @@ public class GameScreen extends ScreenAdapter {
         this.climate = new Climate(impactBar);
         this.gameClock = new GameClock(playerInventory, climate);
 
-        //GameSound.startBackgroundMusic(0.1F);
+        GameSound.startBackgroundMusic(0.1F);
 
         uiViewport = new FitViewport(resolutionX, resolutionY);
         this.ui = new UI(uiViewport,this,resolutionX, resolutionY, gameWidth, gameHeight, playerInventory, climate, gameClock, inputMultiplexer);
