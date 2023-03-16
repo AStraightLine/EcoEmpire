@@ -20,7 +20,7 @@ public class Nuclear extends NonRenewable {
         this.location = location;
 
         // Quantity - Either find rare or import so random
-        setQuantity(rand.nextInt(1000 - 0) + 0);
+        setQuantity(rand.nextInt(100 - 0) + 250);
 
         // Impact - Very low but potential to go very badly.
         // PERHAPS: Keep impact low but look to stability, if we hit a 0 stability role, instantly take some multiple of the impact from the climate one time.

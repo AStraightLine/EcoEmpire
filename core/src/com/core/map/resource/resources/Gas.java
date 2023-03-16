@@ -22,7 +22,7 @@ public class Gas extends NonRenewable {
 
         // Quantity - Fossil so lower quantity, newer to extraction than coal and oil etc
         setQuantityUpperBound(getQuantityUpperBound() + baseQuantityUpperBoundMod);
-        setQuantity(getQuantity() + (rand.nextInt((int) getQuantityUpperBound() - (int) getQuantityLowerBound()) + (int) getQuantityLowerBound()));
+        setQuantity((int)((getQuantity() + (rand.nextInt((int)getQuantityUpperBound() - (int)getQuantityLowerBound()) + (int)getQuantityLowerBound()))/15));
 
         // Impact - Fossil fuel so high impact
         setImpactLowerBound(getImpactLowerBound() + baseImpactLowerBoundMod);

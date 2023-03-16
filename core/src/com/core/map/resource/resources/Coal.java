@@ -23,7 +23,7 @@ public class Coal extends NonRenewable {
 
         // Quantity - Fossil so low quantity, also been mined longest(?) so make rare
         setQuantityUpperBound(getQuantityUpperBound() + baseQuantityUpperBoundMod);
-        setQuantity(getQuantity() + (rand.nextInt((int)getQuantityUpperBound() - (int)getQuantityLowerBound()) + (int)getQuantityLowerBound()));
+        setQuantity((int)((getQuantity() + (rand.nextInt((int)getQuantityUpperBound() - (int)getQuantityLowerBound()) + (int)getQuantityLowerBound()))/15));
 
         // Impact - Fossil fuel so high impact + mining operations
         setImpactLowerBound(getImpactLowerBound() + baseImpactLowerBoundMod);

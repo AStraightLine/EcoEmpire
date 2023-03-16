@@ -766,13 +766,13 @@ public class UI {
 
                     createExtractorButtons();
 
-                    resourceProDetails.setFontScale((float) 0.85);
-                    resourceConDetails.setFontScale((float) 0.85);
+                    resourceProDetails.setFontScale((float) 0.75);
+                    resourceConDetails.setFontScale((float) 0.75);
 
-                    sideTable.add(resourceHeader).pad(10).row();
-                    sideTable.add(resourceProDetails).expand().left().padLeft(10).row();
-                    sideTable.add(resourceConDetails).expand().left().padLeft(10).row();
-                    sideTable.add(this.extractorButtons[i]).expand().left().padLeft(10).row();
+                    sideTable.add(resourceHeader).pad(2).row();
+                    sideTable.add(resourceProDetails).expand().left().padLeft(2).row();
+                    sideTable.add(resourceConDetails).expand().left().padLeft(2).row();
+                    sideTable.add(this.extractorButtons[i]).expand().left().padLeft(2).row();
                 }
 
 
